@@ -22,20 +22,13 @@
 #roads_low{
 
   line-width: [roadsize];
-  line-color: @motorway-trunk-fill;
+  line-color: @standard-fill;
   [type='railway'] { line-color: @rail-line;}
 }
 
 // At mid-level scales start to show primary  routes
 #roads_med{
-  line-color: @motorway-trunk-fill;
-
-  [type='motorway'][can_bicycle='yes'] {
-    line-color: @motorway-trunk-cycle-fill;
-  }
-  [type='primary'] {
-    line-color: @primary-fill;
-  }
+  line-color: @standard-fill;
 
   [type='railway'] {
     line-color: @rail-line;
@@ -112,15 +105,6 @@
     [type='service'][service='minor'] {  line-width: 0.5*[roadsize] + [roadcase]; } // size divided by 2
 
     line-color: @standard-case; 
-    [type='motorway'],[type='motorway_link']     {line-color: @motorway-trunk-case; }
-    [type='primary'],[type='primary_link']       {line-color: @primary-case; }
-    [type='secondary'] ,[type='secondary_link']  {line-color: @secondary-case; }
-    [type='tertiary'] ,[type='tertiary_link']    {line-color: @tertiary-case; }
-    [type='living_street'],[type='pedestrian']   {line-color: @pedestrian-case; }
-
-    // specific color for bridge
-    [zoom>=14][bridge!='no'] { line-color: @bridge_case;}
-
   }
 }
 
@@ -159,172 +143,6 @@
 }
 
 //===========================================================================
-// right and left border showing level of comfort for cycling . 
-// also add arrow for oneway 
-//===========================================================================
-
-// Eventually overload right border for cycleways
-#roads_high::outline_right[zoom>=11][cycleway_right_render='track'],
-#roads_high::outline_right[zoom>=11][cycleway_right_render='shared_track'],
-#roads_high::outline_right[zoom>=11][cycleway_right_render='sidewalk'],
-#roads_high::outline_right[zoom>=12][cycleway_right_render='lane'],
-#roads_high::outline_right[zoom>=12][cycleway_right_render='busway'],
-{
-    [type='motorway'],[type='motorway_link'],
-    [type='primary'],[type='primary_link'],
-    [type='secondary'] ,[type='secondary_link'],
-    [type='tertiary'] ,[type='tertiary_link'],
-    [type='unclassified'],[type='residential'] ,
-    [type='living_street'],[type='pedestrian'],
-    [type='service'],
-    {
-        line-cap: butt;
-
-        line-color: @cycle_track_case;
-
-        [cycleway_right_render='sidewalk'] {
-           line-color: @path-fill;
-        }
-
-        [cycleway_right_render='lane'] {
-          line-dasharray: 6,3;
-          line-color: @mixed-cycle-fill;
-        }
-
-        [cycleway_right_render='busway'] {
-          line-dasharray: 6,10;
-          line-color: @mixed-cycle-fill;
-        }
-
-        [cycleway_right_render='shared_track'] {
-          line-color: @mixed-cycle-fill;
-        }
-
-        line-offset: 1 * [sizecycle];
-        [cycleway_right_oneway='no'] { line-offset: 1.5 * [sizecycle]; }
-        line-width: [roadsize];
-
-    }
-}
-
-// Right oneway marker
-#roads_high::cycleway_right[zoom>=18][cycleway_right_render='shared_track'][cycleway_right_oneway='yes'],
-#roads_high::cycleway_right[zoom>=18][cycleway_right_render='shared_track'][cycleway_right_oneway='-1'],
-#roads_high::cycleway_right[zoom>=18][cycleway_right_render='track'][cycleway_right_oneway='yes'],
-#roads_high::cycleway_right[zoom>=18][cycleway_right_render='track'][cycleway_right_oneway='-1'],
-{
-  [type='motorway'],
-  [type='primary'],
-  [type='secondary'],
-  [type='tertiary'],
-  [type='living_street'],
-  [type='unclassified'],
-  [type='residential'],
-  [type='tertiary_link'],
-  [type='secondary_link'],
-  [type='primary_link'],
-  [type='motorway_link'],
-  [type='service'],
-  [type='pedestrian'] {
-
-    marker-placement: line;
-    marker-max-error: 0.5;
-    marker-spacing: 100;
-    marker-file: url(symbols/oneway.svg);
-    [cycleway_right_oneway='-1'] {
-      marker-file: url(symbols/oneway-reverse.svg);
-    }
-    marker-fill: #ddf;
-
-    marker-transform: translate(0, 0.5 * [roadsize] + 0.5 * [sizecycle] ); 
-
-  }
-}
-
-// Eventually overload left border for cycleways
-#roads_high::outline_left[zoom>=11][cycleway_left_render='track'],
-#roads_high::outline_left[zoom>=11][cycleway_left_render='shared_track'],
-#roads_high::outline_left[zoom>=11][cycleway_left_render='sidewalk'],
-#roads_high::outline_left[zoom>=12][cycleway_left_render='lane'],
-#roads_high::outline_left[zoom>=12][cycleway_left_render='busway'],
-{
-        line-cap: butt;
-
-        line-color: @cycle_track_case;
-
-        [cycleway_left_render='sidewalk'] {
-           line-color: @path-fill;
-        }
-
-        [cycleway_left_render='lane'] {
-          line-dasharray: 6,3;
-          line-color: @mixed-cycle-fill;
-        }
-
-        [cycleway_left_render='busway'] {
-          line-dasharray: 6,10;
-          line-color: @mixed-cycle-fill;
-        }
-
-        [cycleway_left_render='shared_track'] {
-          line-color: @mixed-cycle-fill;
-        }
-
-        line-offset: -1 * [sizecycle];
-        [cycleway_left_oneway='no'] { line-offset: -1.5 * [sizecycle]; }
-        line-width: [roadsize];
-
-}
-
-
-// left oneway markers
-#roads_high::cycleway_left[zoom>=18][cycleway_left_render='shared_track'][cycleway_left_oneway='yes'],
-#roads_high::cycleway_left[zoom>=18][cycleway_left_render='shared_track'][cycleway_left_oneway='-1'],
-#roads_high::cycleway_left[zoom>=18][cycleway_left_render='track'][cycleway_left_oneway='yes'],
-#roads_high::cycleway_left[zoom>=18][cycleway_left_render='track'][cycleway_left_oneway='-1'],
-{
-  [type='motorway'],
-  [type='primary'],
-  [type='secondary'],
-  [type='tertiary'],
-  [type='living_street'],
-  [type='unclassified'],
-  [type='residential'],
-  [type='tertiary_link'],
-  [type='secondary_link'],
-  [type='primary_link'],
-  [type='motorway_link'],
-  [type='service'],
-  [type='pedestrian'] {
-
-    marker-placement: line;
-    marker-max-error: 0.5;
-    marker-spacing: 100;
-    marker-file: url(symbols/oneway.svg);
-    [cycleway_left_oneway='-1'] {
-      marker-file: url(symbols/oneway-reverse.svg);
-    }
-    marker-fill: #ddf;
-
-    marker-transform: translate(0, -0.5 * [roadsize] - 0.5 * [sizecycle] ); 
-
-  }
-}
-
-// Steps equiped with a ramp : draw a line of size roadcase*2  at the right of the road line
-#roads_high::steps_ramp_left[zoom >= 15],
-{
-  [type='steps'] {
-    [has_ramp!='no'][has_ramp!=null][has_ramp!='separate'] {
-      line-color: @cycle-fill;
-      line-width: [roadcase] * 2;
-      line-offset: [roadsize]/2 + [roadcase];
-
-    }
-  }
-}
-
-//===========================================================================
 // roads inner  color
 //
 // remind that view cyclosm_ways combines motorway/trunk
@@ -358,32 +176,7 @@
         [type='service'][service='minor'] { line-width: 0.5*[roadsize] ;}
 
         line-color: @standard-fill;
-        [type='motorway'],[type='motorway_link'] {   line-color: @motorway-trunk-fill; }
-        [type='primary'],[type='primary_link']    {   line-color: @primary-fill; }
-        [type='secondary'],[type='secondary_link']    {   line-color: @secondary-fill; }
-        [type='pedestrian']                          { line-color: @pedestrian-fill; }
-        [type='steps']                               { line-color: @footway-fill; }
-        //line-color: @motorway-trunk-cycle-fill;
 
-        [type!='pedestrian'][type!='steps'] {
-            [maxspeed_kmh < 33] {  line-color: @speed32-fill; }
-            [maxspeed_kmh < 21] {  line-color: @speed20-fill; }
-            [maxspeed_kmh < 10] {  line-color: @speedWalk-fill; }
-        }
-
-        [motor_vehicle='no'][can_bicycle!='no'][cyclestreet='no'][type!='pedestrian'][type!='steps'] { line-color: @nomotor-fill; }
-
-        [cyclestreet='yes'] { line-color: @mixed-cycle-fill; }
-
-        //[can_bicycle='no'] {   line-color: @motorway-trunk-fill; }
-        // special color if can_bicycle=no  but not for motorway/primary
-        
-        // for roads smaller than primary, special color if forbidden to bikes
-        [can_bicycle='no']
-            [type!='motorway'][type!='motorway_link'][type!='primary'][type!='primary_link']
-                { line-color: @standard-nobicycle;}
-
- 
         // dash line for steps
         [type='steps'] {
             line-cap: butt;
@@ -391,21 +184,6 @@
             [zoom>=16] { line-dasharray: 1.5,0.75; }
             [zoom>=17] {  line-dasharray: 2,1; }
 
-        }
-
-        // For higher zoom, add a dashed dark overlay, when surface is bad, depending on surface type
-        [zoom>=14][type!='steps'] {
-
-            [surface_type='cyclocross'],[surface_type='mtb'] {
-                surface/line-width: [roadsize];
-                surface/line-cap: butt;
-                surface/line-join: round;
-                surface/line-opacity: 0.2;
-                surface/line-color: black;
-            }
-
-            [surface_type='cyclocross'] { surface/line-dasharray: 5,5; }
-            [surface_type='mtb']        {  surface/line-dasharray:10,5; }
         }
 
   }
@@ -427,37 +205,12 @@
             background/line-opacity: 0.4;
             background/line-color: #FFFFFF;
             background/line-width: [roadsize];
-            [type='cycleway'][oneway='no'][oneway_bicycle='no']
-                { background/line-width: [roadsize] *1.5; }  // enlarge size for cycleway line-opacity: 0.1;  
       }
 
       line-cap: butt;
       line-join: round;
       line-width: [roadsize];
-      [type='cycleway'][oneway='no'][oneway_bicycle='no'] { line-width: [roadsize] *1.5; }  // enlarge size for cycleway
-
-      [surface_type='cyclocross'] {  line-dasharray: 10,1; }
-
-      [surface_type='mtb'] {
-        line-dasharray: 10,4;
-        [zoom>=16] { line-dasharray: 10,4; }
-        [zoom>=17] { line-dasharray: 20,8; }
-      }
-
-      [can_bicycle='no']  {
-        line-dasharray: 2,2;
-        [zoom>=16] { line-dasharray: 4,4; }
-        [zoom>=17] { line-dasharray: 8,8; }
-      }
-    
-
-      //  colors for track/bridleway/footway
-      [type='track']     {  line-color: @track-fill; }
-      [type='bridleway'] {  line-color: @bridleway-fill; }
-      [type='footway']   { line-color: @footway-fill; }
-      [type='cycleway']  { line-color: @cycle-fill; }
-
-
+      line-color: @standard-fill;
   }
 }
 
@@ -485,20 +238,11 @@
     line-width: [roadsize];
 
     // too difficult or not bike compatible => pink color
-    line-color: @path-fill;
+    line-color: @standard-fill;
     [alpine='low'] { line-dasharray: 24,2; }
     [alpine='medium'] { line-dasharray: 12,4; }
     [alpine='high'] { line-dasharray: 4,4; }
     [alpine='veryhigh'] { line-dasharray: 1,4; }
-
-
-    // easy and not bike incompatible => blue color
-    [alpine='no'][can_bicycle != 'no']{
-        line-color: @mixed-cycle-fill;
-        // note: some path in mountain have smoothness=intermediate, which makes surface=road 
-        [surface_type='cyclocross']                         { line-dasharray: 10,1; }  
-        [surface_type='mtb'],[surface_type='unknown']       { line-dasharray: 10,4; }
-    }
   }
 }
 
@@ -695,34 +439,6 @@
 }
 
 */
-
-#hiking_routes{
-  opacity: 0.20;
-  line-color: red;
-  line-width:8;
-
-}
-
-#bicycle_routes_bicycle_gen3{
-  opacity: 0.20;
-  line-color: @lcn-overlay;
-  [type != 'lcn'] { line-color: @icn-overlay;}  // combine icn/ncn/rcn
-
-  line-width:8;
-  [zoom>=12]{line-width: 12;}
-}
-
-
-#bicycle_routes_mtb_gen3 {
-  opacity: 0.20;
-  line-color: @mtb-overlay;
-
-  line-width:8;
-  [zoom>=12]{line-width: 12;}
-
-
-}
-
 
 
 

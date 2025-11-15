@@ -8,18 +8,6 @@
       line/line-cap: round;
       line/line-color: #808080;
 
-      dash/line-width: 3;
-      dash/line-join: round;
-      dash/line-cap: round;
-      dash/line-color: black;
-      dash/line-dasharray: 0.4,13;
-      dash/line-clip: false;
-
-      [bicycle='yes'] {
-        line/line-color: @cycle-fill;
-        dash/line-color: darken(@cycle-fill, 25%);
-      }
-
       [zoom >= 17] {
         text-name: "[name]";
         text-fill: #666666;
@@ -46,17 +34,6 @@
       line/line-join: round;
       line/line-cap: round;
       line/line-color: #808080;
-
-      dash/line-width: 3.5;
-      dash/line-join: round;
-      dash/line-color: #707070;
-      dash/line-dasharray: 6,25;
-      dash/line-clip: false;
-
-      [bicycle='yes'] {
-        line/line-color: @cycle-fill;
-        dash/line-color: lighten(@cycle-fill, 12.5%);
-      }
 
       [zoom >= 17] {
         text-name: "[name]";
@@ -91,17 +68,6 @@
       line/line-join: round;
       line/line-cap: round;
       line/line-color: #808080;
-
-      dash/line-width: 4;
-      dash/line-join: round;
-      dash/line-color: black;
-      dash/line-dasharray: 1,30;
-      dash/line-clip: false;
-
-      [bicycle='yes'] {
-        line/line-color: @cycle-fill;
-        dash/line-color: darken(@cycle-fill, 25%);
-      }
 
       [zoom >= 17] {
         text-name: "[name]";

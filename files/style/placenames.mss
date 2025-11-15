@@ -57,38 +57,32 @@
 #capital-names {
   [zoom >= 4][zoom < 8][population > 600000],
   [zoom >= 5][zoom < 8] {
-    shield-file: url('symbols/capital.svg');
-    shield-text-dx: 6;
-    shield-text-dy: 6;
-    shield-name: '[name]';
-    shield-face-name: @sans;
-    shield-fill: @placenames;
-    shield-size: 11;
-    shield-wrap-width: 30; // 2.7 em
-    shield-line-spacing: -1.6; // -0.15 em
-    shield-margin: 7.7; // 0.7 em
-    shield-halo-fill: @city_halo;
-    shield-halo-radius: @standard-halo-radius * 1.5;
-    shield-placement-type: simple;
-    shield-placements: 'S,N,E,W';
+    text-name: '[name]';
+    text-face-name: @sans;
+    text-wrap-width: 30; // 2.7 em
+    text-line-spacing: -1.6; // -0.15 em
+    text-margin: 7.7; // 0.7 em
+    text-halo-fill: @city_halo;
+    text-halo-radius: @standard-halo-radius * 1.5;
+    text-placement-type: simple;
+    text-placements: 'S,N,E,W';
     [dir = 1] {
-      shield-placements: 'N,S,E,W';
+      text-placements: 'N,S,E,W';
     }
-    shield-unlock-image: true;
 
     [zoom >= 5] {
-      shield-wrap-width: 45; // 4.1 em
-      shield-line-spacing: -1.1; // -0.10 em
+      text-wrap-width: 45; // 4.1 em
+      text-line-spacing: -1.1; // -0.10 em
     }
     [zoom >= 6] {
-      shield-size: 15;
-      shield-wrap-width: 60; // 5.0 em
-      shield-line-spacing: -0.6; // -0.05 em
-      shield-margin: 8.4; // 0.7 em
+      text-size: 15;
+      text-wrap-width: 60; // 5.0 em
+      text-line-spacing: -0.6; // -0.05 em
+      text-margin: 8.4; // 0.7 em
     }
     [zoom >= 7] {
-      shield-text-dx: 7;
-      shield-text-dy: 7;
+      text-dx: 7;
+      text-dy: 7;
     }
   }
   [zoom >= 8] {
@@ -147,38 +141,36 @@
 }
 
 #placenames-medium::high-importance {
+  /* Marseille */
   [category = 1][score >= 400000][zoom < 14] {
     [zoom >= 5][zoom < 8] {
-      shield-file: url('symbols/townbig.svg');
-      shield-text-dx: 4;
-      shield-text-dy: 4;
-      shield-name: '[name]';
-      shield-face-name: @sans;
-      shield-fill: @placenames;
-      shield-size: 15;
-      shield-wrap-width: 30; // 2.7 em
-      shield-line-spacing: -1.65; // -0.15 em
-      shield-margin: 7.7; // 0.7 em
-      shield-halo-fill: @city_halo;
-      shield-halo-radius: @standard-halo-radius * 1.5;
-      shield-placement-type: simple;
-      shield-placements: 'S,N,E,W';
+      text-dx: 4;
+      text-dy: 4;
+      text-name: '[name]';
+      text-face-name: @sans;
+      text-fill: @placenames;
+      text-wrap-width: 30; // 2.7 em
+      text-line-spacing: -1.65; // -0.15 em
+      text-margin: 7.7; // 0.7 em
+      text-halo-fill: @city_halo;
+      text-halo-radius: @standard-halo-radius * 1.5;
+      text-placement-type: simple;
+      text-placements: 'S,N,E,W';
       [dir = 1] {
-        shield-placements: 'N,S,E,W';
+        text-placements: 'N,S,E,W';
       }
-      shield-unlock-image: true;
 
       [zoom >= 5] {
-        shield-wrap-width: 45; // 4.1 em
-        shield-line-spacing: -1.1; // -0.10 em
+        text-wrap-width: 45; // 4.1 em
+        text-line-spacing: -1.1; // -0.10 em
       }
       [zoom >= 6] {
-        shield-wrap-width: 60; // 5.0 em
-        shield-line-spacing: -0.6; // -0.05 em
+        text-wrap-width: 60; // 5.0 em
+        text-line-spacing: -0.6; // -0.05 em
 
 
-        shield-text-dx: 5;
-        shield-text-dy: 5;
+        text-dx: 5;
+        text-dy: 5;
       }
 
     }
@@ -216,32 +208,31 @@
 }
 
 #placenames-medium::medium-importance {
+  /* Avignon, Toulon, Aix-en-Provence */
   [category = 1][score < 400000][zoom < 15] {
     [zoom >= 6][zoom < 8][score >= 70000],
     [zoom >= 7][zoom < 8] {
-      shield-file: url('symbols/town.svg');
-      shield-text-dx: 4;
-      shield-text-dy: 4;
-      shield-name: "[name]";
-      shield-size: 11;
-      shield-fill: @placenames;
-      shield-face-name: @sans;
-      shield-halo-fill: @city_halo;
-      shield-halo-radius: @standard-halo-radius * 1.5;
-      shield-wrap-width: 30; // 3.0 em
-      shield-line-spacing: -1.5; // -0.15 em
-      shield-margin: 7.0; // 0.7 em
-      shield-placement-type: simple;
-      shield-placements: 'S,N,E,W';
+      text-dx: 4;
+      text-dy: 4;
+      text-name: "[name]";
+      text-size: 11;
+      text-fill: @placenames;
+      text-face-name: @sans;
+      text-halo-fill: @city_halo;
+      text-halo-radius: @standard-halo-radius * 1.5;
+      text-wrap-width: 30; // 3.0 em
+      text-line-spacing: -1.5; // -0.15 em
+      text-margin: 7.0; // 0.7 em
+      text-placement-type: simple;
+      text-placements: 'S,N,E,W';
       [dir = 1] {
-        shield-placements: 'N,S,E,W';
+        text-placements: 'N,S,E,W';
       }
-      shield-unlock-image: true;
 
     }
     [zoom >= 8] {
       text-name: "[name]";
-      text-size: 10;
+      text-size: 11;
       text-fill: @placenames;
       text-face-name: @sans;
       text-halo-fill: @city_halo;
@@ -286,27 +277,26 @@
 
 
 #placenames-medium::low-importance {
+    /* Digne-les-Bains, Carpentras */
     [category = 2]{
-        [zoom >= 9][zoom <=12]{
-          shield-file: url('symbols/town.svg');
-          shield-text-dx: 15;
-          shield-text-dy: 10;
-          shield-name: [name];
-          shield-size: 12;
-          shield-fill: @placenames;
-          shield-face-name: @sans;
-          shield-halo-fill: @city_halo;
-          shield-halo-radius: @standard-halo-radius * 1.5;
-          shield-wrap-width: 45; 
-          shield-line-spacing: -0.8;
-          shield-margin: 4.0; 
-          shield-placement-type: simple;
-          shield-placements: "N,S,E,SW,NW,NE,SE";
-          //shield-avoid-edges: true;  // do NOT use : hides places whose center is on tile boundary , whatever the position of text !
+        [zoom >= 10][zoom <=12],
+        [zoom = 9][score >= 40000] {
+          text-dx: 15;
+          text-dy: 10;
+          text-name: [name];
+          text-size: 11;
+          text-fill: @placenames;
+          text-face-name: @sans;
+          text-halo-fill: @city_halo;
+          text-halo-radius: @standard-halo-radius * 1.5;
+          text-wrap-width: 45;
+          text-line-spacing: -0.8;
+          text-margin: 4.0;
+          text-placement-type: simple;
+          text-placements: "N,S,E,SW,NW,NE,SE";
           [dir = 1] {
-            shield-placements: 'N,S,E,W';
+            text-placements: 'N,S,E,W';
           }
-          shield-unlock-image: true;
         }
 
 
@@ -383,25 +373,23 @@
     [zoom = 11],[zoom >= 12]{
 
         // small zoom: icon+text
-        [zoom >= 11][zoom <= 13] {
+        [zoom <= 12][population >= 1000],
+        [zoom = 13] {
 
-              shield-file: url('symbols/village.svg');
-              shield-text-dx: 15;
-              shield-text-dy: 10;
-              // shield-name: ' '+[name]+' '; // adding blanks seems to avoid troubles on tile boundary !
-              shield-name: [name] ;  // finally, simpler to add blanks inside the SQL request
-              shield-size: 10;
-              shield-fill: @placenames;
-              shield-face-name: @sans;
-              shield-halo-fill: @city_halo;
-              shield-halo-radius: @standard-halo-radius * 1.5;
-              shield-wrap-width: 45; 
-              shield-line-spacing: -0.8;
-              shield-margin: 4.0; 
-              shield-placement-type: simple;
-              shield-placements: "N,S,E,SW,NW,NE,SE";
-              //shield-avoid-edges: true;    // do NOT use : hides places whose center is on tile boundary , whatever the position of text !
-              shield-unlock-image: true;
+              text-dx: 15;
+              text-dy: 10;
+              // text-name: ' '+[name]+' '; // adding blanks seems to avoid troubles on tile boundary !
+              text-name: [name] ;  // finally, simpler to add blanks inside the SQL request
+              text-size: 10;
+              text-fill: @placenames;
+              text-face-name: @sans;
+              text-halo-fill: @city_halo;
+              text-halo-radius: @standard-halo-radius * 1.5;
+              text-wrap-width: 45;
+              text-line-spacing: -0.8;
+              text-margin: 4.0;
+              text-placement-type: simple;
+              text-placements: "N,S,E,SW,NW,NE,SE";
         }
 
 

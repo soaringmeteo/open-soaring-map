@@ -66,7 +66,7 @@
   }
   [type='natural_bare_rock'] {
     polygon-fill: @bare_ground;
-    polygon-pattern-file: url('symbols/openstreetmap-carto/rock_overlay.png');
+    polygon-pattern-file: url('symbols/openstreetmap-carto/scree_overlay.png');
   }
   [type='natural_scree'],
   [type='natural_shingle'] {
@@ -214,26 +214,7 @@
 #hillshade-high[zoom>=10] {
   raster-scaling: bilinear;
   raster-comp-op: multiply;
-  raster-opacity: 0.25;
-}
-
-
-#military-overlay[landuse = 'military'][zoom >= 8][way_pixels > 900],
-#military-overlay[landuse = 'military'][zoom >= 13],
-#military-overlay[military = 'danger_area'][zoom >= 9] {
-  polygon-pattern-file: url('symbols/openstreetmap-carto/danger_red_hatch.png');
-  polygon-pattern-alignment: global;
-  line-color: @military;
-  line-opacity: 0.24;
-  line-width: 1.0;
-  line-offset: -0.5;
-  [zoom >= 15] {
-    [military = 'danger_area'] {
-      line-opacity: 0.2;
-    }
-    line-width: 2;
-    line-offset: -1.0;
-  }
+  raster-opacity: 0.33;
 }
 
 #landuse-overlay[type = 'wood'][zoom >= 13] {
@@ -334,21 +315,21 @@ Map { background-color: @water; }
   /* 100 m */
   #contours100 {
 
-    [zoom >= 11] { line-width: 0.2; }
-    [zoom >= 12] { line-width: 0.4; }
-    [zoom >= 13] { line-width: 0.5; }
-    [zoom >= 14] { line-width: 1;  }
-    [zoom >= 16] { line-width: 1; }
+    [zoom >= 11] { line-width: 0.1; }
+    [zoom >= 12] { line-width: 0.2; }
+    [zoom >= 13] { line-width: 0.3; }
+    [zoom >= 14] { line-width: 0.5;  }
+    [zoom >= 16] { line-width: 0.5; }
 
 
   }
 
   /* 50 m */
   #contours50 {
-    [zoom >= 11] { line-width: 0.2; }
-    [zoom >= 13] { line-width: 0.3; }
-    [zoom >= 14] { line-width: 0.4;  }
-    [zoom >= 16] { line-width: 0.8;  }
+    [zoom >= 11] { line-width: 0.05; }
+    [zoom >= 13] { line-width: 0.1; }
+    [zoom >= 14] { line-width: 0.2;  }
+    [zoom >= 16] { line-width: 0.3;  }
 
 
   }

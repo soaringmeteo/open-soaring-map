@@ -31,23 +31,23 @@
 
 /* The lighten() calls below compensate for the extra opacity from the hillshades. */
 @land:              white; /*#eee5dc;*/
-@grass:             #eeffe6;  /*#c2debd;*/  
-@meadow:            #faffe6;   /*#e2eecb;*/
-@park:              #c2debd;
+@grass:             @land; /*#f8fff5;*/  /*#c2debd;*/
+@meadow:            @grass;   /*#e2eecb;*/
+@park:              @grass;
 @cemetery:          #D6DED2;
 
 
-@wooded:            #d0feb9; /*#95bd84; AF8*/
-@heath:             #fffbe6;  /*#b2c068;*/
-@scrub:             #fffbe6;    /*#c8d7ab;*/
-@farmland:          #fbf0e3;
+@wooded:            #ecffe3; /*#95bd84; AF8*/
+@heath:             @grass;  /*#b2c068;*/
+@scrub:             @grass;    /*#c8d7ab;*/
+@farmland:          @grass;
 @water:             #8ecbeb;
-@glacier:           #ddecec;
+@glacier:           #f1f7f7;
 @religious:         #ded4b2;
 @military:          #f55;
 @quarry:            #c5c3c3;
-@sand:              #f5e9c6;
-@bare_ground:       #eee5dc;
+@sand:              @land; /*#fcf8ee;*/
+@bare_ground:       #fdfcfb;
 @hedge:             #add19e;
 
 @nature_reserve:    #05620e;
@@ -147,7 +147,7 @@
 @contours-min-path-length: 300;
 @contours-max-char-angle-delta: 10;
 @contours-fill: #000;
-@contours-color: #960 ; /* #c45700;  line color */
+@contours-color: #666 ; /* #c45700;  line color */
 
 /* ================================================================== */
 /* POIs COLORS

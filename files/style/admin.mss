@@ -228,24 +228,7 @@ overlapping borders correctly.
 #protected-areas[zoom >= 11] {
   [way_pixels > 750] {
       opacity: 0.20;
-      line-width: 8;
+      line-width: 4;
       line-color: @protected-area;
   }
-}
-
-
-#protected-areas-text[zoom >= 13][way_pixels > 192000] {
-  text-name: "[name]";
-  text-face-name: @standard-font;
-  text-fill: darken(@wooded,50%);
-  text-halo-radius: @standard-halo-radius;
-  text-halo-fill: @standard-halo-fill;
-  text-largest-bbox-only: false;
-  text-placement: line;
-  text-spacing: 750;
-  text-repeat-distance: 250;
-  text-margin: 10;
-  text-clip: true;
-  text-vertical-alignment: middle;
-  text-dy: -10;
 }
