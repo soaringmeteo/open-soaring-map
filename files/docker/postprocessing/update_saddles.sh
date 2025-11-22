@@ -13,7 +13,7 @@
 # Constants: Name of the database, path tools and DEM file
 
 DBname='gis'
-toolpath='mapnik/tools'
+toolpath='/postprocessing'
 demfile='mapnik/dem/dem-srtm.tiff'
 
 cd ~/OpenTopoMap/
