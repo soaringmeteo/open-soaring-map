@@ -130,14 +130,14 @@ void get_isolation_by_ele(struct list_peak *peak,long int numpeaks,double radius
     d=sqrt(dx*dx+dy*dy);
     if(d>radius){d=radius;}
     if(debuglevel>3){printf("   compare with other peak %lld, d=%f\n",peak[j].id,d);}
-    if((d < peak[j].isolation)&&(peak[i].ele > peak[j].ele)){
+    if((d < peak[j].isolation)&&(peak[i].ele >= peak[j].ele)){
      peak[j].isolation=d;
      peak[j].heigherpeak_id=peak[i].id;
      peak[j].heigherpoint_lon=peak[i].lon;
      peak[j].heigherpoint_lat=peak[i].lat;
      if(debuglevel>3){printf("   assign isolation to other peak %lld, d=%f\n",peak[j].id,d);}
     }
-    if((d < peak[i].isolation)     &&(peak[i].ele < peak[j].ele)){
+    if((d < peak[i].isolation)     &&(peak[i].ele <= peak[j].ele)){
      peak[i].isolation=d;
      peak[i].heigherpeak_id=peak[j].id;
      peak[i].heigherpoint_lon=peak[j].lon;
