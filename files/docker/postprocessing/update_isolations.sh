@@ -18,11 +18,11 @@
 #
 
 
-DBname='gis'
+DBname=$1
 toolpath='/postprocessing'
-demfile='mapnik/dem/dem-srtm.tiff'
+demfile='demdata/dem-srtm.tiff'
 
-cd ~/OpenTopoMap/
+cd /osmhike
 
 
 ###### Prepare #########

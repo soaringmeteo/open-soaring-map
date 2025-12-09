@@ -17,14 +17,12 @@ RUN apt update && \
     apt  install --no-install-recommends -y ca-certificates curl gnupg && \
     echo "\n------------------ Install required tools --------------------" && \
     apt install --no-install-recommends -y apt-utils python3 python3-prettytable python3-yaml osm2pgsql osmctools  postgresql-client wget gdal-bin  && \
-    echo "\n------------------ Final cleaning to save disk space --------------------" && \
-    apt clean &&  rm -rf /var/lib/apt/lists/* 
-
-RUN echo "\n------------------ Install stuff needed for pip --------------------" && \
-    apt update  && \
+    echo "\n------------------ Install stuff needed for pip --------------------" && \
     apt install --no-install-recommends -y build-essential python3-venv python3-pip  && \
     echo "\n------------------ Install pyhgtmap needed dependencies ( those available from apt ) --------------------" && \
     apt install --no-install-recommends -y    python3-pkg-resources python3-matplotlib python3-bs4 python3-numpy python3-contourpy python3-pybind11  && \
+    echo "\n------------------ Install libgdal ------------------\n" && \
+    apt install --no-install-recommends -y libgdal-dev && \
     echo "\n------------------ Final cleaning to save disk space --------------------" && \
     apt clean &&  rm -rf /var/lib/apt/lists/* 
 
@@ -36,7 +34,15 @@ RUN mkdir -p /packages
 COPY ./pip-installs.sh /packages
 RUN bash /packages/pip-installs.sh
 
+# Copy postprocessing tools source code
+RUN mkdir -p /postprocessing
+COPY ./postprocessing/* /postprocessing
 
+# Compile isolation postprocessing tool
+RUN cc -Wall -o /postprocessing/isolation /postprocessing/isolation.c -lgdal -lm -O2
+
+# Compile saddledirection postprocessing tool
+RUN cc -o /postprocessing/saddledirection /postprocessing/saddledirection.c -lm -lgdal
 
 # Directory /osmhike is created by volume mapping of the project directory , defined in docker-compose.yml
 WORKDIR /osmhike

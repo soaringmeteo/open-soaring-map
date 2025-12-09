@@ -1976,7 +1976,8 @@ Layer:
                    THEN CONCAT(  E'\n' ,    REPLACE(ROUND(elevation)::TEXT, '-', U&'\2212'),    'm') 
                    ELSE NULL 
               END
-              ) AS name
+              ) AS name,
+          otm_isolation as isolation
           FROM
           (
              SELECT 
@@ -1987,19 +1988,20 @@ Layer:
                      WHEN ele ~ '^-?\d{1,4}(\.\d+)?$' THEN ele::NUMERIC
                      ELSE NULL
                 END AS elevation,
-                name
+                name,
+                otm_isolation::INTEGER
             FROM planet_osm_point
             WHERE 
                 name IS NOT NULL   
                 AND  (
-                     "natural" IN ( 'saddle' ,'peak' , 'volcano' ,'cave_entrance' )
+                     "natural" IN ( 'peak' , 'volcano' )
 
                      )
          ) AS zzz
       ) AS data
   geometry: point
   properties:
-    minzoom: 13
+    minzoom: 10
     <<: *status_label
 
 - id: mountain-poly-text

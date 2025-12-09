@@ -12,11 +12,11 @@
 
 # Constants: Name of the database, path tools and DEM file
 
-DBname='gis'
+DBname=$1
 toolpath='/postprocessing'
-demfile='mapnik/dem/dem-srtm.tiff'
+demfile='demdata/dem-srtm.tiff'
 
-cd ~/OpenTopoMap/
+cd /osmhike
 
 psql -A -t -F ";" $DBname -c \
   "SELECT osm_id,ST_X(ST_Astext(ST_Transform(way,4326))),ST_Y(ST_Astext(ST_Transform(way,4326))),direction \

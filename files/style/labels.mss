@@ -133,8 +133,12 @@
 //==============================================================
 // peak,saddle,cave,hut....
 // =============================================================
-#mountain-point-text,
-#mountain-poly-text  {
+#mountain-point-text[zoom = 10][isolation > 8000],
+#mountain-point-text[zoom = 11][isolation > 5000],
+#mountain-point-text[zoom = 12][isolation > 3000],
+#mountain-point-text[zoom = 13][isolation > 1000],
+#mountain-point-text[zoom = 14][isolation > 500],
+#mountain-point-text[zoom = 15][isolation > 100]  {
     text-name: "[name]";
     [natural='cave_entrance'][zoom<16] { text-name: "''" ; }
     [tourism='wilderness_hut'],[tourism='alpine_hut'] { 

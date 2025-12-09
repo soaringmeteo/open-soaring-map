@@ -19,6 +19,12 @@ STYLE=style
 mkdir -p $STYLE/data
 chmod a+rwX $STYLE/data
 
+# the place where hgt files have been stored, depends on the source
+HGTDIR=hgt/VIEW1
+if [ "$AREAPOLYSOURCE" =  "view3" ]
+then
+  HGTDIR=hgt/VIEW3
+fi
 
 #------------------- Testing if database is ready -----------------------
 i=1
@@ -117,8 +123,31 @@ import)
 
   # creation of Views/Functions
   CreateViewsFunctions
+  echo ""
+  echo "Finished !   `date '+%H:%M:%S'` "
+  ;;
 
+isolations)
+  # download elevation files, and produce .osm.pbf contour file using pyhgtmap
+  # run phyghtmap to download elevation files ( .hgt )  corresponding to $CONTOURS.poly
+  # we use --source=view1 by default ,to download freely from  www.viewfinderpanoramas.org , rather than NASA which needs a very complex registration
+  #  -s 10 produces contour lines with 10 meters interval
+  #  output file will be AREAPOLY_lon_xxxx_lat_yyy.osm.pbf
+  cd demdata
+  POLYGON=../myfiles/$AREAPOLY
+  echo ""
+  echo "***************** run phyghtmap on file=$POLYGON  source=$AREAPOLYSOURCE  `date '+%H:%M:%S'` ********************"
+  rm -f $AREAPOLY*.osm.pbf
+  bash ../dem/pyhgtmap.sh  --polygon=$POLYGON -j 8 -s 10 -0 --source=$AREAPOLYSOURCE  --max-nodes-per-tile=0 --max-nodes-per-way=0 --pbf -o $AREAPOLY
 
+  # run postprocessing tools
+  echo "\nCompute peak isolations and saddle directions  `date '+%H:%M:%S'` "
+  echo "Merge .hgt files"
+  gdal_merge.py -o ./dem-srtm.tiff -of GTiff ./$HGTDIR/*.hgt
+  echo "Update isolations in database"
+  /osmhike/docker/postprocessing/update_isolations.sh $DB_OSM
+  #echo "Update saddle directions in database"
+  #/osmhike/docker/postprocessing/update_saddles.sh $DB_OSM
 
   echo ""
   echo "Finished !   `date '+%H:%M:%S'` " 
@@ -131,7 +160,7 @@ import)
 
 
 ######################## create the database containing contours ############
-contours | contours2)
+contours)
 
   # CAUTION : before calling this:
   #           * a polygon file $AREAPOLY.poly   is to be downloaded from geobabrik  ( typically  wget http://download.geofabrik.de/europe/andorra.poly )
@@ -141,25 +170,7 @@ contours | contours2)
   cd demdata 
 
 
-  # ACTION=contours2 allows to execute only step2 if we just need to recreate database  ( step1  is quite long )
-  if [ "$ACTION" != "contours2" ]
-  then
-
-    # STEP1 : download elevation files, and produce .osm.pbf contour file using pyhgtmap
-
-    # run phyghtmap to download elevation files ( .hgt )  corresponding to $CONTOURS.poly
-    # we use --source=view1 by default ,to download freely from  www.viewfinderpanoramas.org , rather than NASA which needs a very complex registration
-    #  -s 10 produces contour lines with 10 meters interval
-    #  output file will be AREAPOLY_lon_xxxx_lat_yyy.osm.pbf
-    POLYGON=../myfiles/$AREAPOLY
-    echo ""
-    echo "***************** CONTOURS STEP1: run phyghtmap on file=$POLYGON  source=$AREAPOLYSOURCE  `date '+%H:%M:%S'` ********************"
-
-    rm -f $AREAPOLY*.osm.pbf
-    bash ../dem/pyhgtmap.sh  --polygon=$POLYGON -j 8 -s 10 -0 --source=$AREAPOLYSOURCE  --max-nodes-per-tile=0 --max-nodes-per-way=0 --pbf -o $AREAPOLY
-  fi
-
-  # STEP2 : create another database "contours"  and store contour lines , using osm2pgsql
+  # create another database "contours"  and store contour lines , using osm2pgsql
   # in this database, contour lines will be in table "planet_osm_line" , using column "ele" to store height value
   echo "\n**************** CONTOURS STEP2: use osm2pgsql to import data  `date '+%H:%M:%S'` *******************\n"
 
@@ -187,14 +198,6 @@ contours | contours2)
 hillshade)
 
   cd demdata
-
-  # the place where hgt files have been stored, depends on the source
-  HGTDIR=hgt/VIEW1
-  if [ "$AREAPOLYSOURCE" =  "view3" ]
-  then
-    HGTDIR=hgt/VIEW3
-  fi
-  
 
   echo ""
   echo "************** Build the list of needed .hgt files from $HGTDIR`date '+%H:%M:%S'` ****************"

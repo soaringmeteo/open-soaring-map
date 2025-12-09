@@ -73,8 +73,15 @@ Note that after this command, the db container will exit from its terminal . But
 sudo docker-compose up -V import
 ```
 
+Generate peak isolations data (note the usage of RUN command with argument)
+
+It will take many minutes, to download elevation data from Internet
+
+```
+sudo docker-compose run import isolations
+```
+
 Generate contours lines  ( note the usage of RUN command with argument )
-<br> It will take many minutes, to download elevation data from Internet 
 ```
 sudo docker-compose run import contours
 ```
