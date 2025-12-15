@@ -118,8 +118,8 @@
 
 @standard-halo-radius: 1;
 @standard-halo-fill: rgba(255,255,255,0.6); /* 0.6 */
-@standard-font-size: 12;  // 10 ;
-@standard-wrap-width: 30;
+@standard-font-size: 11;
+@standard-wrap-width: 35;
 @standard-line-spacing-size: -1.5;
 
 @shield-size: 10;

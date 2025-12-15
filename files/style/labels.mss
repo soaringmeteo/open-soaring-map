@@ -139,18 +139,19 @@
 #mountain-point-text[zoom = 13][isolation > 1000],
 #mountain-point-text[zoom = 14][isolation > 500],
 #mountain-point-text[zoom = 15][isolation > 100]  {
+    marker-file: url(symbols/openstreetmap-carto/natural/peak.svg);
+    marker-placement: interior;
+    marker-height: 4;
+    marker-width: 7;
+    marker-fill: white;
+    marker-line-color: black;
+    marker-line-width: 0.5;
     text-name: "[name]";
-    [natural='cave_entrance'][zoom<16] { text-name: "''" ; }
-    [tourism='wilderness_hut'],[tourism='alpine_hut'] { 
-        [zoom<16] { text-name: "''" ; }
-        text-fill: @accommodation-text;
-    }
-
-    text-size: @standard-font-size;
+    text-size: 10;
     text-wrap-width: @standard-wrap-width;
     text-line-spacing: @standard-line-spacing-size;
     text-fill: black;
-    text-dy: 7;
+    text-dy: 5;
     text-face-name: @standard-font;
     text-halo-radius: 1.4;
     text-halo-fill: @standard-halo-fill;
