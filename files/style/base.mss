@@ -17,7 +17,6 @@
   polygon-gamma: 0.75;
 }
 
-#landuse_low,
 #landuse_med,
 #landuse_high {
   [type='amenity_grave_yard'],
@@ -64,57 +63,25 @@
   [type='natural_dune'] {
     polygon-fill: @sand;
   }
-  [type='natural_bare_rock'] {
-    polygon-fill: @bare_ground;
-    polygon-pattern-file: url('symbols/openstreetmap-carto/scree_overlay.png');
-  }
+  [type='natural_bare_rock'],
   [type='natural_scree'],
   [type='natural_shingle'] {
     polygon-fill: @bare_ground;
     polygon-pattern-file: url('symbols/openstreetmap-carto/scree_overlay.png');
   }
-
   [type='natural_scrub'] {
     polygon-fill: @scrub;
-    polygon-pattern-file: url('symbols/openstreetmap-carto/scrub.png');
-    polygon-pattern-alignment: global;
   }
-
   [type='natural_heath']         { polygon-fill: @heath; }
   [type='amenity_hospital']      { polygon-fill: @hospital; }
+  [type='landuse_vineyard'],
+  [type='landuse_orchard'],
   [type='landuse_meadow']        { polygon-fill: @meadow; }
-  [type='landuse_vineyard'] {
-    polygon-fill: @meadow;
-    [zoom >= 13] {
-      polygon-pattern-file: url('symbols/openstreetmap-carto/vineyard.png');
-      polygon-pattern-alignment: global;
-    }
-  }
   [type='landuse_plant_nursery'] {
     polygon-fill: @meadow;
   }
-  [type='landuse_orchard'] {
-    polygon-fill: @meadow;
-    [zoom >= 13] {
-      polygon-pattern-file: url('symbols/openstreetmap-carto/orchard.png');
-      polygon-pattern-alignment: global;
-    }
-  }
   [type='landuse_allotments'] {
     polygon-fill: @grass;
-    [zoom >= 13] {
-      polygon-pattern-file: url('symbols/openstreetmap-carto/allotments.png');
-      polygon-pattern-alignment: global;
-    }
-  }
-
-  [type='landuse_quarry'] {
-    polygon-fill: @quarry;
-    polygon-pattern-file: url('symbols/openstreetmap-carto/quarry.svg');
-    [zoom >= 13] {
-      line-width: 0.5;
-      line-color: grey;
-    }
   }
 
   [type='landuse_village_green'],
@@ -208,22 +175,16 @@
 #hillshade-low[zoom>1] {
   raster-scaling: bilinear;
   raster-comp-op: multiply;
-  raster-opacity: 0.5;
+  raster-opacity: 0.3;
 }
 
 #hillshade-high[zoom>=10] {
   raster-scaling: bilinear;
   raster-comp-op: multiply;
-  raster-opacity: 0.33;
+  raster-opacity: 0.25;
 }
 
 #landuse-overlay[type = 'wood'][zoom >= 13] {
-  polygon-pattern-file: url('symbols/openstreetmap-carto/leaftype_unknown.svg'); // Lch(55,30,135)
-  [leaf_type = "broadleaved"] { polygon-pattern-file: url('symbols/openstreetmap-carto/leaftype_broadleaved.svg'); }
-  [leaf_type = "needleleaved"] { polygon-pattern-file: url('symbols/openstreetmap-carto/leaftype_needleleaved.svg'); }
-  [leaf_type = "mixed"] { polygon-pattern-file: url('symbols/openstreetmap-carto/leaftype_mixed.svg'); }
-  [leaf_type = "leafless"] { polygon-pattern-file: url('symbols/openstreetmap-carto/leaftype_leafless.svg'); }
-  polygon-pattern-alignment: global;
   opacity: 0.4; // The entire layer has opacity to handle overlapping forests
 }
 
@@ -315,7 +276,6 @@ Map { background-color: @water; }
   /* 100 m */
   #contours100 {
 
-    [zoom >= 11] { line-width: 0.1; }
     [zoom >= 12] { line-width: 0.2; }
     [zoom >= 13] { line-width: 0.3; }
     [zoom >= 14] { line-width: 0.5;  }
@@ -326,7 +286,6 @@ Map { background-color: @water; }
 
   /* 50 m */
   #contours50 {
-    [zoom >= 11] { line-width: 0.05; }
     [zoom >= 13] { line-width: 0.1; }
     [zoom >= 14] { line-width: 0.2;  }
     [zoom >= 16] { line-width: 0.3;  }
@@ -347,7 +306,6 @@ Map { background-color: @water; }
   }
 
   /* All labels */
-
 
   #contours100[zoom >= 14],
   #contours50[zoom >= 16] {

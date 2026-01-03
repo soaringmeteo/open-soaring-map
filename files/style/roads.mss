@@ -3,21 +3,6 @@
 // ==================================================================
 
 
-
-// draw perpendicular dash for railway
-#roads_low[zoom>=7][zoom<=8][type='railway']::rail_perpendicular,
-#roads_med[zoom>=9][zoom<=10][type='railway']::rail_perpendicular {
-    /* background: to avoid weird pattern when many tracks are overlapping */
-    background/line-color: @land;
-    background/line-width: 4;
-
-    line-color: @rail-line;
-    line-cap: butt;
-    line-dasharray: 0,4,1,4; /* start with space to avoid dense pattern on very short ways */
-    line-width: 4;
-
-}
-
 // low level : only motorway/trunk/railway
 #roads_low{
 
@@ -90,9 +75,9 @@
   ,[type='primary'] ,[type='primary_link']
   ,[type='secondary'] ,[type='secondary_link']
   ,[type='tertiary'] ,[type='tertiary_link']
-  ,[type='unclassified'],[type='residential'] 
+  ,[type='unclassified'],[type='residential']
   ,[type='living_street'],[type='pedestrian']
-  ,[type='service'][service!='minor'] 
+  ,[type='service'][service!='minor']
   {
 
     line-cap: round;
@@ -100,46 +85,12 @@
 
     [tunnel!='no'],[bridge!='no'] {  line-cap: butt;    }
     [tunnel!='no']                {  line-dasharray: 3,3; }  // dashed line for tunnel
-    
-    line-width: [roadsize] + 2*[roadcase];
-    [type='service'][service='minor'] {  line-width: 0.5*[roadsize] + [roadcase]; } // size divided by 2
 
-    line-color: @standard-case; 
+    line-width: 0.5*[roadsize] + [roadcase];
+    [type='service'][service='minor'] {  line-width: 0.25*[roadsize] + 0.5*[roadcase]; } // size divided by 2
+
+    line-color: @standard-case;
   }
-}
-
-// no casing for track...cycleway,path  excepted when tunnel or bridge  when high zoom
-#roads_high::outlineline[zoom>=16] {
-    [type='track'],[type='bridleway'],[type='footway'],[type='cycleway'],[type='path']{
-        [tunnel!='no'],[bridge!='no'] {
-
-            line-color: @bridge_case;
-            [type='cycleway'],[type='path'][can_bicycle='designated'] {  line-color: @bridge_path_case; }
-            line-cap: butt;
-            line-join: round;
-            line-dasharray: 3,3;
-            line-width: [roadsize] + 2*[roadcase];
-
-            // enlarge size for cycleway
-            [type='cycleway'][oneway='no'][oneway_bicycle='no'] { line-width: 1.5*[roadsize]  + 2*[roadcase]; }  
-        }
-    }
-}
-
-// stuff for segregated cycleway on path
-#roads_high::path_outline_right[zoom>=17][type='path'][can_bicycle='designated'][segregated='yes'],
-{
-  line-cap: butt;
-  line-color: @path-fill;
-
-  line-width: [roadsize];
-  line-offset: [roadsize]/2 + [sizecycle]/2;
-  [oneway='no'][oneway_bicycle='no'] {
-    line-width: [roadsize]; 
-    line-offset: [roadsize]/2 + [sizecycle]*1.5/2;
-  }
-
-
 }
 
 //===========================================================================
@@ -165,15 +116,15 @@
      
         // tunnel : put a white background , and set a small opacity to draw the road with a very light color
         [tunnel!='no']{
-            b/line-width: [roadsize];
+            b/line-width: 0.5*[roadsize];
             b/line-color: white;
             line-opacity: 0.1;
         }
      
         line-cap: round;
         line-join: round;
-        line-width: [roadsize];
-        [type='service'][service='minor'] { line-width: 0.5*[roadsize] ;}
+        line-width: 0.5*[roadsize];
+        [type='service'][service='minor'] { line-width: 0.25*[roadsize] ;}
 
         line-color: @standard-fill;
 
@@ -204,12 +155,12 @@
             background/line-join: round;
             background/line-opacity: 0.4;
             background/line-color: #FFFFFF;
-            background/line-width: [roadsize];
+            background/line-width: 0.5*[roadsize];
       }
 
       line-cap: butt;
       line-join: round;
-      line-width: [roadsize];
+      line-width: 0.5*[roadsize];
       line-color: @standard-fill;
   }
 }
@@ -228,14 +179,14 @@
       [tunnel!='no']{  
         background/line-join: round;
         background/line-color: #FFFFFF;
-        background/line-width: [roadsize];
+        background/line-width: 0.5*[roadsize];
         line-opacity: 0.5; 
       }
 
     line-cap: butt;
     line-join: round;
 
-    line-width: [roadsize];
+    line-width: 0.5*[roadsize];
 
     // too difficult or not bike compatible => pink color
     line-color: @standard-fill;
@@ -344,7 +295,7 @@
                 line-color: lighten(@rail-line, 25%);
             }
 
-        line-width: [roadsize];
+        line-width: 0.5*[roadsize];
 
         }
     }
@@ -361,7 +312,7 @@
   marker-line-color: @standard-case;
   marker-line-width: 2* [roadcase];
   marker-allow-overlap: true;
-  marker-width: [roadsize];
+  marker-width: 0.5*[roadsize];
 }
 
 #turning_circle_fill[zoom>=14] {
@@ -369,7 +320,7 @@
   marker-line-width: 0;
   marker-line-opacity: 0;
   marker-allow-overlap: true;
-  marker-width: [roadsize];
+  marker-width: 0.5*[roadsize];
 }
 
 
@@ -379,7 +330,7 @@
 
 #aeroway[zoom>=11] {
     line-color: @aeroway;
-    line-width: [roadsize];
+    line-width: 0.5*[roadsize];
 }
 
 // ==================================================================

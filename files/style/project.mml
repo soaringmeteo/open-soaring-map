@@ -134,14 +134,12 @@ Stylesheet:
 - road-colors.mss
 - fonts.mss
 - base.mss
-- aerialways.mss
 - ferry-routes.mss
 - roads.mss
 - amenities.mss
 - labels.mss
 - placenames.mss
 - addressing.mss
-- power.mss
 - admin.mss
 - gpx.mss
 - legend.mss
@@ -221,43 +219,7 @@ Layer:
 # landscape usage 
 #  type will contain  a concatenation  like  landuse_forest , natural_wood , leisure_stadium ....
 #
-# landuse_low has been inhibited, to avoid loading a huge amount of objects
 ##################################################################################
-
-- id: landuse_low
-  <<: *srs-osm
-  Datasource:
-    <<: *osm2pgsql
-    table: |-
-      (
-        SELECT  -- landuse_low
-          ST_Snaptogrid(way, 0.00028  * !scale_denominator!::real / 4) AS way,
-          way_area AS area,
-          COALESCE(
-            CASE WHEN landuse IS NOT NULL THEN ('landuse_' || landuse) ELSE NULL END,
-            CASE WHEN "natural" IS NOT NULL THEN ('natural_' || "natural") ELSE NULL END,
-            CASE WHEN leisure IS NOT NULL THEN ('leisure_' || leisure) ELSE NULL END,
-            CASE WHEN amenity IS NOT NULL THEN ('amenity_' || amenity) ELSE NULL END,
-            CASE WHEN highway IN ('pedestrian') THEN ('highway_' || highway) ELSE NULL END
-          ) AS type,
-          sport
-          FROM planet_osm_polygon
-          WHERE (
-            landuse IN ('cemetery', 'commercial', 'forest', 'grass', 'industrial', 'meadow', 'farmland', 'vineyard', 'orchard', 'religious', 'residential', 'retail', 'village_green')
-            OR "natural" IN ('grassland', 'glacier', 'heath', 'scrub', 'wood', 'wetland', 'sand', 'beach', 'dune', 'bare_rock', 'shingle', 'scree')
-            OR leisure IN ('common', 'golf_course', 'garden', 'park', 'pitch', 'sports_centre', 'stadium', 'track')
-            OR amenity IN ('college', 'hospital', 'parking', 'school', 'university')
-            OR highway IN ('pedestrian')
-          )
-          AND way_area > 1*0.00028  * !scale_denominator!::real*0.00028  * !scale_denominator!::real
-          AND way && !bbox! -- without this, risk of shared memeory error   
-          ORDER BY way_area DESC
-      ) AS data
-  geometry: polygon
-  properties:
-    minzoom: 3
-    maxzoom: 9
-    <<: *status_off
 
 # landscape usage ( medium zooms )
 #  type will contain  a concatenation  like  landuse_forest , natural_wood , leisure_stadium ....
@@ -281,7 +243,7 @@ Layer:
           sport
         FROM planet_osm_polygon
         WHERE (
-          landuse IN ('allotments', 'brownfield', 'cemetery', 'commercial', 'construction', 'forest', 'grass', 'greenhouse_horticulture', 'industrial', 'landfill', 'meadow', 'farmland', 'vineyard', 'orchard', 'plant_nursery', 'quarry', 'religious', 'residential', 'retail', 'village_green')
+          landuse IN ('allotments', 'brownfield', 'cemetery', 'commercial', 'construction', 'forest', 'grass', 'greenhouse_horticulture', 'industrial', 'landfill', 'meadow', 'farmland', 'vineyard', 'orchard', 'plant_nursery', 'religious', 'residential', 'retail', 'village_green')
           OR "natural" IN ('grassland', 'glacier', 'heath', 'scrub', 'wood', 'wetland', 'sand', 'beach', 'dune', 'bare_rock', 'shingle', 'scree')
           OR leisure IN ('common', 'golf_course', 'garden', 'park', 'pitch', 'sports_centre', 'stadium', 'track')
           OR amenity IN ('college', 'grave_yard', 'hospital', 'parking', 'school', 'university')
@@ -293,7 +255,7 @@ Layer:
   geometry: polygon
   properties:
     cache-features: true
-    minzoom: 10
+    minzoom: 2
     maxzoom: 12
     <<: *status_landuse
 
@@ -318,7 +280,7 @@ Layer:
           ) AS type,
           sport
         FROM planet_osm_polygon
-        WHERE landuse IN ('allotments', 'brownfield', 'cemetery', 'commercial', 'construction', 'forest', 'grass', 'greenhouse_horticulture', 'industrial', 'landfill', 'meadow', 'farmland', 'vineyard', 'orchard', 'plant_nursery', 'quarry', 'religious', 'residential', 'retail', 'village_green')
+        WHERE landuse IN ('allotments', 'brownfield', 'cemetery', 'commercial', 'construction', 'forest', 'grass', 'greenhouse_horticulture', 'industrial', 'landfill', 'meadow', 'farmland', 'vineyard', 'orchard', 'plant_nursery', 'religious', 'residential', 'retail', 'village_green')
           OR leisure IN ('common', 'garden', 'golf_course', 'park', 'pitch', 'sports_centre', 'stadium', 'track')
           OR "natural" IN ('grassland', 'glacier', 'heath', 'scrub', 'wood', 'wetland', 'sand', 'beach', 'dune', 'bare_rock', 'shingle', 'scree')
           OR highway IN ('pedestrian', 'footway')
@@ -395,7 +357,7 @@ Layer:
       ) AS data
   geometry: line
   properties:
-    minzoom: 13
+    minzoom: 12
     <<: *status_contours
 
 - id: contours50
@@ -412,7 +374,7 @@ Layer:
       ) AS data
   geometry: line
   properties:
-    minzoom: 14
+    minzoom: 13
     <<: *status_contours
 
 # not used
@@ -815,8 +777,8 @@ Layer:
   geometry: linestring
   properties:
     cache-features: true
-    minzoom: 7
-    maxzoom: 8
+    minzoom: 8
+    maxzoom: 9
     <<: *status_roadsmedlow
 
 - id: roads_med
@@ -863,8 +825,8 @@ Layer:
           ) AS data
   geometry: linestring
   properties:
-    minzoom: 9
-    maxzoom: 10
+    minzoom: 10
+    maxzoom: 11
     <<: *status_roadsmedlow
 
 
@@ -916,7 +878,7 @@ Layer:
   geometry: linestring
   properties:
     cache-features: true
-    minzoom: 11
+    minzoom: 12
     <<: *status_roadshigh
 
 
@@ -937,29 +899,6 @@ Layer:
   geometry: point
   properties:
     minzoom: 14
-    <<: *status_other
-
-- id: aerialways
-  geometry: linestring
-  <<: *srs-osm
-  Datasource:
-    <<: *osm2pgsql
-    table: |-
-      (
-        SELECT  -- aerialways
-          way,
-          aerialway,
-          name,
-          CASE
-            WHEN tags->'aerialway:bicycle' IN ('yes', 'summer') THEN 'yes'
-            WHEN aerialway IN ('cablecar', 'gondola', 'mixed_lift') AND (tags->'aerialway:bicycle' IS NULL OR tags->'aerialway:bicycle' != 'no') THEN 'yes'
-            ELSE 'no'
-          END AS bicycle
-        FROM planet_osm_line
-        WHERE aerialway IS NOT NULL
-      ) AS data
-  properties:
-    minzoom: 12
     <<: *status_other
 
 #--------- Bridge is suppressed : replaced by attribute bridge!='no' inside road_high
@@ -1223,63 +1162,7 @@ Layer:
   properties:
     <<: *status_gpx
 
-############################### power line ######################
-- id: power-minorline
-  geometry: linestring
-  <<: *srs-osm
-  Datasource:
-    <<: *osm2pgsql
-    table: |-
-      (SELECT  -- power-minorline
-          way
-        FROM planet_osm_line
-        WHERE power = 'minor_line'
-      ) AS power_minorline
-  properties:
-    minzoom: 16
-    <<: *status_other
-
-- id: power-line
-  geometry: linestring
-  <<: *srs-osm
-  Datasource:
-    <<: *osm2pgsql
-    table: |-
-      (SELECT  -- power-line
-          way
-        FROM planet_osm_line
-        WHERE power = 'line'
-          OR (power = 'cable' AND tags->'location' IN ('overground', 'overhead', 'surface', 'outdoor', 'platform'))
-      ) AS power_line
-  properties:
-    minzoom: 14
-    <<: *status_other
-
 ################################### other stuff ###########################
-- id: protected-areas
-  geometry: polygon
-  <<: *srs-osm
-  Datasource:
-    <<: *osm2pgsql
-    table: |-
-      (SELECT  -- protected-areas
-          way,
-          name,
-          boundary,
-          tags->'protect_class' AS protect_class,
-          way_area/NULLIF(0.00028  * !scale_denominator!::real*0.00028  * !scale_denominator!::real,0) AS way_pixels  ---- way_area/NULLIF(POW(!scale_denominator!*0.001*0.28,2),0) AS way_pixels
-        FROM planet_osm_polygon
-        WHERE (boundary IN ('aboriginal_lands', 'national_park')
-                OR leisure = 'nature_reserve'
-                OR (boundary = 'protected_area' AND tags->'protect_class' IN ('1','1a','1b','2','3','4','5','6','7','24','97','98','99')))
-          AND building IS NULL
-          AND way_area > 1*0.00028  * !scale_denominator!::real*0.00028  * !scale_denominator!::real
-      ) AS protected_areas
-  properties:
-    cache-features: true
-    minzoom: 11
-    <<: *status_other
-
 - id: trees
   geometry: polygon
   <<: *srs-osm
@@ -1586,114 +1469,7 @@ Layer:
     status: off 
     <<: *status_other
 
-- id: train_stations
-  <<: *srs-osm
-  Datasource:
-    <<: *osm2pgsql
-    table: |-
-      (
-        SELECT  -- train_stations
-          way,
-          type,
-          name,
-          station,
-          way_area
-        FROM
-        (
-          SELECT
-            ST_PointOnSurface(way) AS way,
-            name,
-            railway AS type,
-            tags->'station' AS station,
-            way_area
-          FROM planet_osm_polygon
-          WHERE way && !bbox! -- Not ST_PointOnSurface(way) because name might be NULL
-            AND way_area > 1 * 0.00028  * !scale_denominator!::real*0.00028  * !scale_denominator!::real
-          UNION ALL
-          SELECT
-            way,
-            name,
-            railway AS type,
-            tags->'station' AS station,
-            NULL AS way_area
-          FROM planet_osm_point
-          WHERE way && !bbox!
-        ) _
-        WHERE type IN ('station', 'halt')
-        ORDER BY
-          CASE type
-            WHEN 'station' THEN 1
-            ELSE 2
-          END,
-          way_area DESC NULLS LAST
-      ) AS data
-  geometry: point
-  properties:
-    minzoom: 12
-    <<: *status_other
-
 ############################## amenities ############################
-- id: oriented-highway-amenities
-  <<: *srs-osm
-  Datasource:
-    <<: *osm2pgsql
-    table: |-
-      (
-        SELECT  -- oriented-highway-amenities
-          osm_id,
-          feature,
-          ST_GeometryN(st_union(way),1) as way, max(angle)-min(angle) as angle_diff,
-          avg(angle) as angle
-        FROM (
-          SELECT
-            p.osm_id,
-            p.way AS way,
-            p.feature AS feature,
-            CASE
-              WHEN p.feature = 'crossing' THEN cast(90+degrees(ST_Azimuth(st_lineinterpolatepoint(way1,0),st_lineinterpolatepoint(way1,1))) AS integer) % 180
-              WHEN p.feature = 'traffic_calming' THEN cast(90+degrees(ST_Azimuth(st_lineinterpolatepoint(way1,0),st_lineinterpolatepoint(way1,1))) AS integer) % 180
-              WHEN p.feature = 'cycleway_asl' THEN
-                CASE
-                  WHEN p.direction = 'backward' THEN cast(degrees(ST_Azimuth(st_lineinterpolatepoint(way1,0),st_lineinterpolatepoint(way1,1))) AS integer) + 180
-                  ELSE cast(degrees(ST_Azimuth(st_lineinterpolatepoint(way1,0),st_lineinterpolatepoint(way1,1))) AS integer)
-                END
-            END AS angle
-          FROM (
-            SELECT * FROM (
-              SELECT
-                p.osm_id,
-                p.way,
-                ST_LineMerge(ST_Intersection(st_buffer(p.way,0.1), h.way)) as way1,
-                CASE
-                  WHEN p.tags->'traffic_calming' IN ('yes', 'bump', 'dip', 'choker', 'cushion', 'hump', 'rumble_strip', 'table') THEN 'traffic_calming'
-                  WHEN p.tags->'cycleway' = 'asl' THEN 'cycleway_asl'
-                  WHEN p.highway = 'crossing' OR p.tags ? 'crossing' THEN 'crossing'
-                END AS feature,
-                p.tags->'direction' AS direction
-              FROM planet_osm_point as p
-              JOIN planet_osm_line h
-                ON (st_intersects(p.way,h.way) and h.highway is not null and h.highway not in ('footway','cycleway','path','pedestrian','steps'))
-              WHERE
-                (
-                  (
-                    (p.highway='crossing' OR p.tags ? 'crossing')
-                    AND p.bicycle IN ('yes', 'designated')
-                  )
-                  OR p.tags->'traffic_calming' IN ('yes', 'bump', 'dip', 'choker', 'cushion', 'hump', 'rumble_strip', 'table')
-                  OR p.tags->'cycleway' = 'asl'
-                )
-                AND p.way && !bbox!
-                AND h.way && !bbox!
-            ) AS p
-            WHERE ST_GeometryType(way1)='ST_LineString'
-          ) AS p
-        ) AS amenity
-        GROUP BY osm_id, feature
-      ) AS data
-  properties:
-    minzoom: 18
-    <<: *status_amenities
-
 - id: amenities-poly
   <<: *srs-osm
   Datasource:
@@ -1834,28 +1610,6 @@ Layer:
   properties:
     minzoom: 19
     status: off
-
-- id: power-towers
-  geometry: point
-  <<: *srs-osm
-  Datasource:
-    <<: *osm2pgsql
-    table: |-
-      (SELECT  -- power-towers
-          way,
-          power
-      FROM planet_osm_point
-      WHERE power IN ('tower', 'pole')
-      ORDER BY
-        CASE
-          WHEN power = 'tower' THEN 1
-          WHEN power = 'pole' THEN 2
-          ELSE NULL
-        END
-      ) AS power_towers
-  properties:
-    minzoom: 14
-    <<: *status_other
 
 ######################################## labels ============================
 - id: area_label

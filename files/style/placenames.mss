@@ -143,12 +143,12 @@
 #placenames-medium::high-importance {
   /* Marseille */
   [category = 1][score >= 400000][zoom < 14] {
+    text-name: '[name]';
+    text-face-name: @sans;
+    text-fill: @placenames;
     [zoom >= 5][zoom < 8] {
       text-dx: 4;
       text-dy: 4;
-      text-name: '[name]';
-      text-face-name: @sans;
-      text-fill: @placenames;
       text-wrap-width: 30; // 2.7 em
       text-line-spacing: -1.65; // -0.15 em
       text-margin: 7.7; // 0.7 em
@@ -175,9 +175,6 @@
 
     }
     [zoom >= 8] {
-      text-name: '[name]';
-      text-face-name: @sans;
-      text-fill: @placenames;
       text-size: 13;
       text-wrap-width: 65; // 5.0 em
       text-line-spacing: -0.65; // -0.05 em
@@ -210,16 +207,17 @@
 #placenames-medium::medium-importance {
   /* Avignon, Toulon, Aix-en-Provence */
   [category = 1][score < 400000][zoom < 15] {
+    text-name: "[name]";
+    text-fill: @placenames;
+    text-face-name: @sans;
+    text-halo-fill: @city_halo;
+    text-halo-radius: @standard-halo-radius * 1.5;
+
     [zoom >= 6][zoom < 8][score >= 70000],
     [zoom >= 7][zoom < 8] {
       text-dx: 4;
       text-dy: 4;
-      text-name: "[name]";
       text-size: 11;
-      text-fill: @placenames;
-      text-face-name: @sans;
-      text-halo-fill: @city_halo;
-      text-halo-radius: @standard-halo-radius * 1.5;
       text-wrap-width: 30; // 3.0 em
       text-line-spacing: -1.5; // -0.15 em
       text-margin: 7.0; // 0.7 em
@@ -231,12 +229,7 @@
 
     }
     [zoom >= 8] {
-      text-name: "[name]";
       text-size: 11;
-      text-fill: @placenames;
-      text-face-name: @sans;
-      text-halo-fill: @city_halo;
-      text-halo-radius: @standard-halo-radius * 1.5;
       text-wrap-width: 40; // 4.0 em
       text-line-spacing: -1.0; // -0.10 em
       text-margin: 7.0; // 0.7 em
@@ -279,17 +272,18 @@
 #placenames-medium::low-importance {
     /* Digne-les-Bains, Carpentras */
     [category = 2]{
-        [zoom >= 10][zoom <=12],
+        text-name: "[name]";
+        text-fill: @placenames;
+        text-face-name: @sans;
+        text-halo-fill: @city_halo;
+        text-halo-radius: @standard-halo-radius * 1.5;
+
+        [zoom >= 10][zoom <=12][score >= 12000],
         [zoom = 9][score >= 40000] {
           text-dx: 15;
-          text-dy: 10;
-          text-name: [name];
+          text-dy: 0;
           text-size: 11;
-          text-fill: @placenames;
-          text-face-name: @sans;
-          text-halo-fill: @city_halo;
-          text-halo-radius: @standard-halo-radius * 1.5;
-          text-wrap-width: 45;
+          text-wrap-width: @standard-wrap-width;
           text-line-spacing: -0.8;
           text-margin: 4.0;
           text-placement-type: simple;
@@ -301,12 +295,7 @@
 
 
       [zoom >= 13][zoom < 16] {
-          text-name: "[name]";
           text-size: 10;
-          text-fill: @placenames;
-          text-face-name: @sans;
-          text-halo-fill: @city_halo;
-          text-halo-radius: @standard-halo-radius * 1.5;
           text-wrap-width: 45; // 4.5 em
           text-line-spacing: -0.8; // -0.08 em
           text-margin: 4; // 0.7 em
@@ -370,10 +359,10 @@
 #placenames-small::village {
   [place = 'village'] {
 
-    [zoom = 11],[zoom >= 12]{
+    [zoom >= 11]{
 
-        // small zoom: icon+text
-        [zoom <= 12][population >= 1000],
+        [zoom = 11][population >= 2500],
+        [zoom = 12][population >= 1000],
         [zoom = 13] {
 
               text-dx: 15;
@@ -392,8 +381,6 @@
               text-placements: "N,S,E,SW,NW,NE,SE";
         }
 
-
-        // high zoom : only text
         [zoom >= 14][zoom < 17] {
           text-name: "[name]";
           text-size: 10;

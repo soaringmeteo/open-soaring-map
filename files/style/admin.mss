@@ -223,12 +223,3 @@ overlapping borders correctly.
     text-dy: -10;
   }
 }
-
-
-#protected-areas[zoom >= 11] {
-  [way_pixels > 750] {
-      opacity: 0.20;
-      line-width: 4;
-      line-color: @protected-area;
-  }
-}

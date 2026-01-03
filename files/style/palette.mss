@@ -42,16 +42,14 @@
 @scrub:             @grass;    /*#c8d7ab;*/
 @farmland:          @grass;
 @water:             #8ecbeb;
-@glacier:           #f1f7f7;
+@glacier:           #e9f7f7;
 @religious:         #ded4b2;
 @military:          #f55;
-@quarry:            #c5c3c3;
 @sand:              @land; /*#fcf8ee;*/
 @bare_ground:       #fdfcfb;
 @hedge:             #add19e;
 
 @nature_reserve:    #05620e;
-@protected-area:    #05620e;
 
 @building:          #e4dfdb;
 @hospital:          #e0e0e0;
@@ -66,8 +64,6 @@
 @commercial:        #ded8dd;
 @industrial:        @land * 0.96;
 @parking:           #EEE;
-
-@power-line: #888;
 
 @admin-boundaries: #888;
 @state-boundaries: #333;
@@ -117,9 +113,9 @@
 @placenames-light: #444;
 
 @standard-halo-radius: 1;
-@standard-halo-fill: rgba(255,255,255,0.6); /* 0.6 */
+@standard-halo-fill: rgba(255,255,255,0.8);
 @standard-font-size: 11;
-@standard-wrap-width: 35;
+@standard-wrap-width: 55;
 @standard-line-spacing-size: -1.5;
 
 @shield-size: 10;
@@ -147,7 +143,7 @@
 @contours-min-path-length: 300;
 @contours-max-char-angle-delta: 10;
 @contours-fill: #000;
-@contours-color: #666 ; /* #c45700;  line color */
+@contours-color: #777 ; /* #c45700;  line color */
 
 /* ================================================================== */
 /* POIs COLORS

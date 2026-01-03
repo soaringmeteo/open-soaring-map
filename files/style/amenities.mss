@@ -1,10 +1,3 @@
-#amenities-poly {
-  [feature = 'amenity_bicycle_parking'][zoom >= 16] {
-    polygon-fill: #eeeeee;
-    line-color: #8d8383;
-  }
-}
-
 #barriers[zoom>=17][zoom<=20] {
   [barrier = 'block'],
   [barrier = 'bollard'],
@@ -43,32 +36,6 @@
   }
   [barrier = 'turnstile'] {
     marker-file: url('symbols/openstreetmap-carto/barriers/stile.svg');
-  }
-}
-
-#oriented-highway-amenities {
-  [feature='crossing'][zoom >= 18] {
-    marker-ignore-placement: true;
-    marker-file: url('symbols/osmfr/crossing.svg');
-    marker-transform: 'rotate([angle]) scale(0.9)';
-    marker-fill: @transportation-icon;
-  }
-
-  [feature = 'traffic_calming'][zoom >= 18] {
-    marker-file: url('symbols/amenity/traffic_calming.svg');
-    marker-fill: @man-made-icon;
-    marker-placement: interior;
-    marker-clip: false;
-    marker-transform: 'rotate([angle])';
-  }
-
-  [feature = 'cycleway_asl'][zoom >= 18] {
-    marker-width: 9;
-    marker-file: url('symbols/osm-bright-gl-style/amenities/bicycle_asl_11.svg');
-    marker-fill: @man-made-icon;
-    marker-placement: interior;
-    marker-clip: false;
-    marker-transform: 'rotate([angle])';
   }
 }
 
@@ -124,20 +91,6 @@
       diy/marker-geometry-transform: translate(-10, 6);
     }
   }
-
-/*
-  [feature = 'tourism_alpine_hut'][zoom >= 13],
-  [feature = 'tourism_wilderness_hut'][zoom >= 13],
-  [feature = 'amenity_shelter'][zoom >= 16] {
-    marker-file: url('symbols/osm-bright-gl-style/amenities/shelter_11.svg');
-    marker-fill: @accommodation-icon;
-    [feature = 'amenity_shelter'] {
-      marker-fill: @man-made-icon;
-    }
-    marker-placement: interior;
-    marker-clip: false;
-  }
-*/
 
   [feature = 'highway_bus_stop'][shelter = 'yes'][zoom >= 17],
   [feature = 'highway_bus_stop'][covered = 'yes'][zoom >= 17] {
@@ -602,14 +555,6 @@
     marker-fill: @airtransport;
   }
 
-  [feature = 'aeroway_aerodrome']['access' != 'private']['icao' != null]['iata' != null][zoom >= 10],
-  [feature = 'aeroway_aerodrome'][zoom >= 11] {
-    marker-file: url('symbols/openstreetmap-carto/aerodrome.12.svg');
-    marker-placement: interior;
-    marker-clip: false;
-    marker-fill: @airtransport;
-  }
-
   [feature = 'amenity_ferry_terminal'][zoom >= 15] {
     marker-file: url('symbols/openstreetmap-carto/amenity/ferry.svg');
     marker-placement: interior;
@@ -624,50 +569,9 @@
     marker-fill: @man-made-icon;
   }
 
-  [feature = 'natural_peak'][zoom >= 12] {
-    marker-file: url('symbols/openstreetmap-carto/natural/peak.svg');
-    marker-fill: @landform-color;
-    marker-placement: interior;
-    marker-clip: false;
-  }
-
-  [feature = 'natural_volcano'][zoom >= 13] {
-    marker-file: url('symbols/openstreetmap-carto/natural/peak.svg');
-    marker-fill: @natural_volcano;
-    marker-placement: interior;
-    marker-clip: false;
-  }
-
-  [feature = 'mountain_pass'][zoom >= 12],
-  [feature = 'natural_saddle'][zoom >= 13] {
-    marker-file: url('symbols/openstreetmap-carto/natural/saddle.svg');
-    marker-placement: interior;
-    marker-clip: false;
-    marker-fill: @man-made-icon;
-    [feature = 'natural_saddle']{ marker-fill: @landform-color; }
-  }
-
-  [feature = 'natural_cave_entrance'][zoom >= 15] {
-    marker-file: url('symbols/openstreetmap-carto/natural/cave.svg');
-    marker-placement: interior;
-    marker-clip: false;
-  }
-
   [feature = 'natural_spring'][zoom >= 16] {
     marker-file: url('symbols/openstreetmap-carto/spring.svg');
     marker-clip: false;
-  }
-
-  [feature = 'waterway_waterfall'] {
-    [zoom >= 13][height > 20],
-    [zoom >= 14][height > 10],
-    [zoom >= 15][name != null],
-    [zoom >= 16] {
-      marker-file: url('symbols/openstreetmap-carto/waterfall.svg');
-      marker-placement: interior;
-      marker-clip: false;
-      marker-fill: @water * 0.6;
-    }
   }
 
   [feature = 'military_bunker'][zoom >= 17] {
@@ -693,41 +597,6 @@
     marker-placement: interior;
     marker-fill: @man-made-icon;
     marker-clip: false;
-  }
-
-  [feature = 'shop_bicycle'][zoom >= 14] {
-    [zoom <=15] { marker-transform: "scale(0.83)"; }
-    marker-file: url('symbols/osm-bright-gl-style/amenities/bicycle_11.svg');
-    marker-placement: interior;
-    marker-clip: false;
-    marker-fill: @bicycle-amenity;
-
-    //Pump sub icon
-    [service_bicycle_pump = 'yes'][zoom >= 16],
-    [compressed_air = 'yes'][zoom >= 16] {
-      pump/marker-file: url('symbols/osmandapp/amenity/compressed_air.svg');
-      pump/marker-fill: @bicycle-amenity;
-      pump/marker-placement: interior;
-      pump/marker-clip: false;
-      pump/marker-ignore-placement: true;
-      pump/marker-allow-overlap: true;
-      pump/marker-width: 9;
-      pump/marker-height: 11;
-      pump/marker-geometry-transform: translate(14, 6);
-    }
-
-    //Do it yourself repair tools sub icon
-    [service_bicycle_diy = 'yes'][zoom >= 16] {
-      diy/marker-file: url('symbols/openstreetmap-carto/amenity/bicycle_repair_station.svg');
-      diy/marker-fill: @bicycle-amenity;
-      diy/marker-placement: interior;
-      diy/marker-clip: false;
-      diy/marker-ignore-placement: true;
-      diy/marker-allow-overlap: true;
-      diy/marker-width: 11;
-      diy/marker-height: 11;
-      diy/marker-geometry-transform: translate(-10, 6);
-    }
   }
 
   [feature = 'shop_sports'][zoom >= 17] {

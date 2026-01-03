@@ -145,7 +145,7 @@
     marker-width: 7;
     marker-fill: white;
     marker-line-color: black;
-    marker-line-width: 0.5;
+    marker-line-width: 1;
     text-name: "[name]";
     text-size: 10;
     text-wrap-width: @standard-wrap-width;
@@ -303,63 +303,5 @@
         designated/marker-transform: "scale(0.75)";
         designated/marker-spacing: 40;
      }
-  }
-}
-
-
-/* ================================================================== */
-/* TRAIN STATIONS
-/* ================================================================== */
-
-#train_stations[zoom >= 12]{
-  // Train station
-  [station=null] {
-    marker-file: url('symbols/openstreetmap-carto/square.svg');
-    marker-fill: @trainstation-icon;
-    marker-placement: interior;
-    marker-clip: false;
-    marker-width: 6;
-
-    [zoom >= 14] {
-      text-name: "[name]";
-      text-size: 1.1 * @standard-font-size;
-      text-wrap-width: @standard-wrap-width;
-      text-line-spacing: @standard-line-spacing-size;
-      text-fill: @trainstation-text;
-      text-dy: 10;
-      text-face-name: @sans_bold;
-      text-halo-radius: @standard-halo-radius;
-      text-halo-fill: @standard-halo-fill;
-      text-placement: interior;
-    }
-    [zoom >= 15] {
-      marker-width: 9;
-      text-size: 1.3 * @standard-font-size;
-    }
-  }
-
-  // Subway / light rail
-  [station!=null][zoom >= 15] {
-    marker-file: url('symbols/openstreetmap-carto/square.svg');
-    marker-fill: @trainstation-icon;
-    marker-placement: interior;
-    marker-clip: false;
-    marker-width: 3;
-
-    [zoom >= 16] {
-      marker-width: 6;
-    }
-    [zoom >= 17] {
-      text-name: "[name]";
-      text-size: @standard-font-size;
-      text-wrap-width: @standard-wrap-width;
-      text-line-spacing: @standard-line-spacing-size;
-      text-fill: @trainstation-text;
-      text-dy: 10;
-      text-face-name: @sans_bold;
-      text-halo-radius: @standard-halo-radius;
-      text-halo-fill: @standard-halo-fill;
-      text-placement: interior;
-    }
   }
 }
