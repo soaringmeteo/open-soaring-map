@@ -33,7 +33,7 @@
 @ncn-shield-fill: #f6f6f6;
 @primary-case: #d8b267;           /*#d8b267;*/
 @primary-fill: #ff3333;           /* red for priamry roads */
-@rail-line: #888888;
+@rail-line: #AAAAAA;
 @rcn-overlay: #5500ff;
 @rcn-shield-fill: #f6f6f6;
 @secondary-case: #b1bb5d;  /*#b1bb5d;*/

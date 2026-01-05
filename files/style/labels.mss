@@ -133,6 +133,8 @@
 //==============================================================
 // peak,saddle,cave,hut....
 // =============================================================
+#mountain-point-text[zoom = 8][isolation > 25000],
+#mountain-point-text[zoom = 9][isolation > 16000],
 #mountain-point-text[zoom = 10][isolation > 8000],
 #mountain-point-text[zoom = 11][isolation > 5000],
 #mountain-point-text[zoom = 12][isolation > 3000],

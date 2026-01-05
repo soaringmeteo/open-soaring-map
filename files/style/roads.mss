@@ -3,14 +3,6 @@
 // ==================================================================
 
 
-// low level : only motorway/trunk/railway
-#roads_low{
-
-  line-width: [roadsize];
-  line-color: @standard-fill;
-  [type='railway'] { line-color: @rail-line;}
-}
-
 // At mid-level scales start to show primary  routes
 #roads_med{
   line-color: @standard-fill;

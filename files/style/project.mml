@@ -738,49 +738,6 @@ Layer:
     minzoom: 15
     <<: *status_hikingroutes
 
-
-- id: roads_low
-  <<: *srs-osm
-  Datasource:
-    <<: *osm2pgsql
-    table: |-
-      (
-          SELECT  -- roads_low
-              *,
-               zfact_roadsize(type,!scale_denominator!) as roadsize
-          FROM
-              (
-              SELECT  -- roads_low
-                ST_Snaptogrid(way, 0.00028  * !scale_denominator!::real / 4) AS way,
-                COALESCE(
-                  highway,
-                  CASE
-                    WHEN railway IN ('rail') THEN 'railway'
-                    ELSE 'other'
-                  END
-                ) AS type,
-
-                bridge,
-                tunnel,
-                bicycle
-              FROM planet_osm_roads
-              WHERE ((railway IN ('rail') AND (service IS NULL OR service NOT IN ('spur', 'siding', 'yard')))
-                  OR highway IN ('motorway', 'trunk'))
-                AND way && !bbox!
-              ORDER BY CASE
-                WHEN railway IS NOT NULL THEN 0
-                WHEN highway IS NOT NULL THEN 1
-              END DESC
-              ) AS tmp
-             
-      ) AS data
-  geometry: linestring
-  properties:
-    cache-features: true
-    minzoom: 8
-    maxzoom: 9
-    <<: *status_roadsmedlow
-
 - id: roads_med
   <<: *srs-osm
   Datasource:
@@ -1755,7 +1712,7 @@ Layer:
       ) AS data
   geometry: point
   properties:
-    minzoom: 10
+    minzoom: 8
     <<: *status_label
 
 - id: mountain-poly-text
