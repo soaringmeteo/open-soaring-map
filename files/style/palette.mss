@@ -41,7 +41,7 @@
 @heath:             @grass;  /*#b2c068;*/
 @scrub:             @grass;    /*#c8d7ab;*/
 @farmland:          @grass;
-@water:             #8ecbeb;
+@water:             #BADFF3;
 @glacier:           #e9f7f7;
 @religious:         #ded4b2;
 @military:          #f55;
