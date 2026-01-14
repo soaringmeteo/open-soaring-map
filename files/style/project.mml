@@ -134,7 +134,6 @@ Stylesheet:
 - road-colors.mss
 - fonts.mss
 - base.mss
-- ferry-routes.mss
 - roads.mss
 - amenities.mss
 - labels.mss
@@ -962,22 +961,6 @@ Layer:
     <<: *status_other
 
 ######################### routes #################################
-- id: ferry-routes
-  geometry: linestring
-  <<: *srs-osm
-  Datasource:
-    <<: *osm2pgsql
-    table: |-
-      (SELECT  -- ferry-routes
-          way,
-          bicycle
-        FROM planet_osm_line
-        WHERE route = 'ferry'
-          AND osm_id > 0
-      ) AS ferry_routes
-  properties:
-    minzoom: 8
-    <<: *status_other
 
 - id: bicycle_routes_gen0
   <<: *srs-osm
@@ -1382,25 +1365,6 @@ Layer:
     cache-features: true
     minzoom: 11
     <<: *status_places
-
-- id: ferry-routes-text
-  geometry: linestring
-  <<: *srs-osm
-  Datasource:
-    <<: *osm2pgsql
-    table: |-
-      (SELECT  -- ferry-routes-text
-          way,
-          name
-        FROM planet_osm_line
-        WHERE route = 'ferry'
-          AND osm_id > 0
-          AND name IS NOT NULL
-      ) AS ferry_routes_text
-  properties:
-    minzoom: 13
-    <<: *status_other
-
 
 
 - id: admin-text
