@@ -770,7 +770,7 @@ Layer:
 
                 FROM planet_osm_roads
                 WHERE (((railway IN ('rail') AND (service IS NULL OR service NOT IN ('spur', 'siding', 'yard')))
-                    OR highway IN ('motorway', 'trunk', 'primary' )))
+                    OR highway IN ('motorway', 'trunk', 'primary' )) and tunnel is null)
                   AND way && !bbox!
                 ORDER BY CASE
                   WHEN railway IS NOT NULL THEN 0
@@ -782,7 +782,7 @@ Layer:
   geometry: linestring
   properties:
     minzoom: 10
-    maxzoom: 11
+    maxzoom: 12
     <<: *status_roadsmedlow
 
 
@@ -822,8 +822,8 @@ Layer:
             zfact_sizecycle(type,!scale_denominator!) as sizecycle
         FROM cyclosm_ways
         WHERE 
-          ( 
-               type IN ('motorway','primary','secondary' )
+          (
+               type IN ('motorway','primary','secondary', 'railway' )
             OR type IN ('motorway_link','primary_link','secondary_link','tertiary','tertiary_link','unclassified','cycleway') AND !scale_denominator!::real < 200000  -- zoom >=12
             OR type = 'service' AND service != 'minor' AND !scale_denominator!::real < 200000  -- zoom >=12
             OR type IN ('track','bridleway','footway') AND  !scale_denominator!::real < 100000 -- zoom >=13
@@ -834,7 +834,7 @@ Layer:
   geometry: linestring
   properties:
     cache-features: true
-    minzoom: 12
+    minzoom: 13
     <<: *status_roadshigh
 
 
