@@ -34,7 +34,6 @@
 @grass:             @land; /*#f8fff5;*/  /*#c2debd;*/
 @meadow:            @grass;   /*#e2eecb;*/
 @park:              @grass;
-@cemetery:          #D6DED2;
 
 
 @wooded:            #ecffe3; /*#95bd84; AF8*/
@@ -53,16 +52,12 @@
 
 @building:          #e4dfdb;
 @hospital:          #e0e0e0;
-@school:            #e0e0e0;
 @sports:            #e0e0e0;
 @stadium:           @land * 0.97;
 @pitch:             @park * 0.97;
 @track:             @park * 0.96;
 @bicycle-leisure-track-fill: #bbaeb8;
 
-@residential:       @land * 1.05;
-@commercial:        #ded8dd;
-@industrial:        @land * 0.96;
 @parking:           #EEE;
 
 @admin-boundaries: #888;

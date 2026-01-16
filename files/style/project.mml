@@ -697,26 +697,6 @@ Layer:
     minzoom: 14
     <<: *status_other
 
-- id: leisure_track
-  <<: *srs-osm
-  Datasource:
-    <<: *osm2pgsql
-    table: |-
-      (
-        SELECT --leisure_track
-          way,
-          sport,
-          zfact_roadsize('track' ,!scale_denominator!) as roadsize,
-          zfact_sizecycle('' ,!scale_denominator!) as sizecycle
-        FROM planet_osm_line
-        WHERE leisure = 'track'
-      ) AS data
-  geometry: linestring
-  properties:
-    cache-features: true
-    minzoom: 13
-    <<: *status_other
-
 # draw hiking routes before roads, to avoid changing the color of roads ...
 - id: hiking_routes
   <<: *srs-osm

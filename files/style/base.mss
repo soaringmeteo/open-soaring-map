@@ -19,35 +19,14 @@
 
 #landuse_med,
 #landuse_high {
-  [type='amenity_grave_yard'],
-  [type='landuse_cemetery'] {
-    polygon-fill: @cemetery;
-    [zoom >= 13] {
-      polygon-pattern-file: url('symbols/openstreetmap-carto/grave_yard_generic_many.svg');
-      polygon-pattern-opacity: 0.15;
-    }
-  }
-  [type='amenity_college']       { polygon-fill: @school; }
   [type='leisure_common']        { polygon-fill: @park; }
   [type='landuse_forest']        { polygon-fill: @wooded; }
   [type='leisure_golf_course']   { polygon-fill: @grass; }
-
-  [type='landuse_retail'],
-  [type='landuse_commercial'] {
-    polygon-fill: @commercial;
-  }
 
   [type='leisure_garden'],
   [type='landuse_grass'],
   [type='natural_grassland'] {
     polygon-fill: @grass;
-  }
-
-  [type='landuse_landfill'],
-  [type='landuse_brownfield'],
-  [type='landuse_construction'],
-  [type='landuse_industrial'] {
-    polygon-fill: @industrial;
   }
 
   [type='natural_glacier'] {
@@ -57,6 +36,7 @@
     polygon-fill: @grass;
     polygon-pattern-file: url('symbols/openstreetmap-carto/wetland.png');
     polygon-pattern-alignment: global;
+    polygon-pattern-opacity: 0.25;
   }
   [type='natural_sand'],
   [type='natural_beach'],
@@ -68,6 +48,7 @@
   [type='natural_shingle'] {
     polygon-fill: @bare_ground;
     polygon-pattern-file: url('symbols/openstreetmap-carto/scree_overlay.png');
+    polygon-pattern-opacity: 0.8;
   }
   [type='natural_scrub'] {
     polygon-fill: @scrub;
@@ -93,83 +74,7 @@
   [type='landuse_farmland'] {
     polygon-fill: @farmland;
   }
-  [type='amenity_parking']       { polygon-fill: @parking; }
-  [type='highway_pedestrian']    { polygon-fill: @pedestrian_area_fill; }
-  [type='highway_footway']       { polygon-fill: @footway_area_fill; }
-  [type='landuse_religious']     { polygon-fill: @religious; }
-  [type='leisure_pitch']         {
-    polygon-fill: @sports;
-    [zoom >= 13] {
-      polygon-fill: @pitch;
-      line-width: 0.5;
-      line-color: @pitch * 0.95;
-    }
-  }
-  [type='landuse_residential']   { polygon-fill: @residential; }
-  [type='amenity_school']        { polygon-fill: @school; }
-  [type='leisure_sports_centre'] {
-    polygon-fill: @sports;
-    [zoom >= 14] {
-      polygon-fill: @stadium;
-    }
-  }
-  [type='leisure_stadium']       { polygon-fill: @stadium; }
-  [type='leisure_track'][zoom >= 13] {
-    polygon-fill: @track;
-    line-width: 0.5;
-    line-color: @track * 0.95;
-
-    [sport='cycling'][zoom >= 15],
-    [sport='bmx'][zoom >= 15] {
-      polygon-fill: @bicycle-leisure-track-fill;
-
-      line-cap: round;
-      line-join: round;
-      line-color: @bicycle-amenity;
-
-    }
-  }
-  [type='amenity_university']    { polygon-fill: @school; }
   [type='natural_wood']          { polygon-fill: @wooded; }
-}
-
-//linear leisure track
-#leisure_track[zoom >= 11] {
-  ::area {
-    //Comp is used in order to avoid the outline being over leisure track area lines.
-    comp-op: darken;
-
-    outline/line-cap: round;
-    outline/line-join: round;
-    outline/line-color: @track * 0.95;
-    outline/line-width: 1 + [roadsize];
-
-    line-cap: round;
-    line-join: round;
-    line-color: @track;
-    line-width: [roadsize] ;
-  }
-
-  // larger because will contain cycleway line
-  [sport='cycling'][zoom>=15],
-  [sport='bmx'][zoom>=15] {
-    ::area {
-      outline/line-opacity: 0;
-      outline/line-width: 1 + 4*[sizecycle];
-
-
-      line-color: @bicycle-leisure-track-fill;
-      line-width: 4*[sizecycle];
-    }
-
-    ::cycleway {
-      line-cap: round;
-      line-join: round;
-      line-color: @bicycle-amenity;
-      line-width: 0.2 * [sizecycle];
-
-    }
-  }
 }
 
 #hillshade-low[zoom>1] {

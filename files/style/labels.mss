@@ -42,14 +42,6 @@
       text-fill: @grass * 0.6;
       text-halo-fill: lighten(@grass, 10%);
     }
-    [type='cemetery'] {
-      text-fill: @cemetery * 0.6;
-      text-halo-fill: lighten(@cemetery, 10%);
-    }
-    [type='university'] {
-      text-fill: @school * 0.6;
-      text-halo-fill: lighten(@school, 10%);
-    }
     [type='basin'],
     [type='water'] {
       text-fill: @water * 0.6;
@@ -69,10 +61,6 @@
     }
     [type='military'] {
       text-fill: @military * 0.6;
-      text-face-name: @sans_italic;
-    }
-    [type='retail'] {
-      text-fill: @shop-text;
       text-face-name: @sans_italic;
     }
 
