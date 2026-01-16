@@ -374,9 +374,9 @@ Layer:
   geometry: line
   properties:
     minzoom: 13
+    maxzoom: 13
     <<: *status_contours
 
-# not used
 - id: contours20
   class: contours
   <<: *srs-osm
@@ -391,8 +391,8 @@ Layer:
       ) AS data
   geometry: line
   properties:
-    minzoom: 12
-    status: off
+    minzoom: 14
+    <<: *status_contours
 
 - id: contours10
   class: contours

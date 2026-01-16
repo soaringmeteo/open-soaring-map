@@ -180,34 +180,19 @@ Map { background-color: @water; }
 
   /* 100 m */
   #contours100 {
-
     [zoom >= 12] { line-width: 0.2; }
-    [zoom >= 13] { line-width: 0.3; }
-    [zoom >= 14] { line-width: 0.5;  }
-    [zoom >= 16] { line-width: 0.5; }
-
-
+    [zoom >= 13] { line-width: 0.4; }
+    [zoom >= 14] { line-width: 0.5; }
   }
 
   /* 50 m */
   #contours50 {
-    [zoom >= 13] { line-width: 0.1; }
-    [zoom >= 14] { line-width: 0.2;  }
-    [zoom >= 16] { line-width: 0.3;  }
-
-
+    [zoom >= 13] { line-width: 0.2; }
   }
 
   /* 20 m */
   #contours20 {
-    [zoom >= 12] { line-width: 0.2;  }
-    [zoom >= 16] { line-width: 0.4; }
-  }
-
-  /* 10m */
-  #contours10 {
-    [zoom >= 13] { line-width: 0.2; }
-    [zoom >= 16] { line-width: 0.4; }
+    [zoom >= 14] { line-width: 0.2;  }
   }
 
   /* All labels */
