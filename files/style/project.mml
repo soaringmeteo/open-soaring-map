@@ -424,12 +424,12 @@ Layer:
         FROM planet_osm_line  -- waterway_low
         WHERE
           waterway IN ('river', 'canal')
-          AND (tunnel IS NULL OR tunnel NOT IN ('yes', 'culvert'))
+          AND (tunnel IS NULL)
           AND way && !bbox!
       ) AS data
   geometry: linestring
   properties:
-    minzoom: 8
+    minzoom: 11
     maxzoom: 12
     <<: *status_other
 
@@ -446,32 +446,12 @@ Layer:
         FROM planet_osm_line
         WHERE
           waterway IN ('river', 'canal', 'stream')
-          AND (tunnel IS NULL OR tunnel NOT IN ('yes', 'culvert'))
+          AND (tunnel IS NULL)
       ) AS data
   geometry: linestring
   properties:
     minzoom: 13
     maxzoom: 14
-    <<: *status_other
-
-- id: waterway_high
-  <<: *srs-osm
-  Datasource:
-    <<: *osm2pgsql
-    table: |-
-      (
-        SELECT --waterway_high
-            way, 
-            waterway AS type,
-            zfact_watersize( waterway , !scale_denominator! ) AS watersize
-        FROM planet_osm_line
-        WHERE
-          waterway IN ('river', 'canal', 'stream', 'ditch', 'drain')
-          AND (tunnel IS NULL OR tunnel NOT IN ('yes', 'culvert'))
-      ) AS data
-  geometry: linestring
-  properties:
-    minzoom: 15
     <<: *status_other
 
 ######################### water : lake, pond .... ###################################

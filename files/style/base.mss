@@ -115,27 +115,19 @@ Map { background-color: @water; }
 /* WATER WAYS
 /* ================================================================== */
 
-#waterway_low[zoom>=8][zoom<=12] {
+#waterway_low[zoom>=11][zoom<=12] {
   line-color: @water;
-  line-width: [watersize];
+  line-width: 1;
 }
 
 #waterway_med[zoom>=13][zoom<=14] {
   line-color: @water;
-  line-width: [watersize];
+  [zoom = 13] { line-width: 0.5; }
+  [zoom = 14] { line-width: 0.8; }
 
   [type='river'], [type='canal'] {
-    line-cap: round;
-    line-join: round;
-  }
-
-}
-
-#waterway_high[zoom>=15] {
-  line-color: @water;
-  line-width: [watersize];
-
-  [type='river'], [type='canal'] {
+    [zoom = 13] { line-width: 1; }
+    [zoom = 14] { line-width: 1.5; }
     line-cap: round;
     line-join: round;
   }
