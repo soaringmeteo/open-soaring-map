@@ -1624,16 +1624,10 @@ Layer:
         SELECT  -- mountain-point-text
           way,
           "natural",
-          elevation,
+          ROUND(elevation) elevation,
           tourism,
           ROUND (!scale_denominator!::real) as zscale,
-          CONCAT(
-              name,
-              CASE WHEN (elevation IS NOT NULL  AND "natural" != 'cave_entrance')  
-                   THEN CONCAT(  E'\n' ,    REPLACE(ROUND(elevation)::TEXT, '-', U&'\2212'),    'm') 
-                   ELSE NULL 
-              END
-              ) AS name,
+          name,
           otm_isolation as isolation
           FROM
           (

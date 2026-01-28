@@ -137,6 +137,11 @@
     marker-line-color: black;
     marker-line-width: 1;
     text-name: "[name]";
+    [zoom <= 10][isolation > 30000],
+    [zoom >= 11][isolation > 10000],
+    [zoom >= 13][isolation > 2000] {
+      text-name: [name]+" "+[elevation]+"\u00A0m";
+    }
     text-size: 10;
     text-wrap-width: @standard-wrap-width;
     text-line-spacing: @standard-line-spacing-size;
