@@ -146,9 +146,9 @@
     text-name: '[name]';
     text-face-name: @sans;
     text-fill: @placenames;
+    text-dx: 0;
+    text-dy: 0;
     [zoom >= 5][zoom < 8] {
-      text-dx: 4;
-      text-dy: 4;
       text-wrap-width: 30; // 2.7 em
       text-line-spacing: -1.65; // -0.15 em
       text-margin: 7.7; // 0.7 em
@@ -167,8 +167,6 @@
       [zoom >= 6] {
         text-wrap-width: 60; // 5.0 em
         text-line-spacing: -0.6; // -0.05 em
-        text-dx: 5;
-        text-dy: 5;
       }
 
     }
@@ -183,8 +181,6 @@
       // FIXME: https://github.com/mapnik/mapnik/commit/4eae86b7bc750a08a7ab103a780d6b4bf951e1b1
       // text-placements: "C,N,S,E,W,NW,NE,SE";
       text-placements: "N,S,E,W,NW,NE,SE";
-      text-dx: 25;
-      text-dy: 20;
 
       [zoom >= 10] {
         text-size: 14;
@@ -211,8 +207,8 @@
       text-face-name: @sans;
       text-halo-fill: @city_halo;
       text-halo-radius: @standard-halo-radius * 1.5;
-      text-dx: 4;
-      text-dy: 4;
+      text-dx: 0;
+      text-dy: 0;
       text-size: 11;
       text-wrap-width: 30; // 3.0 em
       text-line-spacing: -1.5; // -0.15 em
@@ -229,7 +225,7 @@
       text-face-name: @sans;
       text-halo-fill: @city_halo;
       text-halo-radius: @standard-halo-radius * 1.5;
-      text-size: 11;
+      text-size: 12;
       text-wrap-width: 40; // 4.0 em
       text-line-spacing: -1.0; // -0.10 em
       text-margin: 7.0; // 0.7 em
@@ -237,8 +233,8 @@
       // FIXME: https://github.com/mapnik/mapnik/commit/4eae86b7bc750a08a7ab103a780d6b4bf951e1b1
       // text-placements: "C,N,S,E,W,NW,NE,SE";
       text-placements: "N,S,E,W,NW,NE,SE";
-      text-dx: 25;
-      text-dy: 20;
+      text-dx: 0;
+      text-dy: 0;
       [zoom >= 9] {
         text-size: 12;
         text-wrap-width: 60; // 5.0 em
@@ -282,11 +278,11 @@
         text-face-name: @sans;
         text-halo-fill: @city_halo;
         text-halo-radius: @standard-halo-radius * 1.5;
+        text-dx: 0;
+        text-dy: 0;
 
         [zoom >= 9][zoom < 13] {
-          text-dx: 15;
-          text-dy: 0;
-          text-size: 11;
+          text-size: 12;
           text-wrap-width: @standard-wrap-width;
           text-line-spacing: -0.8;
           text-margin: 4.0;
@@ -306,8 +302,6 @@
             // FIXME: https://github.com/mapnik/mapnik/commit/4eae86b7bc750a08a7ab103a780d6b4bf951e1b1
             // text-placements: "C,N,S,E,W,NW,NE,SE";
             text-placements: "N,S,E,SW,NW,NE,SE";
-            text-dx: 15; //25;
-            text-dy: 10; //20;
             [zoom >= 11] {
               text-size: 11;
               text-wrap-width: 55; // 5.0 em
@@ -368,8 +362,8 @@
         [zoom = 12][population >= 200],
         [zoom = 13] {
 
-              text-dx: 15;
-              text-dy: 10;
+              text-dx: 0;
+              text-dy: 0;
               // text-name: ' '+[name]+' '; // adding blanks seems to avoid troubles on tile boundary !
               text-name: [name];  // finally, simpler to add blanks inside the SQL request
               text-size: 10;
@@ -399,8 +393,8 @@
           // text-placements: "C,N,S,E,W,NW,NE,SE";
           text-placements: "N,S,E,NW,NE,SE";
           text-avoid-edges: true;  // avoid troubles on tile border
-          text-dx: 15; //25;
-          text-dy: 10; //20;
+          text-dx: 0;
+          text-dy: 0;
           [zoom >= 13] {
             text-size: 11;
             text-wrap-width: 55; // 5.0 em
