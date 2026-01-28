@@ -1258,7 +1258,8 @@ Layer:
             WHEN (place = 'city') THEN 1
             ELSE 2
           END as category,
-          round(ascii(md5(osm_id::text)) / 55) AS dir -- base direction factor on geometry to be consistent across metatiles
+          round(ascii(md5(osm_id::text)) / 55) AS dir, -- base direction factor on geometry to be consistent across metatiles
+          otm_isolation as isolation
         FROM
           (SELECT
               osm_id,
@@ -1277,7 +1278,8 @@ Layer:
                   WHEN (capital='4') THEN 2
                   ELSE 1
                 END)
-              ) AS score
+              ) AS score,
+              otm_isolation::NUMERIC
             FROM planet_osm_point
             WHERE 
                     -- zoom <=8  show only CITY   ,  zoom > 8 show CITY,TOWN
@@ -1298,7 +1300,7 @@ Layer:
     <<: *status_places
 
 
-
+# computing isolation for villages is too expensive, so we use the population only
 - id: placenames-small
   geometry: point
   <<: *srs-osm
@@ -1537,7 +1539,7 @@ Layer:
           (landuse IN ('basin', 'cemetery', 'commercial', 'farmyard', 'forest', 'grass', 'industrial', 'military', 'retail')
             OR shop IN ('mall')
             OR (leisure IS NOT NULL AND (leisure != 'sport_centre' OR sport != 'swimming'))
-            OR "natural" IS NOT NULL
+            OR ("natural" IS NOT NULL and "natural" != 'mountain_range')
             OR amenity IN ('embassy', 'library', 'school', 'townhall', 'university')
             OR man_made IN ('works', 'wastewater_plant', 'water_works'))
           AND (boundary NOT IN ('national_park', 'protected_area'))

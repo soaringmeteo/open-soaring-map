@@ -167,8 +167,6 @@
       [zoom >= 6] {
         text-wrap-width: 60; // 5.0 em
         text-line-spacing: -0.6; // -0.05 em
-
-
         text-dx: 5;
         text-dy: 5;
       }
@@ -206,15 +204,13 @@
 
 #placenames-medium::medium-importance {
   /* Avignon, Toulon, Aix-en-Provence */
-  [category = 1][score < 400000][zoom < 15] {
-    text-name: "[name]";
-    text-fill: @placenames;
-    text-face-name: @sans;
-    text-halo-fill: @city_halo;
-    text-halo-radius: @standard-halo-radius * 1.5;
-
-    [zoom >= 6][zoom < 8][score >= 70000],
-    [zoom >= 7][zoom < 8] {
+  [category = 1][score < 400000][zoom >= 7][zoom < 15] {
+    [zoom >= 7][zoom < 8][score >= 200000] {
+      text-name: "[name]";
+      text-fill: @placenames;
+      text-face-name: @sans;
+      text-halo-fill: @city_halo;
+      text-halo-radius: @standard-halo-radius * 1.5;
       text-dx: 4;
       text-dy: 4;
       text-size: 11;
@@ -226,9 +222,13 @@
       [dir = 1] {
         text-placements: 'N,S,E,W';
       }
-
     }
     [zoom >= 8] {
+      text-name: "[name]";
+      text-fill: @placenames;
+      text-face-name: @sans;
+      text-halo-fill: @city_halo;
+      text-halo-radius: @standard-halo-radius * 1.5;
       text-size: 11;
       text-wrap-width: 40; // 4.0 em
       text-line-spacing: -1.0; // -0.10 em
@@ -271,15 +271,19 @@
 
 #placenames-medium::low-importance {
     /* Digne-les-Bains, Carpentras */
-    [category = 2]{
+    [category = 2] {
+      [zoom = 9][score >= 4000][isolation > 50000],
+      [zoom = 10][isolation > 30000],
+      [zoom = 11][isolation > 15000],
+      [zoom = 12][isolation > 8000],
+      [zoom >= 13] {
         text-name: "[name]";
         text-fill: @placenames;
         text-face-name: @sans;
         text-halo-fill: @city_halo;
         text-halo-radius: @standard-halo-radius * 1.5;
 
-        [zoom >= 10][zoom <=12][score >= 12000],
-        [zoom = 9][score >= 40000] {
+        [zoom >= 9][zoom < 13] {
           text-dx: 15;
           text-dy: 0;
           text-size: 11;
@@ -292,38 +296,37 @@
             text-placements: 'N,S,E,W';
           }
         }
-
-
-      [zoom >= 13][zoom < 16] {
-          text-size: 10;
-          text-wrap-width: 45; // 4.5 em
-          text-line-spacing: -0.8; // -0.08 em
-          text-margin: 4; // 0.7 em
-          text-placement-type: simple;
-          text-avoid-edges: true;
-          // FIXME: https://github.com/mapnik/mapnik/commit/4eae86b7bc750a08a7ab103a780d6b4bf951e1b1
-          // text-placements: "C,N,S,E,W,NW,NE,SE";
-          text-placements: "N,S,E,SW,NW,NE,SE";
-          text-dx: 15; //25;
-          text-dy: 10; //20;
-          [zoom >= 11] {
-            text-size: 11;
-            text-wrap-width: 55; // 5.0 em
-            text-line-spacing: -0.55; // -0.05 em
-            text-margin: 7.7; // 0.7 em
-          }
-          [zoom >= 12] {
-            text-size: 13;
-            text-wrap-width: 65; // 5.0 em
-            text-line-spacing: -0.65; // -0.05 em
-            text-margin: 8.4; // 0.7 em
-          }
-          [zoom >= 14] {
-            text-size: 15;
-            text-wrap-width: 75; // 5.0 em
-            text-line-spacing: -0.75; // -0.05 em
-            text-margin: 10.5; // 0.7 em
-          }
+        [zoom >= 13][zoom < 16] {
+            text-size: 10;
+            text-wrap-width: 45; // 4.5 em
+            text-line-spacing: -0.8; // -0.08 em
+            text-margin: 4; // 0.7 em
+            text-placement-type: simple;
+            text-avoid-edges: true;
+            // FIXME: https://github.com/mapnik/mapnik/commit/4eae86b7bc750a08a7ab103a780d6b4bf951e1b1
+            // text-placements: "C,N,S,E,W,NW,NE,SE";
+            text-placements: "N,S,E,SW,NW,NE,SE";
+            text-dx: 15; //25;
+            text-dy: 10; //20;
+            [zoom >= 11] {
+              text-size: 11;
+              text-wrap-width: 55; // 5.0 em
+              text-line-spacing: -0.55; // -0.05 em
+              text-margin: 7.7; // 0.7 em
+            }
+            [zoom >= 12] {
+              text-size: 13;
+              text-wrap-width: 65; // 5.0 em
+              text-line-spacing: -0.65; // -0.05 em
+              text-margin: 8.4; // 0.7 em
+            }
+            [zoom >= 14] {
+              text-size: 15;
+              text-wrap-width: 75; // 5.0 em
+              text-line-spacing: -0.75; // -0.05 em
+              text-margin: 10.5; // 0.7 em
+            }
+        }
       }
    }
 }
@@ -361,14 +364,14 @@
 
     [zoom >= 11]{
 
-        [zoom = 11][population >= 2500],
-        [zoom = 12][population >= 1000],
+        [zoom = 11][population >= 8000],
+        [zoom = 12][population >= 200],
         [zoom = 13] {
 
               text-dx: 15;
               text-dy: 10;
               // text-name: ' '+[name]+' '; // adding blanks seems to avoid troubles on tile boundary !
-              text-name: [name] ;  // finally, simpler to add blanks inside the SQL request
+              text-name: [name];  // finally, simpler to add blanks inside the SQL request
               text-size: 10;
               text-fill: @placenames;
               text-face-name: @sans;

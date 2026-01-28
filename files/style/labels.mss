@@ -121,11 +121,11 @@
 //==============================================================
 // peak,saddle,cave,hut....
 // =============================================================
-#mountain-point-text[zoom = 8][isolation > 25000],
-#mountain-point-text[zoom = 9][isolation > 16000],
-#mountain-point-text[zoom = 10][isolation > 8000],
-#mountain-point-text[zoom = 11][isolation > 5000],
-#mountain-point-text[zoom = 12][isolation > 3000],
+#mountain-point-text[zoom = 8][isolation > 40000],
+#mountain-point-text[zoom = 9][isolation > 20000],
+#mountain-point-text[zoom = 10][isolation > 12000],
+#mountain-point-text[zoom = 11][isolation > 7000],
+#mountain-point-text[zoom = 12][isolation > 4000],
 #mountain-point-text[zoom = 13][isolation > 1000],
 #mountain-point-text[zoom = 14][isolation > 500],
 #mountain-point-text[zoom = 15][isolation > 100]  {
@@ -148,7 +148,7 @@
     text-placement: point;  
     text-placement-type: simple;
     text-placements: "S,N,E,W,NE,SE,NW,SW";
-    text-allow-overlap: true;
+    text-allow-overlap: false;
 }
 
 
