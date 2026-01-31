@@ -787,7 +787,6 @@ Layer:
             OR type IN ('motorway_link','primary_link','secondary_link','tertiary','tertiary_link','unclassified','cycleway') AND !scale_denominator!::real < 200000  -- zoom >=12
             OR type = 'service' AND service != 'minor' AND !scale_denominator!::real < 200000  -- zoom >=12
             OR type IN ('track','bridleway','footway') AND  !scale_denominator!::real < 100000 -- zoom >=13
-            OR !scale_denominator!::real < 50000 -- zoom >=14
           )
 
       ) AS data

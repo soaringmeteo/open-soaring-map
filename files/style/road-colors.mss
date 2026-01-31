@@ -40,7 +40,7 @@
 @secondary-fill: #ff0;         /* yellow for secondary roads */
 @secondary-med-fill: #ff9900;   /* medium zoom . without border, yellow is hard to see */
 @standard-case: #888;
-@standard-fill: #f6f6f6;
+@standard-fill: #ffffff;
 @standard-nobicycle: #d4d4d4;
 @tertiary-case: black;
 @pedestrian-case: #bbb;
