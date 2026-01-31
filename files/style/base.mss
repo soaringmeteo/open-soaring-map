@@ -195,7 +195,7 @@ Map { background-color: @water; }
       text-face-name: @standard-font;
       text-size: @contours-larger-font-size;
       text-fill: @contours-fill;
-      text-halo-radius: 1;
+      text-halo-radius: @standard-halo-radius;
       text-halo-fill: @contours-halo-fill;
       text-placement: line;
       text-label-position-tolerance: @contours-position-tolerance;

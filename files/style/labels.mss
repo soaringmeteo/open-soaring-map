@@ -103,7 +103,7 @@
   text-face-name: @sans_italic;
   text-fill: @water * 0.75;
   text-halo-fill: fadeout(lighten(@water,5%),25%);
-  text-halo-radius: 1;
+  text-halo-radius: @standard-halo-radius;
   text-placement: line;
   text-min-distance: 400;
   text-size: 10;
@@ -148,7 +148,7 @@
     text-fill: black;
     text-dy: 5;
     text-face-name: @standard-font;
-    text-halo-radius: 1.4;
+    text-halo-radius: @standard-halo-radius;
     text-halo-fill: @standard-halo-fill;
     text-placement: point;  
     text-placement-type: simple;
