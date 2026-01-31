@@ -327,7 +327,7 @@ Layer:
   geometry: raster
   properties:
     minzoom: 4
-    maxzoom: 9
+    maxzoom: 8
     <<: *status_hillshade
 
 - id: hillshade-high
@@ -338,7 +338,7 @@ Layer:
     format: tiff
   geometry: raster
   properties:
-    minzoom: 10
+    minzoom: 9
     <<: *status_hillshade
 
 ################################## contours lines ##############################

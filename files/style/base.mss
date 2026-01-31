@@ -83,10 +83,10 @@
   raster-opacity: 0.3;
 }
 
-#hillshade-high[zoom>=10] {
+#hillshade-high[zoom>=9] {
   raster-scaling: bilinear;
   raster-comp-op: multiply;
-  raster-opacity: 0.25;
+  raster-opacity: 0.3;
 }
 
 #landuse-overlay[type = 'wood'][zoom >= 13] {

@@ -225,7 +225,7 @@ hillshade)
   sh ../dem/hillshade.sh $AREAPOLY.txt 500 8   # low resolution
 
   echo "\n######################## compute hillshade RESOLUTION=30 ###########################\n"
-  sh ../dem/hillshade.sh $AREAPOLY.txt 30  5    # high resolution
+  sh ../dem/hillshade.sh $AREAPOLY.txt 30  7    # high resolution
 
   echo "\nFinished !  Hillshade have been generated `date '+%H:%M:%S'` "
   ;;
