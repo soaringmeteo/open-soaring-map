@@ -251,35 +251,23 @@
         text-halo-radius: @standard-halo-radius * 1.5;
         text-dx: 0;
         text-dy: 0;
+        // FIXME: https://github.com/mapnik/mapnik/commit/4eae86b7bc750a08a7ab103a780d6b4bf951e1b1
+        // text-placements: "C,N,S,E,W,NW,NE,SE";
+        text-placements: "N,S,E,SW,NW,NE,SE";
+        text-placement-type: simple;
 
         [zoom >= 9][zoom < 13] {
           text-size: 12;
           text-wrap-width: @standard-wrap-width;
           text-line-spacing: -0.8;
           text-margin: 4.0;
-          text-placement-type: simple;
-          text-placements: "N,S,E,SW,NW,NE,SE";
           [dir = 1] {
             text-placements: 'N,S,E,W';
           }
         }
         [zoom >= 13][zoom < 16] {
-            text-size: 10;
-            text-wrap-width: 45; // 4.5 em
-            text-line-spacing: -0.8; // -0.08 em
-            text-margin: 4; // 0.7 em
-            text-placement-type: simple;
-            text-avoid-edges: true;
-            // FIXME: https://github.com/mapnik/mapnik/commit/4eae86b7bc750a08a7ab103a780d6b4bf951e1b1
-            // text-placements: "C,N,S,E,W,NW,NE,SE";
-            text-placements: "N,S,E,SW,NW,NE,SE";
-            [zoom >= 11] {
-              text-size: 11;
-              text-wrap-width: 55; // 5.0 em
-              text-line-spacing: -0.55; // -0.05 em
-              text-margin: 7.7; // 0.7 em
-            }
-            [zoom >= 12] {
+            text-avoid-edges: false;
+            [zoom >= 13] {
               text-size: 13;
               text-wrap-width: 65; // 5.0 em
               text-line-spacing: -0.65; // -0.05 em
