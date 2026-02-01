@@ -134,7 +134,7 @@
 
 
 #roads_high::inline {
-    [type='track'],[type='bridleway'],[type='footway'],[type='cycleway']{
+    [type='footway'],[type='cycleway']{
 
       // different type of dash, depending on surface . 
       // If can_bicycle=no then small points ( do not use a specific color for this, because now we take hiking in consideration )
