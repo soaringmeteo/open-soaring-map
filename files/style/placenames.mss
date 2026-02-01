@@ -111,35 +111,6 @@
   }
 }
 
-
-#state-names {
-  [zoom >= 5][zoom < 7][way_pixels > 3000],
-  [zoom >= 7][way_pixels > 3000][way_pixels < 196000] {
-    text-name: "[name]";
-    text-size: 10;
-    text-wrap-width: 30; // 3.0 em
-    text-line-spacing: -1.5; // -0.15 em
-    text-margin: 7.0; // 0.7 em
-    text-fill: @state_text;
-    text-face-name: @sans_italic;
-    text-halo-fill: @state_halo;
-    text-halo-radius: @standard-halo-radius * 1.5;
-    text-placement: interior;
-
-    text-placement-type: simple;
-    text-placements: "C,N,S,E,W,NW,NE,SE";
-    text-dx: 25;
-    text-dy: 20;
-
-    [zoom >= 7] {
-      text-size: 11;
-      text-wrap-width: 50; // 4.5 em
-      text-line-spacing: -0.6; // -0.05 em
-      text-margin: 7.7; // 0.7 em
-    }
-  }
-}
-
 #placenames-medium::high-importance {
   /* Marseille */
   [category = 1][score >= 400000][zoom < 14] {
