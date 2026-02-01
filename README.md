@@ -1,15 +1,11 @@
-Osmhike
-======= 
-A project by B.Maison
+Open Soaring Map
+================
 
-## Hiking oriented tile server, based on Cyclosm
+Soaring oriented tile server, based on [osmhike](https://github.com/bmgru/osmhike-tileserver).
 
-This is a strongly reworked clone of CyclOSM (cyclosm-cartocss-style-master  on github  sept2024) 
-
-Three goals:
-- allow to build a personnal tile-server, for producing maps adapted to mountain hiking, (without loosing too much bike information)
-- provide a full beginner's tutorial ( the one I would have liked to have at the beginning of the project )
-- implement contours and hillshade
+Goals:
+- only show information relevant for soaring pilots (land type, contours, hillshade, peaks, main cities, cables)
+- reproducible way to generate the tiles
 
 ## Requirements
 
@@ -38,39 +34,38 @@ chmod -R a+rwX  ~/myproject
 
 ## Preparation
 
-Notes: 
-- all docker commands must be executed from sudo
+Notes:
 - this installation contains OSM data for Andorra, to have a small working example
 
 Go to project directory ( where file docker-compose-yml resides )
 
 Build "db" image (the database server)
 ```
-sudo docker-compose build db  
+docker compose build db  
 ```
 
 Build "import" image ( the osm data import tool )
 ```
-sudo docker-compose build import
+docker compose build import
 ```
 
 Build "kosmtik" image ( the tile rendering and web server )
 ```
-sudo docker-compose build kosmtik
+docker compose build kosmtik
 ```
 
 ## Launching the demo based on Andorra data
 
 Launch database
 ```
-sudo docker-compose up -V db
+docker compose up -V db
 ```
 
-Import the data  ( do it from another shell window, because the previous action keeps running in foreground )
+Import the data (do it from another shell window, because the previous action keeps running in foreground).
 
-Note that after this command, the db container will exit from its terminal . But it continues to work in background
+Note that after this command, the db container will exit from its terminal. But it continues to work in background
 ```
-sudo docker-compose up -V import
+docker compose up -V import
 ```
 
 Generate peak isolations data and city isolations data (note the usage of RUN command with argument)
@@ -78,37 +73,37 @@ Generate peak isolations data and city isolations data (note the usage of RUN co
 It will take many minutes, to download elevation data from Internet
 
 ```
-sudo docker-compose run import isolations
-sudo docker-compose run import city_isolations
+docker compose run import isolations
+docker compose run import city_isolations
 ```
 
 Generate contours lines  ( note the usage of RUN command with argument )
 ```
-sudo docker-compose run import contours
+docker compose run import contours
 ```
 *Note: The download speed from viewfinderpanoramas may be incredibly slow at some moments. It seems it works better when Americans are spleeping...*
 
-Generate hillshade  ( note the usage of RUN command with argument )
+Generate hillshade  (note the usage of RUN command with argument)
 ```
-sudo docker-compose run import hillshade
-```
-
-Launch the tiles web server.  Note: the first time, it may spend many minutes to download shapefiles from Internet...
-```
-sudo docker-compose up -V kosmtik
+docker compose run import hillshade
 ```
 
-Navigate in the map : open a browser on the below url , and move the map until you see Andorra
+Launch the tiles web server. Note: the first time, it may spend many minutes to download shapefiles from Internet...
+```
+docker compose up -V kosmtik
+```
+
+Navigate in the map: open a browser on the below url, and move the map until you see Andorra
 ```
 http://localhost:8888
 ```
 
 
 To stop the tile server, just type CTRL/C in its window<br>
-To stop the database, use:  sudo docker-compose stop db
+To stop the database, use: `docker compose stop db`
 
 Note:
-You can ommit "docker-compose up db" 
+You can ommit "docker compose up db" 
 It will be done silently when launching import or kosmtik
 ( but the first execution of "db" initializes the database, and  I prefer to see clearly what happens at that moment )
 
@@ -120,7 +115,7 @@ Note:
 After many runs, the Docker system may be overloaded with obsolete stuff  (stopped containers ...)
 This commands does some cleaning
 ```
-sudo docker system prune
+docker system prune
 ```
  
 ## Load data from another area
@@ -136,9 +131,11 @@ The best place to find such data is
 
 Then run again import phases ( Caution! it will erase previous database )
 ```
-sudo docker-compose up  -V import
-sudo docker-compose run  import contours
-sudo docker-compose run  import hillshade
+docker compose up -V import
+docker compose run import isolations
+docker compose run import city_isolations
+docker compose run import contours
+docker compose run import hillshade
 ```
 
 CAUTION ! "1 arc second" resolution is not available for all countries
@@ -153,7 +150,5 @@ AREAPOLYSOURCE=view3
 
 Execute psql to navigate into database
 ```
-sudo docker-compose run  import psql
+docker compose run import psql
 ```
-
-
