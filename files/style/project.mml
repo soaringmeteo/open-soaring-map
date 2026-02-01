@@ -124,6 +124,7 @@ Stylesheet:
 - roads.mss
 - labels.mss
 - placenames.mss
+- cables.mss
 - admin.mss
 - gpx.mss
 - legend.mss
@@ -1024,6 +1025,28 @@ Layer:
   properties:
     minzoom: 13
     <<: *status_label
+
+- id: cables
+  geometry: linestring
+  <<: *srs-osm
+  Datasource:
+    <<: *osm2pgsql
+    table: |-
+      (
+        select  -- cables
+          way,
+          aerialway,
+          power
+        from planet_osm_line
+        where
+          aerialway is not null
+          or power = 'line'
+          or power = 'minor_line'
+          or (power = 'cable' and tags->'location' in ('overground', 'overhead', 'surface', 'outdoor', 'platform'))
+      ) AS data
+  properties:
+    minzoom: 12
+    <<: *status_other
 
 # Dedicated layer for peak/saddle,cave
 # A peak generally have 2 different nodes, not always exactly at the same location, but with the same name
