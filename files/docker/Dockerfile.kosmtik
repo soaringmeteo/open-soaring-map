@@ -44,8 +44,11 @@ RUN kosmtik plugins --install kosmtik-overpass-layer \
                     --install kosmtik-map-compare \
                     --install kosmtik-osm-data-overlay \
                     --install kosmtik-mapnik-reference \
-                    --install kosmtik-geojson-overlay \
-    && cp /root/.config/kosmtik.yml /tmp/.kosmtik-config.yml
+                    --install kosmtik-geojson-overlay
+# See https://github.com/kosmtik/kosmtik/issues/302
+RUN npm install -g git+https://github.com/kosmtik/kosmtik-tiles-export \
+      && echo "  - kosmtik-tiles-export" >> /root/.config/kosmtik.yml \
+      && cp /root/.config/kosmtik.yml /tmp/.kosmtik-config.yml
 
 # Directory /osmhike is created by volume mapping , defined in docker-compose.yml
 WORKDIR /osmhike

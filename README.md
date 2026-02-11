@@ -118,6 +118,22 @@ This commands does some cleaning
 docker system prune
 ```
  
+## Export tiles as static images
+
+Export the whole world:
+
+```
+docker compose run --rm kosmtik export-tiles --minZoom 0 --maxZoom 10 --bounds=-180,-85,180,85
+```
+
+Then export the WRF domain at higher zoom levels:
+
+```
+docker compose run --rm kosmtik export-tiles --minZoom 11 --maxZoom 14 --bounds=-1,40.5,20.5,51
+```
+
+Tiles are in directory `./files/export`.
+
 ## Load data from another area
 
 In file ".env" , modify the variables which define the files to use

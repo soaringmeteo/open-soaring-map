@@ -13,7 +13,9 @@ DB_CONTOURS=contours
 mkdir -p demdata
 
 # style directory
-STYLE=style
+STYLE=./style
+# export directory
+EXPORT=./export
 
 # data directory used by Kosmtik to download shapefiles
 mkdir -p $STYLE/data
@@ -77,11 +79,7 @@ CreateViewsFunctions()
 
 }
 
-
-
 echo "\n===================ACTION=$ACTION====== `date '+%H:%M:%S'` ==================================="
-
-
 
 case $ACTION in
 
@@ -273,12 +271,7 @@ legend2)
 kosmtik)
 
   # Starting Kosmtik
-
-  # Creating default Kosmtik settings file
-  if [ ! -e ".kosmtik-config.yml" ]; then
-    cp /tmp/.kosmtik-config.yml .kosmtik-config.yml  
-  fi
-  export KOSMTIK_CONFIGPATH=".kosmtik-config.yml"
+  export KOSMTIK_CONFIGPATH="/tmp/.kosmtik-config.yml"
 
   # creation of views/Functions
   CreateViewsFunctions
@@ -293,15 +286,26 @@ kosmtik)
 
 ############################ Kosmtik : just produce mapnik  .xml file ##################
 xml)
-
-
   echo "----------- Kosmtik: produce project.xml file ---------------"
   #kosmtik -h
   kosmtik export $STYLE/project.mml --output $STYLE/project.xml
+  ;;
 
+############################  Kosmtik : export tiles ############
+export-tiles)
+  echo "----------- Kosmtik: export tiles ---------------"
+  export KOSMTIK_CONFIGPATH="/tmp/.kosmtik-config.yml"
 
-;;
+  # creation of views/Functions
+  CreateViewsFunctions
 
+  kosmtik export \
+    $STYLE/project.mml \
+    --output $EXPORT \
+    --format tiles \
+    --tileFormat webp \
+    $*
+  ;;
 
 ################### any other values is command+parameters to execute
 *)
