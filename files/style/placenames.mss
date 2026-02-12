@@ -11,7 +11,7 @@
   [zoom >= 5][way_pixels < 360000] {
     text-name: "[name]";
     text-face-name: @sans_bold;
-    text-size: 10;
+    text-size: 11;
     text-wrap-width: 35; // 3.5 em
     text-line-spacing: -1.5; // -0.15 em
     text-margin: 7.0; // 0.7 em
@@ -22,25 +22,25 @@
     text-dy: 20;
 
     [zoom >= 4] {
-      text-size: 11;
+      text-size: 12;
       text-wrap-width: 40; // 3.6 em
       text-line-spacing: -1.4; // -0.13 em
       text-margin: 7.7; // 0.7 em
     }
     [zoom >= 5] {
-      text-size: 12;
+      text-size: 13;
       text-wrap-width: 45; // 3.8 em
       text-line-spacing: -1.2; // -0.10 em
       text-margin: 8.4; // 0.7 em
     }
     [zoom >= 7] {
-      text-size: 13;
+      text-size: 14;
       text-wrap-width: 50; // 3.8 em
       text-line-spacing: -1.0; // -0.08 em
       text-margin: 9.1; // 0.7 em
     }
     [zoom >= 10] {
-      text-size: 14;
+      text-size: 15;
       text-wrap-width: 55; // 3.9 em
       text-line-spacing: -0.7; // -0.05 em
     }
@@ -325,7 +325,7 @@
               text-dy: 0;
               // text-name: ' '+[name]+' '; // adding blanks seems to avoid troubles on tile boundary !
               text-name: [name];  // finally, simpler to add blanks inside the SQL request
-              text-size: 10;
+              text-size: 11;
               text-fill: @placenames;
               text-face-name: @sans;
               text-halo-fill: @city_halo;
@@ -339,7 +339,7 @@
 
         [zoom >= 14][zoom < 17] {
           text-name: "[name]";
-          text-size: 10;
+          text-size: 11;
           text-fill: @placenames;
           text-face-name: @sans;
           text-halo-fill: @other_halo;
@@ -355,7 +355,7 @@
           text-dx: 0;
           text-dy: 0;
           [zoom >= 13] {
-            text-size: 11;
+            text-size: 12;
             text-wrap-width: 55; // 5.0 em
             text-line-spacing: -0.55; // -0.05 em
             text-margin: 5; // 0.7 em
@@ -410,7 +410,7 @@
       text-halo-fill: white;
       text-halo-radius: @standard-halo-radius * 1.5;
       [zoom >= 14] {
-        text-size: 10;
+        text-size: 11;
         text-wrap-width: 55; // 5.0 em
         text-line-spacing: -0.55; // -0.05 em
         text-margin: 7.7; // 0.7 em

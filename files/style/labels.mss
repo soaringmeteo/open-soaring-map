@@ -142,7 +142,7 @@
     [zoom >= 13][isolation > 2000] {
       text-name: [name]+" "+[elevation]+"\u00A0m";
     }
-    text-size: 10;
+    text-size: 11;
     text-wrap-width: @standard-wrap-width;
     text-line-spacing: @standard-line-spacing-size;
     text-fill: black;
