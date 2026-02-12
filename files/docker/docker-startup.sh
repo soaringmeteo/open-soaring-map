@@ -303,7 +303,7 @@ export-tiles)
     $STYLE/project.mml \
     --output $EXPORT \
     --format tiles \
-    --tileFormat webp \
+    --tileFormat "webp:quality=80" \
     $*
   ;;
 

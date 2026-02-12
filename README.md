@@ -120,6 +120,11 @@ docker system prune
  
 ## Export tiles as static images
 
+Remove any previous export
+```
+rm -rf ./files/export
+```
+
 Export the whole world:
 
 ```
