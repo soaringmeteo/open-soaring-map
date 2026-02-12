@@ -39,14 +39,10 @@
 #roads_high[zoom>=11][tunnel='no']
 {
     [type='railway']::rail_perpendicular {
-      [service!='minor'],
-      [service='minor'][zoom>=13]
+      [service!='minor']
       {
         line-cap: butt;
         line-color: @rail-line;
-        [service='minor'] {
-          line-color: lighten(@rail-line, 25%);
-        }
 
         /* hatches: start with space to avoid dense pattern on very short ways */
         line-dasharray: 0,2,1,2;
@@ -56,6 +52,15 @@
         [zoom>=19] { line-width: 6; }
       }
     }
+}
+
+// railway line
+#roads_high::rail_line[zoom>=11],
+{
+  [type='railway'][tunnel='no'][service!='minor'] {
+    line-color: @rail-line;
+    line-width: 0.5*[roadsize];
+  }
 }
 
 // ---- Casing for roads -----------------------------------------------
@@ -273,25 +278,6 @@
 
 -------------------------------------
 */
-
-// railway line
-#roads_high::rail_line[zoom>=11],
-{
-    [type='railway'][tunnel='no'] {
-        [service!='minor'],
-        [service='minor'][zoom>=13]
-        {
-
-            line-color: @rail-line;
-            [service='minor'] {
-                line-color: lighten(@rail-line, 25%);
-            }
-
-        line-width: 0.5*[roadsize];
-
-        }
-    }
-}
 
 
 // ---- Turning Circles ---------------------------------------------
