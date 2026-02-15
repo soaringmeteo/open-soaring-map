@@ -1,5 +1,5 @@
-name: Osmhike
-description: 'Hiking oriented TileServer based on Cyclosm'
+name: OpenSoaringMap
+description: 'Soaring oriented TileServer based on Osmhike'
 attribution: Data © OpenStreetMap (and) contributors,  ODbL , Cyclosm , Osmhike
 
 # Lon/Lat center  and zoom for the initial map
@@ -843,55 +843,7 @@ Layer:
     maxzoom: 14
     <<: *status_on
 
-# computing isolation for villages is too expensive, so we use the population only.
-- id: placenames-small
-  geometry: point
-  <<: *srs-osm
-  Datasource:
-    <<: *osm2pgsql
-    table: |-
-      (
-        SELECT -- placenames-small
-            *, ROW_NUMBER() OVER () AS row_number
-        FROM (
-          SELECT
-
-            way,
-            place,
-            leisure,
-            CONCAT ( name) AS name,   -- adding blanks seems to avoid troubles when text reaches tile boundaries
-            CASE
-              WHEN (population ~ '^[0-9]{1,8}$') THEN population::INTEGER ELSE 0
-            END as population
-          FROM planet_osm_point
-          WHERE way && !bbox! AND (
-            place IN ('village')
-            AND name IS NOT NULL
-            AND NOT (capital IS NOT NULL AND capital='yes')
-          )
-          ORDER BY
-            population DESC,
-            CASE
-              WHEN place = 'suburb' THEN 3
-              WHEN place = 'village' THEN 4
-              WHEN place = 'hamlet' THEN 5
-              WHEN place = 'quarter' THEN 6
-              WHEN place = 'neighbourhood' THEN 7
-              WHEN place = 'locality' THEN 8
-              WHEN place = 'isolated_dwelling' THEN 9
-              WHEN place = 'farm' THEN 10
-              WHEN place = 'square' THEN 11
-            END ASC,
-            length(name) DESC,
-            name
-        ) AS data2
-      ) AS data
-  properties:
-    cache-features: true
-    minzoom: 11
-    <<: *status_places
-
-# for low zoom, show only CITY to avoid a huge data extraction , for medium zoom show CITY TOWN , 
+# for low zoom, show only CITY to avoid a huge data extraction , for medium zoom show CITY TOWN ,
 - id: placenames-medium
   geometry: point
   <<: *srs-osm
@@ -947,6 +899,53 @@ Layer:
     maxzoom: 16
     <<: *status_places
 
+- id: placenames-small
+  geometry: point
+  <<: *srs-osm
+  Datasource:
+    <<: *osm2pgsql
+    table: |-
+      (
+        SELECT -- placenames-small
+            *, ROW_NUMBER() OVER () AS row_number
+        FROM (
+          SELECT
+
+            way,
+            place,
+            leisure,
+            CONCAT ( name) AS name,   -- adding blanks seems to avoid troubles when text reaches tile boundaries
+            CASE
+              WHEN (population ~ '^[0-9]{1,8}$') THEN population::INTEGER ELSE 0
+            END as population,
+            otm_isolation::NUMERIC as isolation
+          FROM planet_osm_point
+          WHERE way && !bbox! AND (
+            place IN ('village')
+            AND name IS NOT NULL
+            AND NOT (capital IS NOT NULL AND capital='yes')
+          )
+          ORDER BY
+            population DESC,
+            CASE
+              WHEN place = 'suburb' THEN 3
+              WHEN place = 'village' THEN 4
+              WHEN place = 'hamlet' THEN 5
+              WHEN place = 'quarter' THEN 6
+              WHEN place = 'neighbourhood' THEN 7
+              WHEN place = 'locality' THEN 8
+              WHEN place = 'isolated_dwelling' THEN 9
+              WHEN place = 'farm' THEN 10
+              WHEN place = 'square' THEN 11
+            END ASC,
+            length(name) DESC,
+            name
+        ) AS data2
+      ) AS data
+  properties:
+    cache-features: true
+    minzoom: 11
+    <<: *status_places
 
 - id: admin-text
   geometry: linestring

@@ -240,8 +240,8 @@
     /* Digne-les-Bains, Carpentras */
     [category = 2] {
       [zoom = 9][score >= 4000][isolation > 50000],
-      [zoom = 10][isolation > 30000],
-      [zoom = 11][isolation > 15000],
+      [zoom = 10][isolation > 20000],
+      [zoom = 11][isolation > 10000],
       [zoom = 12][isolation > 8000],
       [zoom >= 13] {
         text-name: "[name]";
@@ -317,9 +317,9 @@
 
     [zoom >= 11]{
 
-        [zoom = 11][population >= 8000],
-        [zoom = 12][population >= 200],
-        [zoom = 13] {
+        [zoom = 11][isolation >= 10000],
+        [zoom = 12][isolation >= 8000],
+        [zoom = 13][isolation >= 1000] {
 
               text-dx: 0;
               text-dy: 0;

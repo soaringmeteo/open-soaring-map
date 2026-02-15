@@ -7,9 +7,10 @@ WITH cities_with_pop AS (
       WHEN (population ~ '^[0-9]{1,8}$') THEN population::INTEGER * (CASE WHEN place = 'city' THEN 1.5 WHEN place = 'town' THEN 1.25 ELSE 1 END)
       WHEN (place = 'city') THEN 100000 * 1.5
       WHEN (place = 'town') THEN 1000 * 1.25
+      WHEN (place = 'village') THEN 100
     END AS pop_value
   FROM planet_osm_point
-  WHERE place IN ('city', 'town')
+  WHERE place IN ('city', 'town', 'village')
 )
 UPDATE planet_osm_point outer_point
 SET otm_isolation = round(
@@ -26,4 +27,4 @@ SET otm_isolation = round(
     30000000
   )
 )
-WHERE place IN ('city', 'town');
+WHERE place IN ('city', 'town', 'village');
