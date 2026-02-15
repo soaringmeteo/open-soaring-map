@@ -158,17 +158,7 @@ isolations)
 
 city_isolations)
   echo "Compute city isolations"
-  psql -d $DB_OSM --file=/osmhike/docker/postprocessing/discrete_isolation_function.sql
-  psql -d $DB_OSM -c "update planet_osm_point \
-    set otm_isolation = \
-      round(discrete_isolation( \
-        'planet_osm_point', \
-        'way', \
-        '(case when (population ~ ''^[0-9]{1,8}$'') then population::INTEGER when (place = ''city'') then 100000 when (place = ''town'') then 1000 end)', \
-        way, \
-        case when (population ~ '^[0-9]{1,8}$') then population::INTEGER when (place = 'city') then 100000 when (place = 'town') then 1000 end \
-      )) \
-    where place in ('city', 'town');"
+  psql -d $DB_OSM --file=/osmhike/docker/postprocessing/city_isolation.sql
   ;;
 
 ######################## create the database containing contours ############
@@ -179,7 +169,7 @@ contours)
   #             it contains a list of lon/lat coordinates that define the perimeter for which we build contours
 
   # go to specific directory
-  cd demdata 
+  cd demdata
 
 
   # create another database "contours"  and store contour lines , using osm2pgsql

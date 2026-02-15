@@ -20,7 +20,7 @@ See the [CyclOSM License](#cyclosm-license) section below.
 - **phyghtmap 2.23**: Downloaded from http://katze.tfiu.de/projects/phyghtmap/
 - **pyhgtmap 3.7**: Obtained via pip
 
-### 5. SQL Discrete isolation implementation
+### 5. SQL City isolation implementation
 
 Obtained from https://github.com/MathiasGroebe/discrete_isolation, covered by **BSD-3-Clause**.
 
