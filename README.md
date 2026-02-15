@@ -173,3 +173,10 @@ Execute psql to navigate into database
 ```
 docker compose run import psql
 ```
+
+Or use your local client (e.g. pgadmin) to connect to database server, with the following parameters:
+- host: localhost
+- port: 5432
+- database: osm
+- user: postgres
+- password: postgres

@@ -68,7 +68,8 @@ services:
     build:
       context: ./files/docker
       dockerfile: Dockerfile.db
-    #ports: ( database port not exposed to host )
+    ports:
+      - "5432:5432"    # expose Postgres to host for local tools
     shm_size: 512m
     volumes:
       # directory  will be created if does not exist
@@ -81,5 +82,3 @@ services:
       - PG_WORK_MEM
       - PG_MAINTENANCE_WORK_MEM
       - PG_SHARED_BUFFERS
-
-
