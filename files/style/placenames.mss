@@ -351,7 +351,6 @@
           // FIXME: https://github.com/mapnik/mapnik/commit/4eae86b7bc750a08a7ab103a780d6b4bf951e1b1
           // text-placements: "C,N,S,E,W,NW,NE,SE";
           text-placements: "N,S,E,NW,NE,SE";
-          text-avoid-edges: true;  // avoid troubles on tile border
           text-dx: 0;
           text-dy: 0;
           [zoom >= 13] {
