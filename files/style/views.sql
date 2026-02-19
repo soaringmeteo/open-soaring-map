@@ -14,7 +14,7 @@ CREATE VIEW cyclosm_ways AS
             ELSE NULL
         END,
         CASE
-            WHEN railway IN ('light_rail', 'subway', 'narrow_gauge', 'rail', 'tram') THEN 'railway'
+            WHEN railway IN ('light_rail', 'subway', 'narrow_gauge', 'rail', 'tram', 'funicular') THEN 'railway'
             ELSE NULL
         END
         ) AS type,
@@ -213,7 +213,7 @@ CREATE VIEW cyclosm_ways AS
             'no'
         ) AS tunnel
     FROM planet_osm_line
-    WHERE railway IN ('light_rail', 'subway', 'narrow_gauge', 'rail', 'tram')
+    WHERE railway IN ('light_rail', 'subway', 'narrow_gauge', 'rail', 'tram', 'funicular')
         OR highway IS NOT NULL
     ORDER BY z_order ASC;
 

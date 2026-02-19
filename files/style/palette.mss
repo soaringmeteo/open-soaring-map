@@ -51,7 +51,6 @@
 @nature_reserve:    #05620e;
 
 @building:          #e4dfdb;
-@hospital:          #e0e0e0;
 @sports:            #e0e0e0;
 @stadium:           @land * 0.97;
 @pitch:             @park * 0.97;

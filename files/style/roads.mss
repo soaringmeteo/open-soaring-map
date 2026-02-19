@@ -4,7 +4,7 @@
 
 
 // At mid-level scales start to show primary  routes
-#roads_med{
+#roads_med {
   line-color: @standard-fill;
 
   [type='railway'] {
@@ -36,7 +36,7 @@
 
 // ---- Rail background with hatches -------------------------
 
-#roads_high[zoom>=11][tunnel='no']
+#roads_high[zoom>=13][tunnel='no']
 {
     [type='railway']::rail_perpendicular {
       [service!='minor']
@@ -55,7 +55,7 @@
 }
 
 // railway line
-#roads_high::rail_line[zoom>=11],
+#roads_high::rail_line[zoom>=13],
 {
   [type='railway'][tunnel='no'][service!='minor'] {
     line-color: @rail-line;

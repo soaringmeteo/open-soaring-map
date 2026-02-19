@@ -596,7 +596,7 @@ Layer:
                   COALESCE(
                     highway,
                     CASE
-                      WHEN railway IN ('rail') THEN 'railway'
+                      WHEN railway IN ('rail', 'funicular') THEN 'railway'
                       ELSE 'other'
                     END
                   ) AS type,
@@ -612,7 +612,7 @@ Layer:
                   END AS can_bicycle
 
                 FROM planet_osm_roads
-                WHERE (((railway IN ('rail') AND (service IS NULL OR service NOT IN ('spur', 'siding', 'yard')))
+                WHERE (((railway IN ('rail', 'funicular') AND (service IS NULL OR service NOT IN ('spur', 'siding', 'yard')))
                     OR highway IN ('motorway', 'trunk', 'primary' )) and tunnel is null)
                   AND way && !bbox!
                 ORDER BY CASE

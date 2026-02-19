@@ -54,7 +54,6 @@
     polygon-fill: @scrub;
   }
   [type='natural_heath']         { polygon-fill: @heath; }
-  [type='amenity_hospital']      { polygon-fill: @hospital; }
   [type='landuse_vineyard'],
   [type='landuse_orchard'],
   [type='landuse_meadow']        { polygon-fill: @meadow; }
