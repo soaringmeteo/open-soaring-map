@@ -39,29 +39,19 @@ Notes:
 
 Go to project directory ( where file docker-compose-yml resides )
 
-Build "db" image (the database server)
+Build the Docker images
 ```
-docker compose build db  
-```
-
-Build "import" image ( the osm data import tool )
-```
-docker compose build import
-```
-
-Build "kosmtik" image ( the tile rendering and web server )
-```
-docker compose build kosmtik
+docker compose build
 ```
 
 ## Launching the demo based on Andorra data
 
-Launch database
+Launch database in the background:
 ```
-docker compose up -V db
+docker compose up -V -d db
 ```
 
-Import the data (do it from another shell window, because the previous action keeps running in foreground).
+Import the data:
 
 Note that after this command, the db container will exit from its terminal. But it continues to work in background
 ```
@@ -174,7 +164,7 @@ Execute psql to navigate into database
 docker compose run import psql
 ```
 
-Or use your local client (e.g. pgadmin) to connect to database server, with the following parameters:
+Or, uncomment the port mapping in docker-compose.yml for the db container and restart it. Then, use your local client (e.g. pgadmin) to connect to database server, with the following parameters:
 - host: localhost
 - port: 5432
 - database: osm

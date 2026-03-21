@@ -12,27 +12,7 @@ services:
     depends_on:
       - db
     ports:
-      - "8888:6789"    # kosmtik standard port 6789 remapped to host port 8888
-    environment:
-      # database connection
-      - PGHOST=db
-      - PGUSER=postgres
-
-  #----------- alternative to kosmtik -------------------
-  tirex:
-    image: tirex
-    container_name: c-tirex
-    build:
-      context: ./files/tirex
-      dockerfile: Dockerfile.tirex
-    volumes:
-      - ./files:/osmhike
-      - ./files/tirex/zlogapache:/var/log/apache2   # facilitate visibility of logs
-      - ./files/tirex/zlogtirex:/var/log/tirex      # facilitate visibility of logs
-    depends_on:
-      - db
-    ports:
-      - "8888:80"    # apache standard port 80 remapped to host port 8888
+      - "127.0.0.1:8888:6789"    # kosmtik standard port 6789 remapped to host port 8888
     environment:
       # database connection
       - PGHOST=db
@@ -68,8 +48,8 @@ services:
     build:
       context: ./files/docker
       dockerfile: Dockerfile.db
-    ports:
-      - "5432:5432"    # expose Postgres to host for local tools
+    #ports:
+    #  - "127.0.0.1:5432:5432"    # expose Postgres to host for local tools
     shm_size: 512m
     volumes:
       # directory  will be created if does not exist
@@ -78,6 +58,8 @@ services:
     environment:
       # database connection
       - PGUSER=postgres
+      # Allow passwordless connections (required for PostgreSQL 14+)
+      - POSTGRES_HOST_AUTH_METHOD=trust
       # database tuning
       - PG_WORK_MEM
       - PG_MAINTENANCE_WORK_MEM
