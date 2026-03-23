@@ -22,11 +22,17 @@ mkdir -p $STYLE/data
 chmod a+rwX $STYLE/data
 
 # the place where hgt files have been stored, depends on the source
-HGTDIR=hgt/VIEW1
-if [ "$AREAPOLYSOURCE" =  "view3" ]
-then
-  HGTDIR=hgt/VIEW3
-fi
+# AREAPOLYSOURCE can be a comma-separated list (e.g. "view1,view3") for fallback
+# Build HGTDIRS as a space-separated list of directories to look in
+HGTDIRS=""
+for _src in $AREAPOLYSOURCE; do
+  case "$_src" in
+    view1) HGTDIRS="$HGTDIRS hgt/VIEW1" ;;
+    view3) HGTDIRS="$HGTDIRS hgt/VIEW3" ;;
+    *)     HGTDIRS="$HGTDIRS hgt/${_src}" ;;
+  esac
+done
+HGTDIRS=$(echo $HGTDIRS)   # trim leading space
 
 #------------------- Testing if database is ready -----------------------
 i=1
@@ -140,8 +146,14 @@ isolations)
 
   # run postprocessing tools
   echo "\nCompute peak isolations and saddle directions  `date '+%H:%M:%S'` "
-  echo "Merge .hgt files"
-  gdal_merge.py -o ./dem-srtm.tiff -of GTiff ./$HGTDIR/*.hgt
+  echo "Merge .hgt files from $HGTDIRS"
+  HGTFILES=""
+  for _d in $HGTDIRS; do
+    if ls ./$_d/*.hgt 1>/dev/null 2>&1; then
+      HGTFILES="$HGTFILES ./$_d/*.hgt"
+    fi
+  done
+  gdal_merge.py -o ./dem-srtm.tiff -of GTiff $HGTFILES
   echo "Update isolations in database"
   /osmhike/docker/postprocessing/update_isolations.sh $DB_OSM
   #echo "Update saddle directions in database"
@@ -202,9 +214,9 @@ hillshade)
   cd demdata
 
   echo ""
-  echo "************** Build the list of needed .hgt files from $HGTDIR`date '+%H:%M:%S'` ****************"
+  echo "************** Build the list of needed .hgt files from $HGTDIRS `date '+%H:%M:%S'` ****************"
 
-  python3 ../dem/hgtlist.py ../myfiles/$AREAPOLY $HGTDIR 
+  python3 ../dem/hgtlist.py ../myfiles/$AREAPOLY $HGTDIRS
 
   # process needed file for required resolution
   # this action can be repeated with different resolutions
