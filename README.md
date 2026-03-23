@@ -16,22 +16,6 @@ Optimized for 8GB memory. If you have only 4GB, modify dbconf/myconf.conf
 People stuck on Windows, might try the WSL feature of Windows, which allows to run Linux inside Windows...
 It has been tested on a 8GB memory Windows10 PC, allowing 4GB for WSL.
 
-## Installation
-
-Download the project from github as a .zip file, and unzip to your home directory
-
-Rename it as you want:  (eg:   ~/myproject) , and (IMPORTANT) make all subdirectories accessible to everybody
-```
-chmod -R a+rX  ~/myproject 
-```
-IMPORTANT:  Check that your userid is 1000 ( because it is the one used by several docker containers )
-<br>If not, make the project tree rw by everybody
-```
-chmod -R a+rwX  ~/myproject 
-```
-
-*Note: it is possible that if you don't create the project inside a home directory, then Docker might have trouble to do volume mappings...*
-
 ## Preparation
 
 Notes:
@@ -142,11 +126,11 @@ The best place to find such data is
 
 Then run again import phases ( Caution! it will erase previous database )
 ```
-docker compose up -V import
-docker compose run import isolations
-docker compose run import city_isolations
-docker compose run import contours
-docker compose run import hillshade
+docker compose up -V import && \
+  docker compose run import isolations && \
+  docker compose run import city_isolations && \
+  docker compose run import contours && \
+  docker compose run import hillshade
 ```
 
 CAUTION ! "1 arc second" resolution is not available for all countries
