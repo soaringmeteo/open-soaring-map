@@ -25,7 +25,7 @@ chmod a+rwX $STYLE/data
 # AREAPOLYSOURCE can be a comma-separated list (e.g. "view1,view3") for fallback
 # Build HGTDIRS as a space-separated list of directories to look in
 HGTDIRS=""
-for _src in $AREAPOLYSOURCE; do
+for _src in $(echo "$AREAPOLYSOURCE" | tr ',' '\n'); do
   case "$_src" in
     view1) HGTDIRS="$HGTDIRS hgt/VIEW1" ;;
     view3) HGTDIRS="$HGTDIRS hgt/VIEW3" ;;
