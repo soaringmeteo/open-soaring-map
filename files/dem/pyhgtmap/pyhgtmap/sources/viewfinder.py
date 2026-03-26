@@ -259,8 +259,12 @@ class ViewFinder(Source):
                 self._indexes[resolution].update(zip_url, extracted_areas)
             except Exception as e:
                 LOGGER.warning(
-                    "Exception raised while trying to fetch %s: %s", zip_url, e
+                    "Exception raised while fetching or extracting %s: %s", zip_url, e
                 )
+                # Clean up corrupt/partial file left by failed extraction
+                if Path(output_file_name).is_file():
+                    LOGGER.info("Deleting failing file: %s", output_file_name)
+                    Path(output_file_name).unlink()
             if Path(output_file_name).is_file():
                 break
             LOGGER.debug("%s not found in %s, trying next file", area, zip_url)
