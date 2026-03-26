@@ -204,17 +204,24 @@ def fetch_and_extract_zip(zip_url: str, output_dir_name) -> list[str]:
             if file_name.lower().endswith(".hgt")
         ]
         # Extract all files - might be needed later anyway
+        extracted_names: list[str] = []
         for file_name in file_names:
             # HGT files are in sub-directories of the archive (eg. 'L40/N47E056.hgt')
-            with open(
+            try:
+                data = zip_archive.read(str(file_name))
+            except Exception:
+                LOGGER.warning("Failed to extract %s from %s, skipping", file_name, zip_url)
+                continue
+            out_path = Path(
                 os.path.join(
                     output_dir_name,
                     f"{file_name.stem}.hgt",
                 ),
-                "wb",
-            ) as hgt_file_out:
-                hgt_file_out.write(zip_archive.read(str(file_name)))
-    return [file_name.stem for file_name in file_names]
+            )
+            with open(out_path, "wb") as hgt_file_out:
+                hgt_file_out.write(data)
+            extracted_names.append(file_name.stem)
+    return extracted_names
 
 
 class ViewFinder(Source):
@@ -261,10 +268,6 @@ class ViewFinder(Source):
                 LOGGER.warning(
                     "Exception raised while fetching or extracting %s: %s", zip_url, e
                 )
-                # Clean up corrupt/partial file left by failed extraction
-                if Path(output_file_name).is_file():
-                    LOGGER.info("Deleting failing file: %s", output_file_name)
-                    Path(output_file_name).unlink()
             if Path(output_file_name).is_file():
                 break
             LOGGER.debug("%s not found in %s, trying next file", area, zip_url)
