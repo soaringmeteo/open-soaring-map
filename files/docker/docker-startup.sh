@@ -1,4 +1,5 @@
 #!/bin/sh
+set -e
 
 ############################################################################################
 # this script is executed from /osmhike 
@@ -41,11 +42,11 @@ MAXCOUNT=60
 echo "Waiting for PostgreSQL to be running"
 while [ $i -le $MAXCOUNT ]
 do
-  pg_isready -q && echo "PostgreSQL running" && break
+  if pg_isready -q; then echo "PostgreSQL running"; break; fi
   sleep 2
   i=$((i+1))
 done
-test $i -gt $MAXCOUNT && echo "Timeout while waiting for PostgreSQL to be running"
+if [ $i -gt $MAXCOUNT ]; then echo "Timeout while waiting for PostgreSQL to be running"; fi
 
 
 ACTION=$1
