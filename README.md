@@ -47,19 +47,19 @@ Generate peak isolations data and city isolations data (note the usage of RUN co
 It will take many minutes, to download elevation data from Internet
 
 ```
-docker compose run import isolations
-docker compose run import city_isolations
+docker compose run --rm import isolations
+docker compose run --rm import city_isolations
 ```
 
 Generate contours lines  ( note the usage of RUN command with argument )
 ```
-docker compose run import contours
+docker compose run --rm import contours
 ```
 *Note: The download speed from viewfinderpanoramas may be incredibly slow at some moments. It seems it works better when Americans are spleeping...*
 
 Generate hillshade  (note the usage of RUN command with argument)
 ```
-docker compose run import hillshade
+docker compose run --rm import hillshade
 ```
 
 Launch the tiles web server. Note: the first time, it may spend many minutes to download shapefiles from Internet...
@@ -127,10 +127,10 @@ The best place to find such data is
 Then run again import phases ( Caution! it will erase previous database )
 ```
 docker compose up -V import && \
-  docker compose run import isolations && \
-  docker compose run import city_isolations && \
-  docker compose run import contours && \
-  docker compose run import hillshade
+  docker compose run --rm import isolations && \
+  docker compose run --rm import city_isolations && \
+  docker compose run --rm import contours && \
+  docker compose run --rm import hillshade
 ```
 
 CAUTION ! "1 arc second" resolution is not available for all countries
