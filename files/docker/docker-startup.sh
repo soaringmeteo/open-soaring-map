@@ -108,6 +108,19 @@ import)
      OSMFILE=$AREAOSM
   fi
 
+  # Pre-filter the PBF to strip objects never queried by the Mapnik style
+  # (buildings, barriers, power lines, address-only nodes …).
+  # osmium tags-filter works as an allow-list: only objects matching an
+  # expression in osmium-filter.txt are kept.
+  OSMFILE_FILTERED="${OSMFILE%.pbf}-filtered.pbf"
+  echo "\n  Pre-filtering OSM data with osmium  `date '+%H:%M:%S'`"
+  osmium tags-filter \
+    "$OSMFILE" \
+    --expressions="$STYLE/osmium-filter.txt" \
+    --overwrite \
+    -o "$OSMFILE_FILTERED"
+  echo "  Filtering done. Original: $(du -sh $OSMFILE | cut -f1)  Filtered: $(du -sh $OSMFILE_FILTERED | cut -f1)  `date '+%H:%M:%S'`"
+
   echo "\n  Importing data to  database, using osm2pgsql"
   osm2pgsql \
   --cache $OSM2PGSQL_CACHE \
@@ -118,7 +131,7 @@ import)
   -c \
   -G \
   --drop  \
- $OSMFILE
+  "$OSMFILE_FILTERED"
 
 
 

@@ -1,0 +1,217 @@
+# osmium tags-filter expression file for open-soaring-map
+#
+# Purpose: pre-filter the OSM PBF before osm2pgsql import to remove objects
+#          that are never queried by any layer in the Mapnik style.
+#
+# Usage:
+#   osmium tags-filter input.pbf \
+#       --expressions=osmium-filter.txt \
+#       -o filtered.pbf
+#
+# HOW THIS FILE WAS DERIVED — see METHODOLOGY section at the bottom.
+#
+# Type codes used:
+#   n  = node (point)
+#   w  = way  (open or closed — used for linear features)
+#   a  = area (closed way OR relation with type=multipolygon/boundary)
+#   r  = relation (any)
+#
+# What is intentionally NOT included (= dropped from the PBF):
+#   building=*         — never queried by any style layer  ← biggest win
+#   barrier=*          — fences, walls, hedges, …
+#   power=*            — no power features rendered (wind turbines were dead code)
+#   addr:* only nodes  — standalone address nodes, no renderable primary tag
+#   route relations    — hiking/cycling route relations (not rendered here)
+#   public_transport=* — stop_area relations, platforms, …
+#   amenity/tourism/shop/historic nodes — were only used by the deleted
+#                        cyclosm_amenities_point view, which is no longer in views.sql
+# ──────────────────────────────────────────────────────────────────────────────
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# NODES  — source: planet_osm_point queries in project.mml only
+# ══════════════════════════════════════════════════════════════════════════════
+
+# ── place names ───────────────────────────────────────────────────────────────
+# layers: capital-names, placenames-medium, placenames-small
+# mml:  WHERE place IN ('city','town','village','hamlet')
+# Note: suburb/quarter/neighbourhood/… appear only in ORDER BY, not WHERE.
+#       island/islet were only in the deleted cyclosm_amenities_point view.
+n/place=city,town,village,hamlet
+
+# ── road nodes ───────────────────────────────────────────────────────────────
+# layers: turning_circle_case, turning_circle_fill
+# mml:  WHERE highway = 'turning_circle'
+# Note: bus_stop/elevator/traffic_signals were only in cyclosm_amenities_point.
+n/highway=turning_circle
+
+# ── natural point features ────────────────────────────────────────────────────
+# layer: mountain-point-text
+# mml:  WHERE "natural" IN ('peak','volcano')
+# Note: saddle/spring/cave_entrance were only in cyclosm_amenities_point.
+n/natural=peak,volcano
+
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# WAYS — LINEAR FEATURES  (open ways; also used by osm2pgsql for lines)
+# source: project.mml layer queries + cyclosm_ways view
+# ══════════════════════════════════════════════════════════════════════════════
+
+# ── roads, tracks, paths ─────────────────────────────────────────────────────
+# layers: roads_med, roads_high (via cyclosm_ways view), turning_circles
+# views: cyclosm_ways WHERE highway IS NOT NULL
+# Keep ALL highway values; the style renders nearly every highway type.
+w/highway
+
+# ── railways ─────────────────────────────────────────────────────────────────
+# layer: roads_med (via cyclosm_ways)
+# views: cyclosm_ways WHERE railway IN (…)
+w/railway=rail,funicular,light_rail,subway,narrow_gauge,tram
+
+# ── waterway lines ───────────────────────────────────────────────────────────
+# layers: waterway_low, waterway_med, waterway_label
+# mml:  WHERE waterway IN ('river','canal','stream')
+w/waterway=river,canal,stream
+
+# ── aeroway lines ────────────────────────────────────────────────────────────
+# layer: aeroway
+# mml:  WHERE aeroway IN ('runway','taxiway')
+w/aeroway=runway,taxiway
+
+# ── aerial cables ────────────────────────────────────────────────────────────
+# layer: cables
+# mml:  WHERE aerialway IS NOT NULL
+w/aerialway
+
+# ── cliffs and embankments ───────────────────────────────────────────────────
+# layer: cliffs
+# mml:  WHERE "natural" = 'cliff' OR man_made = 'embankment'
+w/natural=cliff
+w/man_made=embankment
+
+# ── piers, breakwaters, groynes (as lines) ───────────────────────────────────
+# layer: piers-line
+# mml:  WHERE man_made IN ('pier','breakwater','groyne')
+w/man_made=pier,breakwater,groyne
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# AREAS — closed ways + multipolygon/boundary relations
+# (osmium 'a' type = closed ways + relations with type=multipolygon|boundary)
+# source: planet_osm_polygon queries in project.mml only
+# ══════════════════════════════════════════════════════════════════════════════
+
+# ── land use ─────────────────────────────────────────────────────────────────
+# layers: landuse_med, landuse_high, area_label
+# mml:  WHERE landuse IN (…)
+# Includes basin/reservoir (water layers) and military/farmyard (area_label).
+a/landuse=allotments,brownfield,cemetery,commercial,construction,forest,grass,greenhouse_horticulture,industrial,landfill,meadow,farmland,vineyard,orchard,plant_nursery,religious,residential,retail,village_green,basin,reservoir,military,farmyard
+
+# ── natural areas ─────────────────────────────────────────────────────────────
+# layers: landuse_med, landuse_high, landuse-overlay, water_*, area_label
+# mml:  WHERE "natural" IN (…)
+# area_label uses '"natural" IS NOT NULL', so all natural areas with a name
+# can receive a label — keep the full set rendered by other layers.
+a/natural=wood,water,pond,grassland,glacier,heath,scrub,wetland,sand,beach,dune,bare_rock,shingle,scree
+
+# ── leisure areas ────────────────────────────────────────────────────────────
+# layers: landuse_med, landuse_high, area_label
+# mml:  WHERE leisure IN ('common','golf_course','garden','park','pitch',
+#             'sports_centre','stadium','track')
+# area_label uses 'leisure IS NOT NULL', so keep all leisure area values.
+a/leisure
+
+# ── water body polygons ───────────────────────────────────────────────────────
+# layers: water_low, water_med, water_high
+# mml:  WHERE waterway IN ('basin','canal','dock','mill_pond','pond','riverbank','stream')
+a/waterway=basin,canal,dock,mill_pond,pond,riverbank,stream
+
+# ── pedestrian / footway areas ───────────────────────────────────────────────
+# layer: landuse_high
+# mml:  WHERE highway IN ('pedestrian','footway')
+a/highway=pedestrian,footway
+
+# ── amenity areas ────────────────────────────────────────────────────────────
+# layers: landuse_med/high  → amenity IN ('college','grave_yard','hospital','parking','school','university')
+# layer:  area_label        → amenity IN ('embassy','library','school','townhall','university')
+# Note: the long list of amenity values previously here came from
+#       cyclosm_amenities_poly, which has been removed.
+a/amenity=college,grave_yard,hospital,parking,school,university,embassy,library,townhall
+
+# ── man_made areas ───────────────────────────────────────────────────────────
+# layers: landuse_high (works/wastewater_plant/water_works), piers-poly
+# mml:  WHERE man_made IN ('pier','breakwater','groyne','works','wastewater_plant','water_works')
+a/man_made=pier,breakwater,groyne,works,wastewater_plant,water_works
+
+# ── shop areas ───────────────────────────────────────────────────────────────
+# layer: area_label
+# mml:  WHERE shop IN ('mall')
+# Note: the full shop list previously here came from cyclosm_amenities_poly.
+a/shop=mall
+
+# ── administrative boundaries ────────────────────────────────────────────────
+# layers: admin-low, admin-mid, admin-high, admin-text, country-names
+# mml:  WHERE boundary = 'administrative'
+# 'a' type handles both closed ways and boundary relations.
+a/boundary=administrative
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# RELATIONS — explicit catches beyond what 'a' already handles
+# ══════════════════════════════════════════════════════════════════════════════
+
+# All boundary relations (some may not have the tag on the relation itself).
+r/boundary=administrative
+r/type=boundary
+
+# All multipolygon relations whose tags matched an 'a/' line above are already
+# captured. This line catches multipolygons that carry their tags on the outer
+# way rather than on the relation itself (common in older OSM data).
+r/type=multipolygon
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# METHODOLOGY — how this file was derived from the style
+# ══════════════════════════════════════════════════════════════════════════════
+#
+# Step 1 — Identify every data source in project.mml.
+#   Each Layer block has a `Datasource.table` with an SQL subquery.
+#   The FROM clause tells you which osm2pgsql table is used:
+#     planet_osm_point   → nodes   → osmium type 'n'
+#     planet_osm_line    → ways    → osmium type 'w' (and sometimes 'a')
+#     planet_osm_polygon → areas   → osmium type 'a'
+#     planet_osm_roads   → ways    → osmium type 'w' (generalised road layer)
+#
+# Step 2 — Extract the WHERE clause of each subquery.
+#   Each condition of the form  column IN ('val1','val2')  or  column = 'val'
+#   becomes one osmium expression line:
+#     SQL:    landuse IN ('forest','meadow')        FROM planet_osm_polygon
+#     osmium: a/landuse=forest,meadow
+#
+# Step 3 — Repeat for every VIEW referenced by project.mml (views.sql).
+#   Currently only cyclosm_ways is active:
+#     cyclosm_ways  → FROM planet_osm_line  → w/ expressions
+#
+# Step 4 — Handle hstore conditions (tags->'key' = 'val').
+#   The SQL accesses them via hstore because osm2pgsql didn't give them a
+#   dedicated column. But osmium sees the ORIGINAL OSM tag, so the key is
+#   just a normal tag key:
+#     SQL:    WHERE tags->'mountain_pass' = 'yes'
+#     osmium: n/mountain_pass=yes
+#
+# Step 5 — Handle compound AND conditions.
+#   osmium can only filter on one key per expression. When the SQL says:
+#     WHERE amenity='motorcycle_parking' AND bicycle IN ('yes','designated')
+#   keep the broader match and let PostgreSQL do the fine filter:
+#     osmium: n/amenity=motorcycle_parking     (keep all; DB filters bicycle)
+#
+# Step 6 — Choose the osmium type code.
+#   n  for planet_osm_point queries
+#   w  for planet_osm_line queries (open ways → linear features)
+#   a  for planet_osm_polygon queries (closed ways + multipolygon relations)
+#   When a tag can appear as both line AND area (e.g. man_made=pier),
+#   add it in both the w/ and a/ sections.
+#
+# Step 7 — Decide what to omit (= what gets dropped from the PBF).
+#   Anything not listed here is silently removed by osmium.
