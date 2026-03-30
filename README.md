@@ -105,10 +105,11 @@ Export the whole world:
 docker compose run --rm kosmtik export-tiles --minZoom 0 --maxZoom 10 --bounds=-180,-85,180,85
 ```
 
-Then export the WRF domain at higher zoom levels:
+If using a higher-resolution area (e.g. WRF domain):
 
 ```
-docker compose run --rm kosmtik export-tiles --minZoom 11 --maxZoom 14 --bounds=-1,40.5,20.5,51
+docker compose run --rm kosmtik export-tiles --minZoom 11 --maxZoom 14 \
+  --bounds=$(cat files/myfiles/wrf-domain.bbox)
 ```
 
 Tiles are in directory `./files/export`.
@@ -119,6 +120,10 @@ In file ".env" , modify the variables which define the files to use
 ( filenames are relative to subdirectory "files/myfiles" )
 - AREAOSM : the name of the .osm.pbf  file
 - AREAPOLY:  the name of the polygon file that define the area for which the import phase will download "elevation data"
+- HIGHRESAREABBOX: the name of a `.bbox` file defining the high-resolution area (zoom 11+).
+  A `.bbox` file is a plain text file containing a single line: `minlon,minlat,maxlon,maxlat`.
+  Contours are clipped to this bounding box (+ 0.5° buffer) to keep the DB small.
+  The tile-export `--bounds` is read directly from this file with `cat`.
 
 The best place to find such data is 
 - https://download.geofabrik.de/

@@ -202,11 +202,26 @@ contours)
   # in this database, contour lines will be in table "planet_osm_line" , using column "ele" to store height value
   echo "\n**************** CONTOURS STEP2: use osm2pgsql to import data  `date '+%H:%M:%S'` *******************\n"
 
-  CreateDatabase $DB_CONTOURS postgis
-  #psql -c "SELECT 1 FROM pg_database WHERE datname = '$DB_CONTOURS';" | grep -q 1 || createdb $DB_CONTOURS
-  #psql -d $DB_CONTOURS -c 'CREATE EXTENSION IF NOT EXISTS postgis;'
+  # Determine the PBF to import.
+  # If HIGHRESAREAPOLY is set, clip the full pyhgtmap output to that polygon
+  # (+ 0.5° buffer) before importing. Contours are only rendered from zoom 12
+  # and only within the high-res export area, so importing the whole world would
+  # waste disk space and slow down every tile-render query.
+  PBF_INPUT="./$AREAPOLY*.osm.pbf"
+  if [ -n "$HIGHRESAREABBOX" ]; then
+    echo "\n*** Clipping contours to high-res area: $HIGHRESAREABBOX (+ 0.5° buffer) ***"
+    BBOX=$(sh ../scripts/bbox_buffer.sh ../myfiles/$HIGHRESAREABBOX 0.5)
+    echo "    Clipping bbox: $BBOX"
+    CLIPPED_PBF="./contours-clipped.osm.pbf"
+    # pyhgtmap is invoked with --max-nodes-per-tile=0 --max-nodes-per-way=0, so it
+    # always produces exactly one PBF file; the glob always expands to a single path.
+    osmium extract --bbox="$BBOX" --overwrite -o "$CLIPPED_PBF" ./$AREAPOLY*.osm.pbf
+    PBF_INPUT="$CLIPPED_PBF"
+  fi
 
-  osm2pgsql --slim --drop -d $DB_CONTOURS    --cache $OSM2PGSQL_CACHE --style ../dem/contours.style ./$AREAPOLY*.osm.pbf
+  CreateDatabase $DB_CONTOURS postgis
+
+  osm2pgsql --slim --drop -d $DB_CONTOURS    --cache $OSM2PGSQL_CACHE --style ../dem/contours.style $PBF_INPUT
 
 
 

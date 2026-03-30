@@ -38,8 +38,9 @@ services:
       - OSM2PGSQL_NUMPROC
       # defines the files to use
       - AREAOSM       # osm.pbf file
-      - AREAPOLY      # .poly file 
+      - AREAPOLY      # .poly file
       - AREAPOLYSOURCE # defines the source for downloading contours from viewfinderpanoramas.org
+      - HIGHRESAREABBOX  # optional: .bbox file (minlon,minlat,maxlon,maxlat) defining the high-res area; contours are clipped to it (+ 0.5° buffer)
 
   #--------------- database server ------------------
   db:
