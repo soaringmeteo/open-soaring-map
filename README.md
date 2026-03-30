@@ -44,7 +44,7 @@ docker compose up -V import
 
 Generate peak isolations data and city isolations data (note the usage of RUN command with argument)
 
-It will take many minutes, to download elevation data from Internet
+The download of elevation data from Internet may take many minutes.
 
 ```
 docker compose run --rm import isolations

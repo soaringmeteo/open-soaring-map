@@ -239,10 +239,10 @@
 #placenames-medium::low-importance {
     /* Digne-les-Bains, Carpentras */
     [category = 2] {
-      [zoom = 9][score >= 4000][isolation > 50000],
-      [zoom = 10][isolation > 20000],
-      [zoom = 11][isolation > 10000],
-      [zoom = 12][isolation > 8000],
+      [zoom = 9][score >= 4000][isolation > 30000],
+      [zoom = 10][isolation > 13000],
+      [zoom = 11][isolation > 7000],
+      [zoom = 12][isolation > 5500],
       [zoom >= 13] {
         text-name: "[name]";
         text-fill: @placenames;
@@ -317,9 +317,9 @@
 
     [zoom >= 11]{
 
-        [zoom = 11][isolation >= 10000],
-        [zoom = 12][isolation >= 8000],
-        [zoom = 13][isolation >= 1000] {
+        [zoom = 11][isolation >= 7000],
+        [zoom = 12][isolation >= 5600],
+        [zoom = 13][isolation >= 700] {
 
               text-dx: 0;
               text-dy: 0;

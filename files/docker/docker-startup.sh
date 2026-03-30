@@ -159,7 +159,7 @@ isolations)
   bash ../dem/pyhgtmap.sh  --polygon=$POLYGON -j 8 -s 10 -0 --source=$AREAPOLYSOURCE  --max-nodes-per-tile=0 --max-nodes-per-way=0 --pbf -o $AREAPOLY
 
   # run postprocessing tools
-  echo "\nCompute peak isolations and saddle directions  `date '+%H:%M:%S'` "
+  echo "\nFill missing peak elevations and compute peak isolations  `date '+%H:%M:%S'` "
   echo "Merge .hgt files from $HGTDIRS"
   HGTFILES=""
   for _d in $HGTDIRS; do
@@ -325,7 +325,7 @@ export-tiles)
 
 ################### any other values is command+parameters to execute
 *)
-  $*
+  "$@"
   ;;
 
 

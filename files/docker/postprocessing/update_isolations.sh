@@ -1,25 +1,24 @@
 #!/bin/bash
 #
-# get all natural=peak and natural volcano without otm_isolation=*,
-# calculates the topographic isolation of each peak and writes this back
-# to the database.
-# The isolation is calculated based on the distance to the next neighbours 
-# in a first step. In a second step it is calculated based on DEM data.
+# Two-step peak isolation update:
 #
-# The first run will calculate each peak in the DB, because otm_isolation
-# is empty. If otm_isolation doesn't exist, it will be created.
+# Step 1 – Fill missing elevations:
+#   For peaks/volcanoes whose ele tag is absent or non-numeric, sample the
+#   merged SRTM DEM raster at the peak's coordinates using gdallocationinfo
+#   and write the result back to the database.
 #
-# The following runs will update only some newly mapped peaks. Most of them
-# only based on DEM data, because their neighbour are not newly mapped. That
-# will leed to some different isolations than we could get in the first run
-# (with all the neighbours).  
+# Step 2 – Compute isolations via SQL:
+#   Run peak_isolation.sql, which uses a PostGIS LATERAL join + <-> KNN
+#   operator to find, for each peak, the nearest peak with equal or greater
+#   elevation.  The result is stored in otm_isolation (metres, rounded integer
+#   stored as TEXT).  Peaks with no higher neighbour within the dataset receive
+#   a fallback isolation of 50 000 m (50 km radius).
 #
-# The first run may take a hour, following runs some seconds.
+# If otm_isolation doesn't exist it will be created.
 #
 
 
 DBname=$1
-toolpath='/postprocessing'
 demfile='demdata/dem-srtm.tiff'
 
 cd /osmhike
@@ -52,14 +51,35 @@ if [ "$column" != " otm_isolation" ] ; then
 fi
 
 
-########## Update ###########
+########## Step 1: Fill missing elevations from DEM ###########
 #
-# Get all peaks without isolation, pipe it through toolpath/isolation and update this column in DB
+# Query peaks/volcanoes whose ele is NULL or not a valid number.
+# For each, sample the DEM raster with gdallocationinfo and emit an UPDATE.
+# All UPDATEs are piped into a single psql transaction.
 #
 
-psql -A -t -F ";" $DBname -c \
-  "SELECT osm_id,ST_X(ST_Astext(ST_Transform(way,4326))),ST_Y(ST_Astext(ST_Transform(way,4326))),ele \
-   FROM planet_osm_point WHERE \"natural\" IN ('peak','volcano') AND \
-                               (otm_isolation IS NULL or otm_isolation NOT SIMILAR TO '[0-9]+');;" \
-  | $toolpath/isolation -f $demfile -o sql -r 50000 | psql $DBname
+echo "Step 1: Filling missing peak elevations from DEM..."
 
+(
+  echo "BEGIN;"
+  psql -A -t -F ";" -d $DBname -c \
+    "SELECT osm_id,
+            ST_X(ST_Transform(way, 4326)),
+            ST_Y(ST_Transform(way, 4326))
+     FROM planet_osm_point
+     WHERE \"natural\" IN ('peak', 'volcano')
+       AND (ele IS NULL OR ele !~ '^-?[0-9]+(\.[0-9]+)?$')" \
+  | while IFS=";" read -r id lon lat; do
+      val=$(gdallocationinfo -wgs84 -valonly "$demfile" "$lon" "$lat" 2>/dev/null)
+      if [ -n "$val" ]; then
+        echo "UPDATE planet_osm_point SET ele='$val' WHERE osm_id=$id;"
+      fi
+    done
+  echo "COMMIT;"
+) | psql -d $DBname
+
+
+########## Step 2: Compute isolations via SQL ###########
+
+echo "Step 2: Computing peak isolations via SQL..."
+psql -d $DBname --file=/postprocessing/peak_isolation.sql

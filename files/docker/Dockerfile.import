@@ -38,8 +38,6 @@ RUN bash /packages/pip-installs.sh
 RUN mkdir -p /postprocessing
 COPY ./postprocessing/* /postprocessing
 
-# Compile isolation postprocessing tool
-RUN cc -Wall -o /postprocessing/isolation /postprocessing/isolation.c -lgdal -lm -O2
 
 # Compile saddledirection postprocessing tool
 RUN cc -o /postprocessing/saddledirection /postprocessing/saddledirection.c -lm -lgdal
