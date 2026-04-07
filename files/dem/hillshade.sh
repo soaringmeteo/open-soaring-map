@@ -32,7 +32,7 @@ echo "************ Merging files with gdalwarp *****************"
   echo "************ creating hillshade with gdaldem *****************"
 # -co COMPRESS=JPEG  causes many strange square pixels
 
-  cmd="gdaldem hillshade -z $ZFACTOR -compute_edges  -co PREDICTOR=2 -co COMPRESS=DEFLATE $WARPFILE $HILLFILE"
+  cmd="gdaldem hillshade -z $ZFACTOR -compute_edges  -co BIGTIFF=YES -co TILED=YES -co PREDICTOR=2 -co COMPRESS=DEFLATE $WARPFILE $HILLFILE"
   echo $cmd
   $cmd
 
