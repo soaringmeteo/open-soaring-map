@@ -26,12 +26,13 @@ def lat2txt(lat):
     else:
         return "S%02d" % -lat
 
-latlist={}
-
 filepoly=sys.argv[1]
-hgtdirs=sys.argv[2:]   # one or more directories
+hgtdirs=sys.argv[2:]   # one or more directories, searched in order (first match wins)
 
-mem=False
+# --- Parse all lon/lat points from the polygon file ---
+lons = []
+lats = []
+
 f=open(filepoly,"r")
 for line in f :
 
@@ -39,48 +40,27 @@ for line in f :
         continue
     line=line.strip()
     line=re.sub(" +",";",line)
-    #print("\nline=",line,"END")
     lon,lat=line.split(";")
-    #print("lon=",lon," lat ",lat)
-    lonf=float(lon)
-    latf=float(lat)
-
-    if mem==False:
-        memlonf=lonf
-        memlatf=latf
-
-    nb=30
-    inclon=(lonf - memlonf)/nb
-    inclat=(latf - memlatf)/nb
-    for i in range(nb):
-        lon=math.trunc( memlonf+inclon*i)
-        lat=math.trunc( memlatf+inclat*i)
-
-        #print("lon=",lon," lat=",lat)
-
-        if (lon<0): lon=lon-1
-        if (lat<0): lat=lat-1
-
-        key=lat2txt(lat)
-        if key in latlist:
-            zmin,zmax=latlist[key]
-            latlist[key] = [ min(zmin,lon) , max(zmax,lon) ]
-        else:
-            latlist[key] = [lon,lon]
-
-    mem=True
-    memlonf=lonf
-    memlatf=latf
-
+    lons.append(float(lon))
+    lats.append(float(lat))
 f.close()
 
+# --- Compute bounding box with 1-degree buffer ---
+# The buffer ensures tiles that only partially overlap the area are included,
+# which is necessary to avoid missing hillshade at polygon edges.
+BUFFER = 1
+minlat = math.floor(min(lats)) - BUFFER
+maxlat = math.floor(max(lats)) + BUFFER
+minlon = math.floor(min(lons)) - BUFFER
+maxlon = math.floor(max(lons)) + BUFFER
+
+# --- For each tile in the bbox, find it in the first hgtdir that has it ---
 filelist=os.path.basename(filepoly) + ".txt"
-latlist=dict( sorted( latlist.items() ) )
 
 f=open(filelist,"w")
-for lat,lonrange in latlist.items():
-    for lon in range( lonrange[0], lonrange[1]+1 ):
-        tilename = f'{lat}{lon2txt(lon)}.hgt'
+for lat in range(minlat, maxlat + 1):
+    for lon in range(minlon, maxlon + 1):
+        tilename = f'{lat2txt(lat)}{lon2txt(lon)}.hgt'
         found = False
         for hgtdir in hgtdirs:
             filename = f'{hgtdir}/{tilename}'
@@ -92,7 +72,3 @@ for lat,lonrange in latlist.items():
             print( tilename + "=not found in any of: " + ", ".join(hgtdirs))
 f.close()
 print("filelist=",filelist)
-
-
-    
-
