@@ -13,9 +13,18 @@ ZFACTOR=$3
 
 WARPFILE=warp-$RESOLUTION.tif
 HILLFILE=hillshade-$RESOLUTION.tif
+VRTFILE=merged-$RESOLUTION.vrt
 
-rm -f $WARPFILE
-rm -f $HILLFILE
+rm -f $WARPFILE $HILLFILE $VRTFILE
+
+# Guard: skip gracefully if no HGT files were found for this area
+if [ ! -s $INFILE ]; then
+    echo "WARNING: no HGT files found, skipping hillshade for resolution $RESOLUTION"
+    exit 0
+fi
+
+# Build VRT index from file list (avoids shell ARG_MAX limit)
+gdalbuildvrt -srcnodata -32768 -input_file_list $INFILE $VRTFILE
 
 echo ""
 echo "************ Merging files with gdalwarp *****************"
@@ -26,8 +35,7 @@ cmd="gdalwarp \
   -r bilinear \
   -tr $RESOLUTION $RESOLUTION \
   -srcnodata -32768 -dstnodata -32768 \
-  --optfile $INFILE \
-  $WARPFILE"
+  $VRTFILE $WARPFILE"
 echo $cmd
 $cmd
 
