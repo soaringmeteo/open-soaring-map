@@ -34,7 +34,7 @@ cmd="gdalwarp \
   -t_srs EPSG:3857 \
   -r bilinear \
   -tr $RESOLUTION $RESOLUTION \
-  -srcnodata -32768 -dstnodata -32768 \
+  -srcnodata -32768 \
   $VRTFILE $WARPFILE"
 echo $cmd
 $cmd
