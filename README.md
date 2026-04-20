@@ -37,7 +37,8 @@ docker compose up -V -d db
 
 Import the data:
 
-Note that after this command, the db container will exit from its terminal. But it continues to work in background
+Note that after this command, the db container will exit from its terminal. But it continues to work in background. Also note that it can take a long time for large areas (about 24 hours for Europe).
+
 ```
 docker compose up -V import
 ```

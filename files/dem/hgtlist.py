@@ -67,7 +67,8 @@ for lat in range(minlat, maxlat + 1):
             if os.path.exists(filename):
                 f.write(filename + "\n")
                 found = True
-                break
+                # don't break: include all resolutions so gdalbuildvrt can fill
+                # nodata holes in higher-res tiles with lower-res data
         if not found:
             print( tilename + "=not found in any of: " + ", ".join(hgtdirs))
 f.close()

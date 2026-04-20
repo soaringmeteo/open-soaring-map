@@ -745,6 +745,12 @@ class SourcesPool:
             return downloadAndUnzip(opener, url, area, source)
 
 
+def _hgt_has_nodata(filename: str) -> bool:
+    """Return True if the HGT file contains any nodata (-32768) pixels."""
+    data = numpy.fromfile(filename, dtype=">i2")
+    return bool(numpy.any(data == -32768))
+
+
 def getFiles(
     area: str,
     polygon: PolygonsList | None,
@@ -762,15 +768,22 @@ def getFiles(
     else:
         opener = None
     for area, checkPoly in areaPrefixes:
+        best_file = None
         for source in sources:
             print("{0:s}: trying {1:s} ...".format(area, source))
             saveFilename = sources_pool.get_file(opener, area, source)
             if saveFilename:
-                files.append((saveFilename, checkPoly))
-                break
+                if best_file is None:
+                    best_file = saveFilename
+                # For HGT sources, continue to the next source if this tile has nodata
+                # within the polygon bbox so the lower-res file is also downloaded and
+                # available to fill gaps during hillshade generation.
+                if not saveFilename.endswith(".hgt") or not _hgt_has_nodata(saveFilename):
+                    break
+        if best_file:
+            files.append((best_file, checkPoly))
         else:
             print("{0:s}: no file found on server.".format(area))
-            continue
     return files
 
 
