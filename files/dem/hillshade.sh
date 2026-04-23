@@ -2,13 +2,14 @@
 #
 # build hillshade
 #
-# bash ../dem/hillshade.sh listfile.txt resolution zfactor
+# bash ../dem/hillshade.sh listfile.txt resolution zfactor [polyfile]
 #
 #####################################################
 
 INFILE=$1
 RESOLUTION=$2
 ZFACTOR=$3
+POLYFILE=$4
 
 
 WARPFILE=warp-$RESOLUTION.tif
@@ -29,12 +30,27 @@ gdalbuildvrt -srcnodata -32768 -input_file_list $INFILE $VRTFILE
 echo ""
 echo "************ Merging files with gdalwarp *****************"
 
+TE_ARGS=""
+if [ -f "$POLYFILE" ]; then
+    set -- $(awk '
+        /^[[:space:]]+-?[0-9]/ {
+            if (!seen++) { minlon=$1; maxlon=$1; minlat=$2; maxlat=$2 }
+            if ($1 < minlon) minlon=$1; if ($1 > maxlon) maxlon=$1
+            if ($2 < minlat) minlat=$2; if ($2 > maxlat) maxlat=$2
+        }
+        END { print minlon-1, minlat-1, maxlon+1, maxlat+1 }
+    ' "$POLYFILE")
+    MINLON=$1; MINLAT=$2; MAXLON=$3; MAXLAT=$4
+    TE_ARGS="-te $MINLON $MINLAT $MAXLON $MAXLAT -te_srs EPSG:4326"
+fi
+
 cmd="gdalwarp \
   -co BIGTIFF=YES -co TILED=YES -co PREDICTOR=2 -co COMPRESS=DEFLATE \
   -t_srs EPSG:3857 \
   -r bilinear \
   -tr $RESOLUTION $RESOLUTION \
-  -srcnodata -32768 \
+  -srcnodata -32768 -wo INIT_DEST=0 \
+  $TE_ARGS \
   $VRTFILE $WARPFILE"
 echo $cmd
 $cmd
