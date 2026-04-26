@@ -10,15 +10,15 @@
 
 #area_label {
   // Bring in labels gradually as one zooms in, bases on polygon area
-  [zoom=10][area>102400000],
-  [zoom=11][area>51200000],
-  [zoom=12][area>25600000],
-  [zoom=13][area>1280000][area<256000000],
-  [zoom=14][area>320000] [area<64000000],
-  [zoom=15][area>80000]  [area<16000000],
-  [zoom=16][area>20000]  [area<4000000],
-  [zoom=17][area>5000]   [area<100000],
-  [zoom>=18]             [area<25000] {
+  [zoom=10][area>32000000],
+  [zoom=11][area>16000000],
+  [zoom=12][area>8000000],
+  [zoom=13][area>4000000],
+  [zoom=14][area>2000000],
+  [zoom=15][area>100000],
+  [zoom=16][area>50000],
+  [zoom=17][area>25000],
+  [zoom>=18] {
     text-name: "[name]";
     text-halo-radius: 1.5;
     text-face-name:@sans;
