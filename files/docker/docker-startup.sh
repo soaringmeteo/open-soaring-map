@@ -160,14 +160,15 @@ isolations)
 
   # run postprocessing tools
   echo "\nFill missing peak elevations and compute peak isolations  `date '+%H:%M:%S'` "
-  echo "Merge .hgt files from $HGTDIRS"
-  HGTFILES=""
+  echo "Build VRT index from .hgt files in $HGTDIRS"
+  HGTLIST=dem-srtm-files.txt
+  rm -f $HGTLIST dem-srtm.vrt
   for _d in $HGTDIRS; do
     if ls ./$_d/*.hgt 1>/dev/null 2>&1; then
-      HGTFILES="$HGTFILES ./$_d/*.hgt"
+      ls ./$_d/*.hgt >> $HGTLIST
     fi
   done
-  gdal_merge.py -o ./dem-srtm.tiff -of GTiff $HGTFILES
+  gdalbuildvrt -srcnodata -32768 -input_file_list $HGTLIST dem-srtm.vrt
   echo "Update isolations in database"
   /osmhike/docker/postprocessing/update_isolations.sh $DB_OSM
   #echo "Update saddle directions in database"

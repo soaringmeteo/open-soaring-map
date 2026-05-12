@@ -19,7 +19,7 @@
 
 
 DBname=$1
-demfile='demdata/dem-srtm.tiff'
+demfile='demdata/dem-srtm.vrt'
 
 cd /osmhike
 
