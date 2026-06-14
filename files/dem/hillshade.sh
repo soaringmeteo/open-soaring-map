@@ -38,7 +38,13 @@ if [ -f "$POLYFILE" ]; then
             if ($1 < minlon) minlon=$1; if ($1 > maxlon) maxlon=$1
             if ($2 < minlat) minlat=$2; if ($2 > maxlat) maxlat=$2
         }
-        END { print minlon-1, minlat-1, maxlon+1, maxlat+1 }
+        END {
+            lo = minlon-1 < -180   ? -180   : minlon-1
+            hi = maxlon+1 >  180   ?  180   : maxlon+1
+            bo = minlat-1 < -85.06 ? -85.06 : minlat-1
+            bi = maxlat+1 >  85.06 ?  85.06 : maxlat+1
+            print lo, bo, hi, bi
+        }
     ' "$POLYFILE")
     MINLON=$1; MINLAT=$2; MAXLON=$3; MAXLAT=$4
     TE_ARGS="-te $MINLON $MINLAT $MAXLON $MAXLAT -te_srs EPSG:4326"
