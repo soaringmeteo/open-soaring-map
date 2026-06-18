@@ -244,18 +244,16 @@ hillshade)
   cd demdata
 
   echo ""
-  echo "************** Build the list of needed .hgt files from $HGTDIRS `date '+%H:%M:%S'` ****************"
+  echo "************** Build per-resolution HGT file lists `date '+%H:%M:%S'` ****************"
 
-  python3 ../dem/hgtlist.py ../myfiles/$AREAPOLY $HGTDIRS
-
-  # process needed file for required resolution
-  # this action can be repeated with different resolutions
+  python3 ../dem/hgtlist.py ../myfiles/$AREAPOLY view1.txt hgt/VIEW1
+  python3 ../dem/hgtlist.py ../myfiles/$AREAPOLY view3.txt hgt/VIEW3
 
   echo "\n######################## compute hillshade RESOLUTION=500 ###########################\n"
-  sh ../dem/hillshade.sh $AREAPOLY.txt 500 8 ../myfiles/$AREAPOLY   # low resolution
+  sh ../dem/hillshade.sh view1.txt view3.txt 500 8 ../myfiles/$AREAPOLY   # low resolution
 
   echo "\n######################## compute hillshade RESOLUTION=30 ###########################\n"
-  sh ../dem/hillshade.sh $AREAPOLY.txt 30  7 ../myfiles/$AREAPOLY   # high resolution
+  sh ../dem/hillshade.sh view1.txt view3.txt 30  7 ../myfiles/$AREAPOLY   # high resolution
 
   echo "\nFinished !  Hillshade have been generated `date '+%H:%M:%S'` "
   ;;

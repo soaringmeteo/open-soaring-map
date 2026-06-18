@@ -3,9 +3,9 @@
 # Builds the list of the HGT files needed to cover the area defined by a polygon file
 #
 # arg1: the polygon file
-# arg2..N: one or more directories containing HGT files (searched in order, first match wins)
+# arg2: output file path
+# arg3..N: one or more directories containing HGT files
 #
-# the output file is a .txt file in the current directory
 #########################################################
 
 import sys
@@ -27,7 +27,8 @@ def lat2txt(lat):
         return "S%02d" % -lat
 
 filepoly=sys.argv[1]
-hgtdirs=sys.argv[2:]   # one or more directories, searched in order (first match wins)
+filelist=sys.argv[2]
+hgtdirs=sys.argv[3:]   # one or more directories
 
 # --- Parse all lon/lat points from the polygon file ---
 lons = []
@@ -54,9 +55,7 @@ maxlat = math.floor(max(lats)) + BUFFER
 minlon = math.floor(min(lons)) - BUFFER
 maxlon = math.floor(max(lons)) + BUFFER
 
-# --- For each tile in the bbox, find it in the first hgtdir that has it ---
-filelist=os.path.basename(filepoly) + ".txt"
-
+# --- For each tile in the bbox, find it in the hgtdirs ---
 f=open(filelist,"w")
 for lat in range(minlat, maxlat + 1):
     for lon in range(minlon, maxlon + 1):
@@ -67,9 +66,7 @@ for lat in range(minlat, maxlat + 1):
             if os.path.exists(filename):
                 f.write(filename + "\n")
                 found = True
-                # don't break: include all resolutions so gdalbuildvrt can fill
-                # nodata holes in higher-res tiles with lower-res data
         if not found:
             print( tilename + "=not found in any of: " + ", ".join(hgtdirs))
 f.close()
-print("filelist=",filelist)
+print("filelist=", filelist)
