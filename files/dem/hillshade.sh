@@ -92,7 +92,7 @@ if [ -f "$V1_HILLFILE" ] && [ -f "$V3_HILLFILE" ]; then
     # VIEW1 takes priority; where VIEW1 has nodata (=0), VIEW3 fills in.
     # -srcnodata 0 treats gdaldem's nodata output (0) as transparent so VIEW3 shows through.
     gdalbuildvrt -resolution highest -r bilinear -srcnodata 0 \
-        $COMBINED_VRT $V1_HILLFILE $V3_HILLFILE
+        $COMBINED_VRT $V3_HILLFILE $V1_HILLFILE
     gdal_translate \
         -co BIGTIFF=YES -co TILED=YES -co PREDICTOR=2 -co COMPRESS=DEFLATE \
         $COMBINED_VRT $HILLFILE
