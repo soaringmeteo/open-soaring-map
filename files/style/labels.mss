@@ -20,7 +20,7 @@
   [zoom=17][area>25000],
   [zoom>=18] {
     text-name: "[name]";
-    text-halo-radius: 1.5;
+    text-halo-radius: @standard-halo-radius;
     text-face-name:@sans;
     text-size: 11;
     text-wrap-width: 30;
@@ -148,7 +148,7 @@
     text-fill: black;
     text-dy: 5;
     text-face-name: @standard-font;
-    text-halo-radius: @standard-halo-radius;
+    text-halo-radius: @standard-halo-radius * 1.5;
     text-halo-fill: @standard-halo-fill;
     text-placement: point;  
     text-placement-type: simple;

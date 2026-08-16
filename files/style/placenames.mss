@@ -142,7 +142,7 @@
 
     }
     [zoom >= 8] {
-      text-size: 13;
+      text-size: 14;
       text-wrap-width: 65; // 5.0 em
       text-line-spacing: -0.65; // -0.05 em
       text-margin: 9.1; // 0.7 em
@@ -154,13 +154,13 @@
       text-placements: "N,S,E,W,NW,NE,SE";
 
       [zoom >= 10] {
-        text-size: 14;
+        text-size: 15;
         text-wrap-width: 70; // 5.0 em
         text-line-spacing: -0.7; // -0.05 em
         text-margin: 9.8; // 0.7 em
       }
       [zoom >= 11] {
-        text-size: 15;
+        text-size: 17;
         text-wrap-width: 75; // 5.0 em
         text-line-spacing: -0.75; // -0.05 em
         text-margin: 10.5; // 0.7 em
@@ -180,7 +180,7 @@
       text-halo-radius: @standard-halo-radius * 1.5;
       text-dx: 0;
       text-dy: 0;
-      text-size: 11;
+      text-size: 12;
       text-wrap-width: 30; // 3.0 em
       text-line-spacing: -1.5; // -0.15 em
       text-margin: 7.0; // 0.7 em
@@ -207,25 +207,25 @@
       text-dx: 0;
       text-dy: 0;
       [zoom >= 9] {
-        text-size: 12;
+        text-size: 13;
         text-wrap-width: 60; // 5.0 em
         text-line-spacing: -0.6; // -0.05 em
         text-margin: 8.4; // 0.7 em
       }
       [zoom >= 10] {
-        text-size: 13;
+        text-size: 14;
         text-wrap-width: 65; // 5.0 em
         text-line-spacing: -0.65; // -0.05 em
         text-margin: 9.1; // 0.7 em
       }
       [zoom >= 11] {
-        text-size: 14;
+        text-size: 16;
         text-wrap-width: 70; // 5.0 em
         text-line-spacing: -0.7; // -0.05 em
         text-margin: 9.8; // 0.7 em
       }
       [zoom >= 14] {
-        text-size: 15;
+        text-size: 17;
         text-wrap-width: 75; // 5.0 em
         text-line-spacing: -0.7; // -0.05 em
         text-margin: 10.5; // 0.7 em
@@ -268,7 +268,7 @@
         [zoom >= 13][zoom < 16] {
             text-avoid-edges: false;
             [zoom >= 13] {
-              text-size: 13;
+              text-size: 14;
               text-wrap-width: 65; // 5.0 em
               text-line-spacing: -0.65; // -0.05 em
               text-margin: 8.4; // 0.7 em
@@ -325,7 +325,10 @@
               text-dy: 0;
               // text-name: ' '+[name]+' '; // adding blanks seems to avoid troubles on tile boundary !
               text-name: [name];  // finally, simpler to add blanks inside the SQL request
-              text-size: 11;
+              text-size: 12;
+              [zoom = 11] {
+                text-size: 11;
+              }
               text-fill: @placenames;
               text-face-name: @sans;
               text-halo-fill: @city_halo;
@@ -339,7 +342,7 @@
 
         [zoom >= 14][zoom < 17] {
           text-name: "[name]";
-          text-size: 11;
+          text-size: 12;
           text-fill: @placenames;
           text-face-name: @sans;
           text-halo-fill: @other_halo;
@@ -353,12 +356,6 @@
           text-placements: "N,S,E,NW,NE,SE";
           text-dx: 0;
           text-dy: 0;
-          [zoom >= 13] {
-            text-size: 12;
-            text-wrap-width: 55; // 5.0 em
-            text-line-spacing: -0.55; // -0.05 em
-            text-margin: 5; // 0.7 em
-          }
           [zoom >= 14] {
             text-fill: @placenames-light;
             text-halo-fill: white;
