@@ -64,7 +64,7 @@ if [ -s "$V1INFILE" ]; then
     gdalwarp $WARP_OPTS -tr $RESOLUTION $RESOLUTION $TE_ARGS $V1_VRTFILE $V1_WARPFILE
 
     echo "************ VIEW1: hillshade *****************"
-    gdaldem hillshade -z $ZFACTOR -compute_edges $HILLSHADE_OPTS $V1_WARPFILE $V1_HILLFILE
+    gdaldem hillshade -alt 60 -z $ZFACTOR -compute_edges $HILLSHADE_OPTS $V1_WARPFILE $V1_HILLFILE
 else
     echo "WARNING: VIEW1 list is empty, skipping VIEW1 pass"
 fi
@@ -79,7 +79,7 @@ if [ -s "$V3INFILE" ]; then
     gdalwarp $WARP_OPTS -tr $V3_RESOLUTION $V3_RESOLUTION $TE_ARGS $V3_VRTFILE $V3_WARPFILE
 
     echo "************ VIEW3: hillshade *****************"
-    gdaldem hillshade -z $ZFACTOR -compute_edges $HILLSHADE_OPTS $V3_WARPFILE $V3_HILLFILE
+    gdaldem hillshade -alt 60 -z $ZFACTOR -compute_edges $HILLSHADE_OPTS $V3_WARPFILE $V3_HILLFILE
 else
     echo "WARNING: VIEW3 list is empty, skipping VIEW3 pass"
 fi
