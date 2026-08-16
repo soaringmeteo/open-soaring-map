@@ -802,9 +802,7 @@ Layer:
       (SELECT  -- capital-names
           way,
           name,
-          CASE
-            WHEN (population ~ '^[0-9]{1,8}$') THEN population::INTEGER ELSE 0
-          END as population,
+          COALESCE(parsed_population(population), 0) as population,
           round(ascii(md5(osm_id::text)) / 55) AS dir -- base direction factor on geometry to be consistent across metatiles
         FROM planet_osm_point
         WHERE place IN ('city', 'town', 'village', 'hamlet')
@@ -868,12 +866,13 @@ Layer:
               place,
               name,
               (
-                (CASE
-                  WHEN (population ~ '^[0-9]{1,8}$') THEN population::INTEGER
-                  WHEN (place = 'city') THEN 100000
-                  WHEN (place = 'town') THEN 1000
-                  ELSE 1
-                END)
+                COALESCE(
+                  parsed_population(population),
+                  CASE
+                    WHEN (place = 'city') THEN 100000
+                    WHEN (place = 'town') THEN 1000
+                    ELSE 1
+                  END)
                 *
                 (CASE
                   WHEN (capital='4') THEN 2
@@ -916,9 +915,7 @@ Layer:
             place,
             leisure,
             CONCAT ( name) AS name,   -- adding blanks seems to avoid troubles when text reaches tile boundaries
-            CASE
-              WHEN (population ~ '^[0-9]{1,8}$') THEN population::INTEGER ELSE 0
-            END as population,
+            COALESCE(parsed_population(population), 0) as population,
             otm_isolation::NUMERIC as isolation
           FROM planet_osm_point
           WHERE way && !bbox! AND (

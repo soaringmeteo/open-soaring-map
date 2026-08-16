@@ -1,3 +1,13 @@
+-- Parse an OSM population tag into a number.
+-- The tag is free text and often carries a thousands separator: "20 142" (Vevey),
+-- the Swiss "20'142", or "20,142" -- \u00a0 and \u202f are the non-breaking variants.
+-- Returns NULL when the tag is absent or cannot be read as a number.
+CREATE OR REPLACE FUNCTION parsed_population(pop_tag text) RETURNS integer
+    LANGUAGE sql IMMUTABLE STRICT PARALLEL SAFE AS $$
+    SELECT CASE WHEN digits ~ '^[0-9]{1,8}$' THEN digits::integer END
+    FROM (SELECT regexp_replace(pop_tag, '[\s,''\u00a0\u202f]', '', 'g')) AS t(digits);
+$$;
+
 DROP VIEW IF EXISTS cyclosm_ways;
 CREATE VIEW cyclosm_ways AS
     SELECT

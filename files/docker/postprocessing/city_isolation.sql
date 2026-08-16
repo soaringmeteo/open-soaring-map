@@ -6,12 +6,10 @@
 -- Based on https://github.com/MathiasGroebe/discrete_isolation by Mathias Groebe
 WITH cities_with_pop AS (
   SELECT osm_id, way,
-    CASE
-      WHEN (population ~ '^[0-9]{1,8}$') THEN population::INTEGER * (CASE WHEN place = 'city' THEN 1.5 WHEN place = 'town' THEN 1.25 ELSE 1 END)
-      WHEN (place = 'city') THEN 100000 * 1.5
-      WHEN (place = 'town') THEN 1000 * 1.25
-      WHEN (place = 'village') THEN 100
-    END AS pop_value
+    COALESCE(
+      parsed_population(population),
+      CASE place WHEN 'city' THEN 100000 WHEN 'town' THEN 1000 WHEN 'village' THEN 100 END
+    ) * (CASE place WHEN 'city' THEN 1.5 WHEN 'town' THEN 1.25 ELSE 1 END) AS pop_value
   FROM planet_osm_point
   WHERE place IN ('city', 'town', 'village')
 )
