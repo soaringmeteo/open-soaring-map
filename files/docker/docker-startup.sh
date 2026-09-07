@@ -185,6 +185,7 @@ isolations)
 
 city_isolations)
   echo "Compute city isolations"
+  CreateViewsFunctions
   psql -d $DB_OSM --file=/osmhike/docker/postprocessing/city_isolation.sql
   ;;
 
