@@ -3,19 +3,28 @@
 // ==================================================================
 
 
-// At mid-level scales start to show primary  routes
-#roads_med {
-  line-color: @standard-fill;
+// At mid-level scales (zoom 10-11-12) start to show primary  routes
+#roads_med::outline[type != 'railway'] {
+  line-cap: round;
+  line-join: round;
+  line-color: @standard-case;
+  line-width: [roadsize] + 1;
 
-  [type='railway'] {
-    line-color: @rail-line;
+  [tunnel!='no'] { line-dasharray: 5,4; }
+}
+#roads_med::inline {
+  [type != 'railway'],[type = 'railway'][tunnel = 'no'] {
+      line-cap: round;
+      line-join: round;
+      line-color: @standard-fill;
+      [type='railway'] {
+        line-color: @rail-line;
+      }
+      line-width: [roadsize];
   }
-
-  line-width: [roadsize];
-
 }
 
-// At higher levels the roads become more complex. We're now showing
+// At higher levels (zoom 13+) the roads become more complex. We're now showing
 //more than just automobile and railway routes - footways, and cycleways
 //come in as well.
 
@@ -33,33 +42,12 @@
 // * border_width).
 
 
-
-// ---- Rail background with hatches -------------------------
-
-#roads_high[zoom>=13][tunnel='no']
-{
-    [type='railway']::rail_perpendicular {
-      [service!='minor']
-      {
-        line-cap: butt;
-        line-color: @rail-line;
-
-        /* hatches: start with space to avoid dense pattern on very short ways */
-        line-dasharray: 0,2,1,2;
-        [zoom>=14] { line-dasharray: 0,4,1,4; }
-
-        line-width: 3;
-        [zoom>=19] { line-width: 6; }
-      }
-    }
-}
-
 // railway line
 #roads_high::rail_line[zoom>=13],
 {
   [type='railway'][tunnel='no'][service!='minor'] {
     line-color: @rail-line;
-    line-width: 0.5*[roadsize];
+    line-width: [roadsize];
   }
 }
 
@@ -73,7 +61,6 @@
   ,[type='secondary'] ,[type='secondary_link']
   ,[type='tertiary'] ,[type='tertiary_link']
   ,[type='unclassified'],[type='residential']
-  ,[type='living_street'],[type='pedestrian']
   ,[type='service'][service!='minor']
   {
 
@@ -81,10 +68,10 @@
     line-join: round;
 
     [tunnel!='no'],[bridge!='no'] {  line-cap: butt;    }
-    [tunnel!='no']                {  line-dasharray: 3,3; }  // dashed line for tunnel
+    [tunnel!='no']                {  line-dasharray: 5,4; }  // dashed line for tunnel
 
-    line-width: 0.5*[roadsize] + [roadcase];
-    [type='service'][service='minor'] {  line-width: 0.25*[roadsize] + 0.5*[roadcase]; } // size divided by 2
+    line-width: 0.8*[roadsize] + [roadcase];
+    [type='service'][service='minor'] {  line-width: 0.4*[roadsize] + 0.5*[roadcase]; } // size divided by 2
 
     line-color: @standard-case;
   }
@@ -104,10 +91,7 @@
     [type='unclassified'],
     [type='residential'],
     [type='service'][service!='minor'],
-    [type='service'][service='minor'][zoom>=15],
-    [type='living_street'],
-    [type='pedestrian'],
-    [type='steps']        
+    [type='service'][service='minor'][zoom>=15]
 
     {
      
@@ -120,19 +104,10 @@
      
         line-cap: round;
         line-join: round;
-        line-width: 0.5*[roadsize];
-        [type='service'][service='minor'] { line-width: 0.25*[roadsize] ;}
+        line-width: 0.8*[roadsize];
+        [type='service'][service='minor'] { line-width: 0.4*[roadsize] ;}
 
         line-color: @standard-fill;
-
-        // dash line for steps
-        [type='steps'] {
-            line-cap: butt;
-            line-dasharray: 0.5,0.5;
-            [zoom>=16] { line-dasharray: 1.5,0.75; }
-            [zoom>=17] {  line-dasharray: 2,1; }
-
-        }
 
   }
 }
@@ -162,124 +137,6 @@
   }
 }
 
-// if path compatible bike ( 'alpine'='no' and can_bicycle != no ) 
-//   take color mixed-cycle-fill , and make difference between road/cyclocross/mtb+unknown
-// otherwise take color path-fill and make difference alpine='no' / alpine='low' / 'alpine='medium'/alpine='high' 
-#roads_high::inline {
-  [type='path']
-  {
-
-
-      
-      // tunnel : set a small opacity to draw the road with a  light color
-      // since there is no casing, we put middle opacity
-      [tunnel!='no']{  
-        background/line-join: round;
-        background/line-color: #FFFFFF;
-        background/line-width: 0.5*[roadsize];
-        line-opacity: 0.5; 
-      }
-
-    line-cap: butt;
-    line-join: round;
-
-    line-width: 0.5*[roadsize];
-
-    // too difficult or not bike compatible => pink color
-    line-color: @standard-fill;
-    [alpine='low'] { line-dasharray: 24,2; }
-    [alpine='medium'] { line-dasharray: 12,4; }
-    [alpine='high'] { line-dasharray: 4,4; }
-    [alpine='veryhigh'] { line-dasharray: 1,4; }
-  }
-}
-
-
-
-
-/*
-//------------------------------------------------------
-//skip details for MountainBike difficulty
-//------------------------------------------------------
-#roads_high::mtbscale[mtb_scale>=0][zoom>=15]
-{
-  [type='service'],
-  [type='track'],
-  [type='bridleway'],
-  [type='footway'],
-  [type='path'],
-  [type='cycleway']
-  {
-    line-color: #2076ff;
-    line-dasharray: 1,8;
-
-    [mtb_scale=1] {
-      line-dasharray: 1,1,1,8;
-    }
-    [mtb_scale>=2] {
-      line-color: #FF0000;
-    }
-    [mtb_scale>=3] {
-      line-color: #000000; //one dash |
-    }
-    [mtb_scale>=4] {
-      line-dasharray: 1,1,1,8;// 2 dashes ||
-    }
-    [mtb_scale>=5] {
-      line-dasharray: 1,1,1,1,1,8;// 3 dashes |||
-    }
-    [mtb_scale>=6] {
-      line-dasharray: 1,1,1,1,1,1,1,8;// 4 dashes ||||
-    }
-
-    line-width: [roadsize]*2;
-
-  }
-}
-
-#roads_high::mtbscale[mtb_scale=null][mtb_scale_imba>=0][zoom>=15]
-{
-  [type='service'],
-  [type='track'],
-  [type='bridleway'],
-  [type='footway'],
-  [type='path'],
-  [type='cycleway']
-  {
-    line-cap: round;
-    line-color: #FFFFFF;
-    line-dasharray: 0.1,12;
-
-    [mtb_scale_imba>=1] {
-      line-color: #4e9b00;
-    }
-    [mtb_scale_imba>=2] {
-      line-color: #2076ff;
-    }
-    [mtb_scale_imba>=3] {
-      line-color: #000000;
-    }
-    [mtb_scale_imba>=4] {
-      line-color: #000000;
-      line-dasharray: 0.1,4,0.1,18;
-    }
-
-    line-width: [roadsize]*2;
-
-    [zoom>=17] {
-      line-dasharray: 0.1,24;
-      [mtb_scale_imba>=4] {
-        line-dasharray: 0.1,4,0.1,36;
-      }
-    }
-
-  }
-}
-
--------------------------------------
-*/
-
-
 // ---- Turning Circles ---------------------------------------------
 
 // CAUTION: for turning_circle , the roadcase value for turning_circle must be identical to the roadcase value of 'residential'
@@ -298,7 +155,7 @@
   marker-line-width: 0;
   marker-line-opacity: 0;
   marker-allow-overlap: true;
-  marker-width: 0.5*[roadsize];
+  marker-width: [roadsize];
 }
 
 
@@ -308,5 +165,5 @@
 
 #aeroway[zoom>=11] {
     line-color: @aeroway;
-    line-width: 0.5*[roadsize];
+    line-width: [roadsize];
 }

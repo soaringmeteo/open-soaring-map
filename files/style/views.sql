@@ -223,6 +223,7 @@ CREATE VIEW cyclosm_ways AS
             'no'
         ) AS tunnel
     FROM planet_osm_line
-    WHERE railway IN ('light_rail', 'subway', 'narrow_gauge', 'rail', 'tram', 'funicular')
-        OR highway IS NOT NULL
+    WHERE (railway IN ('light_rail', 'subway', 'narrow_gauge', 'rail', 'tram', 'funicular')
+        OR highway IS NOT NULL)
+        AND (highway IS NULL OR highway <> 'footway' OR COALESCE(tags->'footway', '') NOT IN ('sidewalk', 'crossing'))
     ORDER BY z_order ASC;

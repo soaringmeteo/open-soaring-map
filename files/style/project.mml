@@ -593,7 +593,7 @@ Layer:
           FROM
                 (
                 SELECT  -- roads_med
-                  ST_Snaptogrid(way, 0.00028  * !scale_denominator!::real / 4) AS way,
+                  way,
                   COALESCE(
                     highway,
                     CASE
@@ -610,11 +610,12 @@ Layer:
                     WHEN highway NOT IN ('motorway', 'motorway_link') AND access IN ('no', 'private') THEN 'no'
                     WHEN highway NOT IN ('motorway', 'motorway_link') AND access IS NOT NULL THEN access
                     ELSE NULL
-                  END AS can_bicycle
+                  END AS can_bicycle,
+                  COALESCE(tunnel, 'no') AS tunnel
 
                 FROM planet_osm_roads
-                WHERE (((railway IN ('rail', 'funicular') AND (service IS NULL OR service NOT IN ('spur', 'siding', 'yard')))
-                    OR highway IN ('motorway', 'trunk', 'primary' )) and tunnel is null)
+                WHERE ((railway IN ('rail', 'funicular') AND (service IS NULL OR service NOT IN ('spur', 'siding', 'yard')))
+                    OR highway IN ('motorway', 'trunk', 'primary' ))
                   AND way && !bbox!
                 ORDER BY CASE
                   WHEN railway IS NOT NULL THEN 0
@@ -668,7 +669,7 @@ Layer:
         WHERE 
           (
                type IN ('motorway','primary','secondary', 'railway' )
-            OR type IN ('motorway_link','primary_link','secondary_link','tertiary','tertiary_link','unclassified','cycleway') AND !scale_denominator!::real < 200000  -- zoom >=12
+            OR type IN ('motorway_link','primary_link','secondary_link','tertiary','tertiary_link','unclassified','residential','cycleway') AND !scale_denominator!::real < 200000  -- zoom >=12
             OR type = 'service' AND service != 'minor' AND !scale_denominator!::real < 200000  -- zoom >=12
             OR type IN ('footway') AND  !scale_denominator!::real < 100000 -- zoom >=13
           )
