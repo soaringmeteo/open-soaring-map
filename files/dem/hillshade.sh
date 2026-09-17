@@ -21,8 +21,12 @@ V3_HILLFILE=hillshade-v3-$RESOLUTION.tif
 COMBINED_VRT=hillshade-combined-$RESOLUTION.vrt
 HILLFILE=hillshade-$RESOLUTION.tif
 
+FLAT_ELEVFILE=flat-elevation-$RESOLUTION.tif
+FLAT_HILLFILE=flat-hillshade-$RESOLUTION.tif
+
 rm -f $V1_VRTFILE $V1_WARPFILE $V1_HILLFILE \
       $V3_VRTFILE $V3_WARPFILE $V3_HILLFILE \
+      $FLAT_ELEVFILE $FLAT_HILLFILE \
       $COMBINED_VRT $HILLFILE
 
 # VIEW3 is 3" ≈ 90m native; never warp it finer than that to avoid upsampling artifacts
@@ -84,22 +88,39 @@ else
     echo "WARNING: VIEW3 list is empty, skipping VIEW3 pass"
 fi
 
+#----------- Flat filler -----------
+if [ -f "$V3_WARPFILE" ]; then
+    REFERENCE_WARPFILE=$V3_WARPFILE
+elif [ -f "$V1_WARPFILE" ]; then
+    REFERENCE_WARPFILE=$V1_WARPFILE
+fi
+
+if [ -n "$REFERENCE_WARPFILE" ]; then
+    echo ""
+    echo "************ building flat filler for areas with no elevation data *****************"
+    # -scale <any> <any> 0 0 maps every pixel (data or nodata) to elevation 0
+    gdal_translate -a_nodata none -scale 0 1 0 0 $REFERENCE_WARPFILE $FLAT_ELEVFILE
+    gdaldem hillshade -alt 60 -z $ZFACTOR -compute_edges $HILLSHADE_OPTS $FLAT_ELEVFILE $FLAT_HILLFILE
+fi
+
 #----------- Combine -----------
 echo ""
 echo "************ combining hillshades *****************"
 
-if [ -f "$V1_HILLFILE" ] && [ -f "$V3_HILLFILE" ]; then
-    # VIEW1 takes priority; where VIEW1 has nodata (=0), VIEW3 fills in.
-    # -srcnodata 0 treats gdaldem's nodata output (0) as transparent so VIEW3 shows through.
+# Priority order (lowest to highest): flat filler < VIEW3 < VIEW1.
+# -srcnodata 0 treats gdaldem's nodata output (0) as transparent so
+# lower-priority layers show through.
+COMBINE_INPUTS=""
+[ -f "$FLAT_HILLFILE" ] && COMBINE_INPUTS="$COMBINE_INPUTS $FLAT_HILLFILE"
+[ -f "$V3_HILLFILE" ] && COMBINE_INPUTS="$COMBINE_INPUTS $V3_HILLFILE"
+[ -f "$V1_HILLFILE" ] && COMBINE_INPUTS="$COMBINE_INPUTS $V1_HILLFILE"
+
+if [ -f "$V1_HILLFILE" ] || [ -f "$V3_HILLFILE" ]; then
     gdalbuildvrt -resolution highest -r bilinear -srcnodata 0 \
-        $COMBINED_VRT $V3_HILLFILE $V1_HILLFILE
+        $COMBINED_VRT $COMBINE_INPUTS
     gdal_translate \
         -co BIGTIFF=YES -co TILED=YES -co PREDICTOR=2 -co COMPRESS=DEFLATE \
         $COMBINED_VRT $HILLFILE
-elif [ -f "$V1_HILLFILE" ]; then
-    mv $V1_HILLFILE $HILLFILE
-elif [ -f "$V3_HILLFILE" ]; then
-    mv $V3_HILLFILE $HILLFILE
 else
     echo "ERROR: no hillshade produced (both VIEW1 and VIEW3 lists are empty)"
     exit 1
