@@ -8,7 +8,7 @@
   line-cap: round;
   line-join: round;
   line-color: @standard-case;
-  line-width: 0.75 * [roadsize] + 1;
+  line-width: 0.75 * [roadsize] + 1.25;
 
   [tunnel!='no'] { line-dasharray: 5,4; }
 }
