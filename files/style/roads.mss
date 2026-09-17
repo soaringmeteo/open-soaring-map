@@ -8,7 +8,7 @@
   line-cap: round;
   line-join: round;
   line-color: @standard-case;
-  line-width: [roadsize] + 1;
+  line-width: 0.75 * [roadsize] + 1;
 
   [tunnel!='no'] { line-dasharray: 5,4; }
 }
@@ -20,7 +20,7 @@
       [type='railway'] {
         line-color: @rail-line;
       }
-      line-width: [roadsize];
+      line-width: 0.75 * [roadsize];
   }
 }
 
