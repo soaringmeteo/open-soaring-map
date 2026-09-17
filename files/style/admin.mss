@@ -29,19 +29,19 @@ overlapping borders correctly.
     }
     [zoom >= 6] {
       background/line-width: 1.2;
-      line-width: 1.2;
+      line-width: 1;
     }
     [zoom >= 7] {
       background/line-width: 1.5;
-      line-width: 1.5;
+      line-width: 1.2;
     }
     [zoom >= 8] {
       background/line-width: 1.8;
-      line-width: 2;
+      line-width: 1.2;
     }
     [zoom >= 9] {
       background/line-width: 2;
-      line-width: 2.5;
+      line-width: 1.5;
     }
   }
 
