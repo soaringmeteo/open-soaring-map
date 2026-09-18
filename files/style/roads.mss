@@ -5,22 +5,26 @@
 
 // At mid-level scales (zoom 10-11-12) start to show primary  routes
 #roads_med::outline[type != 'railway'] {
-  line-cap: round;
-  line-join: round;
-  line-color: @standard-case;
-  line-width: 0.75 * [roadsize] + 1.25;
+  [zoom < 12][type != 'secondary'], [zoom >= 12] {
+    line-cap: round;
+    line-join: round;
+    line-color: @standard-case;
+    line-width: [roadsize] + [roadcase];
 
-  [tunnel!='no'] { line-dasharray: 5,4; }
+    [tunnel!='no'] { line-dasharray: 5,4; }
+  }
 }
 #roads_med::inline {
   [type != 'railway'],[type = 'railway'][tunnel = 'no'] {
+    [zoom < 12][type != 'secondary'], [zoom >= 12] {
       line-cap: round;
       line-join: round;
       line-color: @standard-fill;
       [type='railway'] {
         line-color: @rail-line;
       }
-      line-width: 0.75 * [roadsize];
+      line-width: [roadsize];
+    }
   }
 }
 

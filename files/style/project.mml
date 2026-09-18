@@ -589,7 +589,8 @@ Layer:
       (
           SELECT  -- roads_med
               *,
-               zfact_roadsize(type,!scale_denominator!) as roadsize
+               zfact_roadsize(type,!scale_denominator!) as roadsize,
+               zfact_roadcase(type,!scale_denominator!) as roadcase
           FROM
                 (
                 SELECT  -- roads_med
@@ -615,7 +616,7 @@ Layer:
 
                 FROM planet_osm_roads
                 WHERE ((railway IN ('rail', 'funicular') AND (service IS NULL OR service NOT IN ('spur', 'siding', 'yard')))
-                    OR highway IN ('motorway', 'trunk', 'primary' ))
+                    OR highway IN ('motorway', 'trunk', 'primary', 'secondary'))
                   AND way && !bbox!
                 ORDER BY CASE
                   WHEN railway IS NOT NULL THEN 0
