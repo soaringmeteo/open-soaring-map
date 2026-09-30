@@ -5,7 +5,7 @@
 
 // At mid-level scales (zoom 10-11-12) start to show primary  routes
 #roads_med::outline[type != 'railway'] {
-  [zoom < 12][type != 'secondary'], [zoom >= 12] {
+  [zoom < 10][type = 'motorway'], [zoom >= 10][zoom < 12][type != 'secondary'], [zoom >= 12] {
     line-cap: round;
     line-join: round;
     line-color: @standard-case;
@@ -16,7 +16,7 @@
 }
 #roads_med::inline {
   [type != 'railway'],[type = 'railway'][tunnel = 'no'] {
-    [zoom < 12][type != 'secondary'], [zoom >= 12] {
+    [zoom < 10][type = 'motorway'], [zoom >= 10][zoom < 12][type != 'secondary'], [zoom >= 12] {
       line-cap: round;
       line-join: round;
       line-color: @standard-fill;

@@ -44,14 +44,16 @@ BEGIN
         WHEN scale < 50000 THEN  r = 4::numeric ; --zoom >= 14 
         WHEN scale < 100000 THEN  r = 3::numeric ; --zoom >= 13 
         WHEN scale < 200000 THEN  r = 1.8::numeric ; --zoom >= 12 
-        WHEN scale < 750000 THEN  r = 1.5::numeric ; --zoom >= 10 
+        WHEN scale < 750000 THEN  r = 1.7::numeric ; --zoom >= 10 
+        WHEN scale < 1500000 THEN  r = 1.3::numeric ; --zoom >= 9 
+        WHEN scale < 3000000 THEN  r = 1::numeric ; --zoom >= 8 
         WHEN false THEN r = 0::numeric ;
         ELSE r = 0::numeric ;
       END CASE;
     WHEN key  = 'trunk'  THEN
       CASE
         WHEN scale < 200000 THEN  r = 1.7::numeric ; --zoom >= 12 
-        WHEN scale < 750000 THEN  r = 1.4::numeric ; --zoom >= 10 
+        WHEN scale < 750000 THEN  r = 1.6::numeric ; --zoom >= 10 
         WHEN false THEN r = 0::numeric ;
         ELSE r = 0::numeric ;
       END CASE;
@@ -63,7 +65,7 @@ BEGIN
         WHEN scale < 25000 THEN  r = 5::numeric ; --zoom >= 15 
         WHEN scale < 100000 THEN  r = 3::numeric ; --zoom >= 13 
         WHEN scale < 200000 THEN  r = 1.6::numeric ; --zoom >= 12 
-        WHEN scale < 750000 THEN  r = 1.3::numeric ; --zoom >= 10 
+        WHEN scale < 750000 THEN  r = 1.5::numeric ; --zoom >= 10 
         WHEN false THEN r = 0::numeric ;
         ELSE r = 0::numeric ;
       END CASE;
@@ -295,9 +297,8 @@ BEGIN
         WHEN scale < 3000 THEN  r = 2::numeric ; --zoom >= 18 
         WHEN scale < 12500 THEN  r = 1.25::numeric ; --zoom >= 16 
         WHEN scale < 25000 THEN  r = 1.25::numeric ; --zoom >= 15 
-        WHEN scale < 200000 THEN  r = 1::numeric ; --zoom >= 12 
-        WHEN scale < 400000 THEN  r = 1::numeric ; --zoom >= 11 
-        WHEN scale < 750000 THEN  r = 1::numeric ; --zoom >= 10 
+        WHEN scale < 1500000 THEN  r = 1.2::numeric ; --zoom >= 9 
+        WHEN scale < 3000000 THEN  r = 1::numeric ; --zoom >= 8 
         WHEN false THEN r = 0::numeric ;
         ELSE r = 0::numeric ;
       END CASE;
@@ -306,9 +307,7 @@ BEGIN
         WHEN scale < 3000 THEN  r = 2::numeric ; --zoom >= 18 
         WHEN scale < 12500 THEN  r = 1.25::numeric ; --zoom >= 16 
         WHEN scale < 25000 THEN  r = 1.25::numeric ; --zoom >= 15 
-        WHEN scale < 200000 THEN  r = 1::numeric ; --zoom >= 12 
-        WHEN scale < 400000 THEN  r = 1::numeric ; --zoom >= 11 
-        WHEN scale < 750000 THEN  r = 1::numeric ; --zoom >= 10 
+        WHEN scale < 750000 THEN  r = 1.2::numeric ; --zoom >= 10 
         WHEN false THEN r = 0::numeric ;
         ELSE r = 0::numeric ;
       END CASE;
@@ -316,9 +315,7 @@ BEGIN
       CASE
         WHEN scale < 3000 THEN  r = 2::numeric ; --zoom >= 18 
         WHEN scale < 12500 THEN  r = 1.25::numeric ; --zoom >= 16 
-        WHEN scale < 200000 THEN  r = 1::numeric ; --zoom >= 12 
-        WHEN scale < 400000 THEN  r = 1::numeric ; --zoom >= 11 
-        WHEN scale < 750000 THEN  r = 1::numeric ; --zoom >= 10 
+        WHEN scale < 750000 THEN  r = 1.2::numeric ; --zoom >= 10 
         WHEN false THEN r = 0::numeric ;
         ELSE r = 0::numeric ;
       END CASE;
@@ -326,9 +323,7 @@ BEGIN
       CASE
         WHEN scale < 3000 THEN  r = 2::numeric ; --zoom >= 18 
         WHEN scale < 12500 THEN  r = 1.25::numeric ; --zoom >= 16 
-        WHEN scale < 200000 THEN  r = 1::numeric ; --zoom >= 12 
-        WHEN scale < 400000 THEN  r = 1::numeric ; --zoom >= 11 
-        WHEN scale < 750000 THEN  r = 1::numeric ; --zoom >= 10 
+        WHEN scale < 750000 THEN  r = 1.2::numeric ; --zoom >= 10 
         WHEN false THEN r = 0::numeric ;
         ELSE r = 0::numeric ;
       END CASE;

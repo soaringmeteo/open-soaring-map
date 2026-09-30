@@ -627,7 +627,7 @@ Layer:
           ) AS data
   geometry: linestring
   properties:
-    minzoom: 10
+    minzoom: 8
     maxzoom: 12
     <<: *status_roadsmedlow
 
