@@ -33,13 +33,13 @@
 @ncn-shield-fill: #f6f6f6;
 @primary-case: #d8b267;           /*#d8b267;*/
 @primary-fill: #ff3333;           /* red for priamry roads */
-@rail-line: #cccccc;
+@rail-line: #bbb;
 @rcn-overlay: #5500ff;
 @rcn-shield-fill: #f6f6f6;
 @secondary-case: #b1bb5d;  /*#b1bb5d;*/
 @secondary-fill: #ff0;         /* yellow for secondary roads */
 @secondary-med-fill: #ff9900;   /* medium zoom . without border, yellow is hard to see */
-@standard-case: #888;
+@standard-case: #999;
 @standard-fill: #ffffff;
 @standard-nobicycle: #d4d4d4;
 @tertiary-case: black;
