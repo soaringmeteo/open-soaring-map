@@ -319,7 +319,7 @@
 
         [zoom = 11][isolation >= 6000],
         [zoom = 12][isolation >= 4500],
-        [zoom = 13][isolation >= 700] {
+        [zoom = 13][isolation >= 1000] {
 
               text-dx: 0;
               text-dy: 0;

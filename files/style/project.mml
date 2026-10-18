@@ -561,26 +561,6 @@ Layer:
 
 ############################################# tunnel , bridge , road , track/path ######################
 
-# this one is exactly the same than turning_circle_fill
-# perhaps the goal is to have 3 steps of drawing :  turning_circle_case / roads / turning_circle_fill
-- id: turning_circle_case
-  <<: *srs-osm
-  Datasource:
-    <<: *osm2pgsql
-    table: |-
-      (
-        SELECT  -- turning_circle_case
-            way,
-            zfact_roadsize(highway,!scale_denominator!) as roadsize,
-            zfact_roadcase(highway,!scale_denominator!) as roadcase
-        FROM planet_osm_point
-        WHERE highway = 'turning_circle'
-      ) AS data
-  geometry: point
-  properties:
-    minzoom: 14
-    <<: *status_other
-
 - id: roads_med
   <<: *srs-osm
   Datasource:
@@ -683,24 +663,6 @@ Layer:
     <<: *status_roadshigh
 
 
-
-#--------------------- draw turning circles a second time, after road drawing
-- id: turning_circle_fill
-  <<: *srs-osm
-  Datasource:
-    <<: *osm2pgsql
-    table: |-
-      (
-        SELECT  -- turning_circle_fill
-            way,
-            zfact_roadsize(highway,!scale_denominator!) as roadsize
-        FROM planet_osm_point
-        WHERE highway = 'turning_circle'
-      ) AS data
-  geometry: point
-  properties:
-    minzoom: 14
-    <<: *status_other
 
 ############################### administrative boundaries #####################
 - id: admin-low

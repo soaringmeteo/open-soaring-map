@@ -144,28 +144,6 @@
   }
 }
 
-// ---- Turning Circles ---------------------------------------------
-
-// CAUTION: for turning_circle , the roadcase value for turning_circle must be identical to the roadcase value of 'residential'
-// because original Cyclosm was using the 'residential' casing value for 'turning_circle' casing
-// I do not know the impact if we change this
-#turning_circle_case[zoom>=14] {
-  marker-fill: @standard-fill;
-  marker-line-color: @standard-case;
-  marker-line-width: 2* [roadcase];
-  marker-allow-overlap: true;
-  marker-width: 0.5*[roadsize];
-}
-
-#turning_circle_fill[zoom>=14] {
-  marker-fill: @standard-fill;
-  marker-line-width: 0;
-  marker-line-opacity: 0;
-  marker-allow-overlap: true;
-  marker-width: [roadsize];
-}
-
-
 // ==================================================================
 // AEROWAYS
 // ==================================================================
